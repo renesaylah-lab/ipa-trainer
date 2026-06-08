@@ -1,0 +1,521 @@
+/* style.css — Logopädie-Trainer
+ * Heller Modus, klare Typografie-Hierarchie, wenige Farben.
+ * Keine externen Abhängigkeiten. */
+
+:root {
+  --bg: #f5f6f8;
+  --surface: #ffffff;
+  --border: #dfe3e8;
+  --text: #1f2733;
+  --muted: #67707c;
+  --primary: #2563a8;
+  --primary-dark: #1d4e85;
+  --ok: #1f7a4d;
+  --ok-bg: #e6f4ec;
+  --bad: #b3261e;
+  --bad-bg: #fbeae8;
+  --warn-bg: #fdf3e3;
+  --shadow: 0 1px 3px rgba(16, 24, 40, 0.06), 0 1px 2px rgba(16, 24, 40, 0.04);
+  --radius: 10px;
+  /* IPA-taugliche Schrift mit Fallbacks */
+  --ipa-font: "Charis SIL", "Doulos SIL", "Gentium Plus", "Segoe UI", "DejaVu Sans", system-ui, sans-serif;
+  --ui-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--ui-font);
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.ipa-text {
+  font-family: var(--ipa-font);
+  font-feature-settings: "kern" 1;
+}
+
+/* --- Header --- */
+.app-header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+.app-header-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.brand h1 {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+}
+.subtitle {
+  margin: 2px 0 0;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+.header-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+/* --- Tabs --- */
+.tabs {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  gap: 4px;
+  border-bottom: 1px solid var(--border);
+}
+.tab-btn {
+  appearance: none;
+  background: transparent;
+  border: none;
+  border-bottom: 3px solid transparent;
+  padding: 14px 18px;
+  font-size: 0.98rem;
+  font-weight: 550;
+  color: var(--muted);
+  cursor: pointer;
+  font-family: inherit;
+}
+.tab-btn:hover { color: var(--text); }
+.tab-btn.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+
+/* --- Layout --- */
+main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px 20px 48px;
+}
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+.card, .card-result {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 24px;
+  margin-bottom: 20px;
+}
+.card-result:empty { display: none; }
+
+h2 { font-size: 1.2rem; margin: 0 0 8px; }
+h3 { font-size: 1.05rem; margin: 0 0 12px; }
+h4 { font-size: 0.95rem; margin: 16px 0 8px; }
+.muted { color: var(--muted); font-size: 0.9rem; }
+
+/* --- Buttons --- */
+.btn {
+  appearance: none;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 550;
+  padding: 9px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s;
+}
+.btn:hover { background: #f0f2f5; }
+.btn-primary {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+}
+.btn-primary:hover { background: var(--primary-dark); border-color: var(--primary-dark); }
+.btn-ghost { background: transparent; }
+.btn-small { padding: 4px 10px; font-size: 0.85rem; }
+.btn-danger { color: var(--bad); border-color: transparent; background: transparent; font-size: 1.1rem; line-height: 1; }
+.btn-danger:hover { background: var(--bad-bg); }
+
+/* --- Trainer (Modi 1 + 2) --- */
+.trainer { text-align: center; }
+.trainer-progress {
+  color: var(--muted);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 16px;
+}
+.trainer-prompt {
+  font-size: 2.6rem;
+  font-weight: 600;
+  margin: 8px 0 20px;
+  word-break: break-word;
+}
+.trainer-label { color: var(--muted); font-size: 0.9rem; margin-bottom: 8px; }
+.trainer-input {
+  width: 100%;
+  max-width: 440px;
+  font-size: 1.5rem;
+  text-align: center;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin: 0 auto 16px;
+  display: block;
+}
+.trainer-input:focus { outline: 2px solid var(--primary); border-color: var(--primary); }
+.trainer-hint { color: var(--muted); font-size: 0.82rem; margin-top: 12px; }
+.trainer-score {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+.weak-box {
+  margin-top: 16px;
+  padding: 12px 14px;
+  background: var(--warn-bg);
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+/* --- IPA-Tastatur --- */
+.kbd-card { padding: 16px 20px; }
+.ipa-keyboard { display: flex; flex-wrap: wrap; gap: 18px; }
+.ipa-group { display: flex; flex-direction: column; gap: 6px; }
+.ipa-group-title {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+}
+.ipa-keys { display: flex; flex-wrap: wrap; gap: 6px; }
+.ipa-key {
+  font-family: var(--ipa-font);
+  font-size: 1.15rem;
+  min-width: 40px;
+  height: 42px;
+  padding: 0 8px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+}
+.ipa-key:hover { background: #eef1f5; border-color: #c7ced6; }
+.ipa-key:active { background: #e3e8ee; }
+.ipa-key-action { font-family: var(--ui-font); font-size: 0.85rem; font-weight: 550; }
+
+/* --- Tabellen (Ergebnisse) --- */
+.result-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 8px;
+  font-size: 0.92rem;
+}
+.result-table th, .result-table td {
+  text-align: left;
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+.result-table th {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  font-weight: 600;
+}
+.row-ok { background: var(--ok-bg); }
+.row-bad { background: var(--bad-bg); }
+.row-explain td { background: #fafbfc; }
+.mark-ok { color: var(--ok); font-weight: 700; }
+.mark-bad { color: var(--bad); font-weight: 700; }
+.explain { color: var(--muted); font-size: 0.86rem; font-style: italic; }
+
+/* --- Dodd --- */
+.dodd-age {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  margin: 16px 0;
+  flex-wrap: wrap;
+}
+.dodd-age label { font-size: 0.92rem; }
+.age-input { width: 64px; padding: 6px 8px; border: 1px solid var(--border); border-radius: 6px; font-size: 1rem; }
+
+/* overflow: visible, damit das Autovervollständigungs-Dropdown nicht
+   abgeschnitten wird (overflow-x:auto würde auch vertikal clippen). */
+.dodd-table-wrap { overflow: visible; }
+.dodd-input-table { width: 100%; border-collapse: collapse; min-width: 640px; }
+.dodd-input-table th {
+  text-align: left;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  padding: 6px 8px;
+}
+.dodd-input-table td { padding: 4px 8px; }
+.dodd-input-table input {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 1rem;
+}
+.dodd-input-table input:focus { outline: 2px solid var(--primary); border-color: var(--primary); }
+.versuch-input { width: 70px; }
+
+/* --- Zielwort-Autovervollständigung --- */
+.zielwort-cell { overflow: visible; }
+.autocomplete-wrap { position: relative; }
+.zielwort-input {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 1rem;
+}
+.zielwort-input:focus { outline: 2px solid var(--primary); border-color: var(--primary); }
+.autocomplete-menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  min-width: 240px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: 0 8px 28px rgba(16, 24, 40, 0.14);
+  padding: 4px;
+  z-index: 70;
+  max-height: 280px;
+  overflow-y: auto;
+}
+.autocomplete-menu[hidden] { display: none; }
+.autocomplete-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  padding: 7px 9px;
+  cursor: pointer;
+  font-family: inherit;
+  color: var(--text);
+}
+.autocomplete-item:hover,
+.autocomplete-item.active { background: #f0f2f5; }
+.autocomplete-wort { font-weight: 600; font-size: 0.92rem; }
+.autocomplete-ipa { color: var(--muted); font-size: 0.88rem; }
+
+/* --- Versuch-Spalte (read-only, automatisch) --- */
+.versuch-cell {
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.9rem;
+  vertical-align: middle;
+}
+
+/* --- "+ zur Wortliste" + Zeilen-Aktionen --- */
+.wortliste-add {
+  flex: 0 0 auto;
+  color: var(--primary);
+  white-space: nowrap;
+  font-size: 0.8rem;
+}
+.wortliste-add[hidden] { display: none; }
+.dodd-actions { white-space: nowrap; }
+.dodd-actions .btn { margin-left: 4px; }
+
+/* --- Hybrid-Eingabe Kind-IPA --- */
+.kind-ipa-wrap { display: flex; align-items: center; gap: 4px; }
+.kind-ipa-wrap .kind-ipa-input { flex: 1; min-width: 0; }
+.kind-ipa-edit {
+  flex: 0 0 auto;
+  padding: 6px 9px;
+  line-height: 1;
+  font-size: 0.95rem;
+  color: var(--primary);
+}
+.kind-ipa-edit[hidden] { display: none; }
+.kind-ipa-preview {
+  margin-top: 3px;
+  font-size: 0.8rem;
+  font-style: italic;
+  color: var(--muted);
+}
+.kind-ipa-preview[hidden] { display: none; }
+
+/* --- Korrektur-Popup (Modal) --- */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(16, 24, 40, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 100;
+}
+.modal {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 12px 40px rgba(16, 24, 40, 0.22);
+  padding: 22px;
+  width: 100%;
+  max-width: 560px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+.modal-title { margin: 0 0 14px; }
+.modal-input {
+  width: 100%;
+  font-size: 1.4rem;
+  text-align: center;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+.modal-input:focus { outline: 2px solid var(--primary); border-color: var(--primary); }
+.modal-kbd { margin-bottom: 18px; }
+/* kompaktere Tasten im Popup */
+.modal-kbd .ipa-keyboard { gap: 12px; }
+.modal-kbd .ipa-key { min-width: 34px; height: 36px; font-size: 1.02rem; }
+.modal-actions { display: flex; justify-content: flex-end; gap: 8px; }
+
+.dodd-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+.dodd-buttons { display: flex; gap: 8px; flex-wrap: wrap; position: relative; }
+
+/* --- Dropdown (Beispiel laden) --- */
+.dropdown { position: relative; display: inline-block; }
+.dropdown-toggle .caret { font-size: 0.8em; margin-left: 4px; }
+.dropdown-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  min-width: 300px;
+  max-width: min(380px, 92vw);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: 0 8px 28px rgba(16, 24, 40, 0.14);
+  padding: 6px;
+  z-index: 60;
+}
+.dropdown-menu[hidden] { display: none; }
+.dropdown-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  padding: 9px 11px;
+  cursor: pointer;
+  font-family: inherit;
+  color: var(--text);
+}
+.dropdown-item:hover { background: #f0f2f5; }
+.dropdown-item + .dropdown-item { margin-top: 2px; }
+.dropdown-item-title { font-weight: 600; font-size: 0.92rem; }
+.dropdown-item-desc { font-size: 0.8rem; color: var(--muted); line-height: 1.35; }
+
+/* Auf schmalen Ansichten das Menü unter der gesamten Button-Zeile aufspannen,
+   damit es nicht abgeschnitten wird oder andere Buttons überlappt. */
+@media (max-width: 720px) {
+  .dropdown { position: static; }
+  .dropdown-menu { left: 0; right: 0; width: auto; min-width: 0; max-width: none; }
+}
+
+.dodd-klass {
+  background: #eef4fa;
+  border: 1px solid #cfe0f0;
+  border-radius: 8px;
+  padding: 18px 20px;
+  margin-bottom: 12px;
+}
+.dodd-klass-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+}
+.dodd-klass-value { font-size: 1.45rem; font-weight: 650; color: var(--primary-dark); margin: 2px 0; }
+.dodd-klass-meta { font-size: 0.85rem; color: var(--muted); }
+.dodd-disclaimer { font-size: 0.82rem; color: var(--muted); font-style: italic; margin: 0 0 8px; }
+.dodd-section { margin-top: 20px; }
+.dodd-section ul { margin: 0; padding-left: 20px; }
+.dodd-section li { margin-bottom: 4px; }
+
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+.badge-typisch { background: var(--ok-bg); color: var(--ok); }
+.badge-untypisch { background: var(--bad-bg); color: var(--bad); }
+.badge-artikulatorisch { background: var(--warn-bg); color: #9a6a14; }
+.badge-unbekannt { background: #eee; color: var(--muted); }
+
+.status-ok { color: var(--ok); }
+.status-bad { color: var(--bad); }
+.status-neutral { color: var(--muted); }
+
+/* --- Fehler-Box --- */
+.error-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--bad);
+  border-radius: var(--radius);
+  padding: 24px;
+}
+.error-box pre {
+  background: #f0f2f5;
+  padding: 10px 14px;
+  border-radius: 6px;
+  overflow-x: auto;
+}
+code { background: #f0f2f5; padding: 1px 5px; border-radius: 4px; font-size: 0.9em; }
+
+/* --- Footer --- */
+.app-footer {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px 20px 40px;
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+/* --- Responsive --- */
+@media (max-width: 720px) {
+  .trainer-prompt { font-size: 2rem; }
+  .app-header-inner { flex-direction: column; align-items: flex-start; }
+  .tab-btn { padding: 12px 12px; font-size: 0.9rem; }
+  .ipa-key { min-width: 36px; height: 40px; font-size: 1.05rem; }
+}

@@ -1,0 +1,225 @@
+{
+  "hinweis": "Altersgrenzen sind RICHTWERTE und müssen gegen Fox-Boyer (2014) / PLAKSS-II verifiziert werden. Wo unsicher: quelle = 'TBD verifizieren'. 'altersgrenze_jahre' = Alter, bis zu dem der Prozess als physiologisch (typisch) gilt; danach gilt er als verzögert.",
+  "prozesse": [
+    {
+      "id": "vorverlagerung-velar",
+      "name": "Vorverlagerung (Velar-Fronting)",
+      "typ": "typisch",
+      "kategorie": "phonologisch",
+      "beschreibung": "Velare /k, g, ŋ/ werden zu alveolaren /t, d, n/ ersetzt.",
+      "regel": { "von": ["k", "g", "ŋ"], "zu": ["t", "d", "n"], "position": "beliebig" },
+      "altersgrenze_jahre": 3.5,
+      "quelle": "Fox-Boyer (TBD verifizieren)"
+    },
+    {
+      "id": "plosivierung",
+      "name": "Plosivierung (Stopping)",
+      "typ": "typisch",
+      "kategorie": "phonologisch",
+      "beschreibung": "Frikative werden durch Plosive ersetzt (z. B. /f/→[p], /s/→[t], /ʃ/→[t], /v/→[b], /z/→[d]).",
+      "regel": { "von": ["f", "v", "s", "z", "ʃ", "ʒ", "ç", "x"], "zu": ["p", "b", "t", "d", "k", "g"], "position": "beliebig" },
+      "altersgrenze_jahre": 3.0,
+      "quelle": "Fox-Boyer (TBD verifizieren)"
+    },
+    {
+      "id": "konsonantenverbindung-reduktion",
+      "name": "Konsonantenverbindungsreduktion (Cluster Reduction)",
+      "typ": "typisch",
+      "kategorie": "phonologisch",
+      "beschreibung": "Eine Konsonantenverbindung wird auf einen Konsonanten reduziert (z. B. /ʃp/→[p], /kl/→[k]).",
+      "regel": { "muster": "cluster_reduktion" },
+      "altersgrenze_jahre": 4.0,
+      "quelle": "Fox-Boyer (TBD verifizieren)"
+    },
+    {
+      "id": "deaffrizierung",
+      "name": "Deaffrizierung (Deaffrication)",
+      "typ": "typisch",
+      "kategorie": "phonologisch",
+      "beschreibung": "Affrikaten /ts, pf, tʃ, dʒ/ werden zu einem Frikativ oder Plosiv reduziert.",
+      "regel": { "von": ["ts", "pf", "tʃ", "dʒ"], "zu": ["s", "f", "ʃ", "t", "p"], "position": "beliebig" },
+      "altersgrenze_jahre": 3.5,
+      "quelle": "Fox-Boyer (TBD verifizieren)"
+    },
+    {
+      "id": "silbenreduktion-unbetont",
+      "name": "Reduktion unbetonter Silben (Weak Syllable Deletion)",
+      "typ": "typisch",
+      "kategorie": "phonologisch",
+      "beschreibung": "Unbetonte Silben werden ausgelassen (z. B. 'Banane' → [naːnə]).",
+      "regel": { "muster": "silben_reduktion" },
+      "altersgrenze_jahre": 3.0,
+      "quelle": "Fox-Boyer (TBD verifizieren)"
+    },
+    {
+      "id": "reduplikation",
+      "name": "Reduplikation",
+      "typ": "typisch",
+      "kategorie": "phonologisch",
+      "beschreibung": "Eine Silbe wird verdoppelt (z. B. 'Wasser' → [wawa]).",
+      "regel": { "muster": "reduplikation" },
+      "altersgrenze_jahre": 2.5,
+      "quelle": "Fox-Boyer (TBD verifizieren)"
+    },
+    {
+      "id": "finale-konsonantentilgung",
+      "name": "Finale Konsonantentilgung (Final Consonant Deletion)",
+      "typ": "typisch",
+      "kategorie": "phonologisch",
+      "beschreibung": "Der Konsonant am Wort-/Silbenende wird ausgelassen (z. B. 'Ball' → [ba]).",
+      "regel": { "muster": "tilgung", "position": "final" },
+      "altersgrenze_jahre": 3.0,
+      "quelle": "Fox-Boyer (TBD verifizieren)"
+    },
+    {
+      "id": "kontaktassimilation",
+      "name": "Kontaktassimilation (Assimilation)",
+      "typ": "typisch",
+      "kategorie": "phonologisch",
+      "beschreibung": "Ein Laut gleicht sich einem benachbarten Laut an (z. B. 'Lampe' → [mampə]).",
+      "regel": { "muster": "assimilation" },
+      "altersgrenze_jahre": 3.0,
+      "quelle": "Fox-Boyer (TBD verifizieren)"
+    },
+    {
+      "id": "vorverlagerung-sch",
+      "name": "Vorverlagerung von /ʃ/ (sch → s)",
+      "typ": "typisch",
+      "kategorie": "phonologisch",
+      "beschreibung": "/ʃ/ wird durch das weiter vorne gebildete /s/ ersetzt.",
+      "regel": { "von": ["ʃ"], "zu": ["s"], "position": "beliebig" },
+      "altersgrenze_jahre": 4.0,
+      "quelle": "Fox-Boyer (TBD verifizieren)"
+    },
+    {
+      "id": "ent-rundung-vokale",
+      "name": "Entrundung gerundeter Vokale",
+      "typ": "typisch",
+      "kategorie": "phonologisch",
+      "beschreibung": "Gerundete Vordervokale /y, ø, œ, ʏ/ werden entrundet zu /i, e, ɛ, ɪ/.",
+      "regel": { "von": ["y", "ø", "œ", "ʏ", "yː", "øː"], "zu": ["i", "e", "ɛ", "ɪ", "iː", "eː"], "position": "beliebig" },
+      "altersgrenze_jahre": 3.5,
+      "quelle": "TBD verifizieren"
+    },
+    {
+      "id": "rueckverlagerung-backing",
+      "name": "Rückverlagerung (Backing)",
+      "typ": "untypisch",
+      "kategorie": "phonologisch",
+      "beschreibung": "Alveolare /t, d, n, s/ werden zu velaren/dorsalen Lauten ersetzt (z. B. /t/→[k]). Gilt in jedem Alter als untypisch.",
+      "regel": { "von": ["t", "d", "n", "s"], "zu": ["k", "g", "ŋ", "x"], "position": "beliebig" },
+      "altersgrenze_jahre": null,
+      "quelle": "Fox-Boyer (TBD verifizieren)"
+    },
+    {
+      "id": "glottale-ersetzung",
+      "name": "Glottale Ersetzung (Glottal Replacement)",
+      "typ": "untypisch",
+      "kategorie": "phonologisch",
+      "beschreibung": "Konsonanten werden durch den Glottisschlag /ʔ/ oder /h/ ersetzt.",
+      "regel": { "von": ["p", "t", "k", "b", "d", "g", "f", "s", "ʃ"], "zu": ["ʔ", "h"], "position": "beliebig" },
+      "altersgrenze_jahre": null,
+      "quelle": "Fox-Boyer (TBD verifizieren)"
+    },
+    {
+      "id": "initiale-konsonantentilgung",
+      "name": "Initiale Konsonantentilgung (Initial Consonant Deletion)",
+      "typ": "untypisch",
+      "kategorie": "phonologisch",
+      "beschreibung": "Der Konsonant am Wort-/Silbenanfang wird ausgelassen (z. B. 'Hand' → [ant]). Gilt als untypisch.",
+      "regel": { "muster": "tilgung", "position": "initial" },
+      "altersgrenze_jahre": null,
+      "quelle": "Fox-Boyer (TBD verifizieren)"
+    },
+    {
+      "id": "tilgung-betonter-silben",
+      "name": "Auslassung betonter Silben",
+      "typ": "untypisch",
+      "kategorie": "phonologisch",
+      "beschreibung": "Eine betonte Silbe wird ausgelassen. Gilt als untypisch.",
+      "regel": { "muster": "silben_reduktion", "betont": true },
+      "altersgrenze_jahre": null,
+      "quelle": "TBD verifizieren"
+    },
+    {
+      "id": "denasalierung",
+      "name": "Denasalierung",
+      "typ": "untypisch",
+      "kategorie": "phonologisch",
+      "beschreibung": "Nasale /m, n, ŋ/ werden durch homorgane Plosive /b, d, g/ ersetzt.",
+      "regel": { "von": ["m", "n", "ŋ"], "zu": ["b", "d", "g"], "position": "beliebig" },
+      "altersgrenze_jahre": null,
+      "quelle": "TBD verifizieren"
+    },
+    {
+      "id": "nasalierung",
+      "name": "Nasalierung von Plosiven",
+      "typ": "untypisch",
+      "kategorie": "phonologisch",
+      "beschreibung": "Plosive /b, d, g/ werden durch Nasale /m, n, ŋ/ ersetzt.",
+      "regel": { "von": ["b", "d", "g"], "zu": ["m", "n", "ŋ"], "position": "beliebig" },
+      "altersgrenze_jahre": null,
+      "quelle": "TBD verifizieren"
+    },
+    {
+      "id": "metathese",
+      "name": "Metathese / Lautvertauschung",
+      "typ": "untypisch",
+      "kategorie": "phonologisch",
+      "beschreibung": "Die Reihenfolge von Lauten wird vertauscht (z. B. 'Blume' → [bulmə]).",
+      "regel": { "muster": "metathese" },
+      "altersgrenze_jahre": null,
+      "quelle": "TBD verifizieren"
+    },
+    {
+      "id": "vokalveraenderung",
+      "name": "Vokalveränderung / Vokalersetzung",
+      "typ": "untypisch",
+      "kategorie": "phonologisch",
+      "beschreibung": "Vokale werden systematisch durch andere Vokale ersetzt (über Entrundung hinaus). Gilt als untypisch.",
+      "regel": { "muster": "vokalersetzung" },
+      "altersgrenze_jahre": null,
+      "quelle": "TBD verifizieren"
+    },
+    {
+      "id": "favoritlaut",
+      "name": "Bevorzugung eines Lautes (Favourite Sound)",
+      "typ": "untypisch",
+      "kategorie": "phonologisch",
+      "beschreibung": "Mehrere unterschiedliche Ziellaute werden durch einen einzigen bevorzugten Laut ersetzt.",
+      "regel": { "muster": "favoritlaut" },
+      "altersgrenze_jahre": null,
+      "quelle": "TBD verifizieren"
+    },
+    {
+      "id": "sigmatismus",
+      "name": "Sigmatismus (s-Fehlbildung)",
+      "typ": "artikulatorisch",
+      "kategorie": "phonetisch",
+      "beschreibung": "Phonetische Fehlbildung der S-Laute /s, z/ (z. B. interdental [s̪]/[θ] oder lateral). Lautbildungs-, kein Phonologie-Problem.",
+      "regel": { "von": ["s", "z"], "zu": ["θ", "ð", "s̪", "ɬ"], "position": "beliebig" },
+      "altersgrenze_jahre": null,
+      "quelle": "TBD verifizieren"
+    },
+    {
+      "id": "schetismus",
+      "name": "Schetismus (sch-Fehlbildung)",
+      "typ": "artikulatorisch",
+      "kategorie": "phonetisch",
+      "beschreibung": "Phonetische Fehlbildung von /ʃ/. Lautbildungs-, kein Phonologie-Problem.",
+      "regel": { "von": ["ʃ"], "zu": ["ɕ", "ʂ", "ç"], "position": "beliebig" },
+      "altersgrenze_jahre": null,
+      "quelle": "TBD verifizieren"
+    },
+    {
+      "id": "rhotazismus",
+      "name": "Rhotazismus (r-Fehlbildung)",
+      "typ": "artikulatorisch",
+      "kategorie": "phonetisch",
+      "beschreibung": "Phonetische Fehlbildung des R-Lautes (z. B. uvular vibrierend statt Standard, oder Ersetzung).",
+      "regel": { "von": ["ʁ", "r"], "zu": ["ʀ", "ɹ", "l", "j"], "position": "beliebig" },
+      "altersgrenze_jahre": null,
+      "quelle": "TBD verifizieren"
+    }
+  ]
+}

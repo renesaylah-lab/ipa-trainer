@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Logopädie-Trainer</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="app-header">
+    <div class="app-header-inner">
+      <div class="brand">
+        <h1>Logopädie-Trainer</h1>
+        <p class="subtitle">IPA-Transkription &amp; Dodd-Analyse · Lern- und Reflexionshilfe</p>
+      </div>
+      <div class="header-actions">
+        <button id="btn-export" class="btn btn-ghost" type="button">Daten exportieren</button>
+        <button id="btn-import" class="btn btn-ghost" type="button">Daten importieren</button>
+        <input id="import-file" type="file" accept="application/json" hidden>
+      </div>
+    </div>
+  </header>
+
+  <nav class="tabs" role="tablist">
+    <button class="tab-btn active" role="tab" aria-selected="true" data-tab="tab-wort2ipa" type="button">Wort → IPA</button>
+    <button class="tab-btn" role="tab" aria-selected="false" data-tab="tab-ipa2wort" type="button">IPA → Wort</button>
+    <button class="tab-btn" role="tab" aria-selected="false" data-tab="tab-dodd" type="button">Dodd-Analyse</button>
+  </nav>
+
+  <main>
+    <!-- Modus 1: Wort -> IPA -->
+    <section id="tab-wort2ipa" class="tab-panel active" role="tabpanel">
+      <div class="card">
+        <div id="trainer-wort2ipa" class="trainer"></div>
+      </div>
+      <div id="kbd-wort2ipa" class="card kbd-card"></div>
+    </section>
+
+    <!-- Modus 2: IPA -> Wort -->
+    <section id="tab-ipa2wort" class="tab-panel" role="tabpanel">
+      <div class="card">
+        <div id="trainer-ipa2wort" class="trainer"></div>
+      </div>
+    </section>
+
+    <!-- Modus 3: Dodd-Analyse -->
+    <section id="tab-dodd" class="tab-panel" role="tabpanel">
+      <div class="card">
+        <h2>Dodd-Analyse</h2>
+        <p class="muted">
+          Kindliche Aussprache-Produktionen eingeben; die App schlägt eine Klassifikation
+          nach Dodd (dt. Adaption Fox-Boyer) vor. <strong>Lern-/Reflexionshilfe – ersetzt keine fachliche Diagnose.</strong>
+        </p>
+
+        <div class="dodd-age">
+          <label>Alter:
+            <input id="dodd-jahre" type="number" min="0" max="12" value="4" class="age-input"> Jahre
+          </label>
+          <label>
+            <input id="dodd-monate" type="number" min="0" max="11" value="0" class="age-input"> Monate
+          </label>
+        </div>
+
+        <div class="dodd-table-wrap">
+          <table class="dodd-input-table">
+            <thead>
+              <tr>
+                <th>Zielwort</th>
+                <th>Ziel-IPA</th>
+                <th>Kind-IPA</th>
+                <th>Versuch</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="dodd-rows"></tbody>
+          </table>
+        </div>
+
+        <div class="dodd-controls">
+          <span id="dodd-count" class="muted"></span>
+          <div class="dodd-buttons">
+            <button id="dodd-add" class="btn" type="button">Produktion hinzufügen</button>
+            <button id="dodd-loadall" class="btn" type="button">Alle 25 PLAKSS-Wörter laden</button>
+            <div class="dropdown" id="dodd-example-dropdown">
+              <button id="dodd-example-toggle" class="btn btn-ghost dropdown-toggle" type="button" aria-haspopup="true" aria-expanded="false">Beispiel laden <span class="caret" aria-hidden="true">&#9662;</span></button>
+              <div class="dropdown-menu" id="dodd-example-menu" role="menu" hidden></div>
+            </div>
+            <button id="dodd-clear" class="btn btn-ghost" type="button">Zurücksetzen</button>
+            <button id="dodd-analyze" class="btn btn-primary" type="button">Analysieren</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="kbd-dodd" class="card kbd-card"></div>
+
+      <div id="dodd-result" class="card-result"></div>
+
+      <div class="card">
+        <h3>Verlauf der letzten Analysen</h3>
+        <div id="dodd-history"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    <p>
+      Vanilla HTML/CSS/JS · LocalStorage · Daten gegen Fox-Boyer/PLAKSS-II zu verifizieren (Felder mit „TBD“).
+      Kein Diagnose-Tool für reale Patient:innen.
+    </p>
+  </footer>
+
+  <script src="js/storage.js"></script>
+  <script src="js/spaced-repetition.js"></script>
+  <script src="js/ipa-keyboard.js"></script>
+  <script src="js/dodd-analyzer.js"></script>
+  <script src="js/ortho-to-ipa.js"></script>
+  <script src="js/ipa-trainer.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

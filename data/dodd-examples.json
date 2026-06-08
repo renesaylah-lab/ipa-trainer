@@ -1,0 +1,87 @@
+{
+  "hinweis": "Vier Beispiel-Sets zum Testen/Demonstrieren des Dodd-Analyse-Tools – eines pro Dodd-Kategorie. Die Zielwörter und Ziel-IPA kommen aus data/words.json (single source of truth). 'kind_produktionen' ist ein flaches Array in EXAKT der Reihenfolge von words.json. Ein Eintrag kann a) ein String (ein Versuch) oder b) ein Array von Strings (mehrere Versuche desselben Wortes, z. B. für das Inkonsequenz-Set) sein. Schwellen (40 % Inkonsequenz, Altersgrenzen) stammen aus der Klassifikations-Logik bzw. processes.json, nicht von hier.",
+  "wortliste_source": "TBD verifizieren — angelehnt an PLAKSS-II (Fox-Boyer). 25-Wörter-Auswahl; vollständige PLAKSS-II umfasst mehr Items.",
+  "sets": [
+    {
+      "id": "artikulationsstoerung",
+      "label": "Artikulationsstörung (Sigmatismus interdentalis)",
+      "category": "Artikulationsstörung",
+      "kurzbeschreibung": "Ein einziger phonetischer Fehler: /s, z/ konsequent interdental ([θ, ð]). Alle übrigen Laute korrekt.",
+      "alter_jahre": 5,
+      "alter_monate": 0,
+      "source": "TBD verifizieren — angelehnt an PLAKSS-II",
+      "kind_produktionen": [
+        "ˈðɔnə", "ˈtaθə", "ˈaɪθ", "baˈnaːnə", "ˈkuː", "ˈɡaːbl̩", "ˈʃuːlə", "ˈfɪʃ",
+        "ˈdoːðə", "ˈvaθɐ", "ˈkatsə", "ˈnaːðə", "ˈpfeːɐ̯t", "ˈtsuːk", "ˈbluːmə",
+        "ˈʃtɛɐ̯n", "ˈʃmɛtɐlɪŋ", "ˈjʊŋə", "ˈhʊnt", "ˈmaʊθ", "ˈbal", "ˈbʁɪlə",
+        "ˈmɪlç", "ˈbuːx", "ˈkʊtʃə"
+      ]
+    },
+    {
+      "id": "phonologische-verzoegerung",
+      "label": "Phonologische Verzögerung (altersuntypische Prozesse)",
+      "category": "Phonologische Verzögerung",
+      "kurzbeschreibung": "Mehrere typische Prozesse – Vorverlagerung, Plosivierung, Deaffrizierung – konsequent angewandt, aber bei 5;0 über ihren Altersgrenzen.",
+      "alter_jahre": 5,
+      "alter_monate": 0,
+      "source": "TBD verifizieren — angelehnt an PLAKSS-II",
+      "kind_produktionen": [
+        "ˈdɔnə", "ˈtatə", "ˈaɪt", "baˈnaːnə", "ˈtuː", "ˈdaːbl̩", "ˈtuːlə", "ˈpɪt",
+        "ˈdoːdə", "ˈbatɐ", "ˈtasə", "ˈnaːdə", "ˈfeːɐ̯t", "ˈsuːt", "ˈbluːmə",
+        "ˈtɛɐ̯n", "ˈtmɛtɐlɪn", "ˈjʊnə", "ˈhʊnt", "ˈmaʊt", "ˈbal", "ˈbʁɪlə",
+        "ˈmɪlt", "ˈbuːk", "ˈtʊʃə"
+      ]
+    },
+    {
+      "id": "konsequente-phonologische-stoerung",
+      "label": "Konsequente Phonologische Störung",
+      "category": "Konsequente phonologische Störung",
+      "kurzbeschreibung": "Ungewöhnliche Prozesse (Rückverlagerung/Backing, Initialkonsonanten-Tilgung) konsequent angewandt, kombiniert mit typischen Prozessen. Mindestens ein untypischer Prozess.",
+      "alter_jahre": 5,
+      "alter_monate": 0,
+      "source": "TBD verifizieren — angelehnt an PLAKSS-II",
+      "kind_produktionen": [
+        "ˈzɔŋə", "ˈkaxə", "ˈaɪx", "baˈŋaːŋə", "ˈkuː", "ˈɡaːbl̩", "ˈuːlə", "ˈɪʃ",
+        "ˈɡoːzə", "ˈaxɐ", "ˈkasə", "ˈŋaːzə", "ˈfeːɐ̯k", "ˈsuːk", "ˈbluːmə",
+        "ˈkɛɐ̯ŋ", "ˈmɛkɐlɪŋ", "ˈjʊŋə", "ˈʊŋk", "ˈmaʊx", "ˈbal", "ˈbʁɪlə",
+        "ˈmɪlk", "ˈbuːx", "ˈkʊʃə"
+      ]
+    },
+    {
+      "id": "inkonsequente-phonologische-stoerung",
+      "label": "Inkonsequente Phonologische Störung",
+      "category": "Inkonsequente phonologische Störung",
+      "kurzbeschreibung": "Dasselbe Wort über mehrere Versuche unterschiedlich produziert. 12 von 25 Wörtern mit 3 Versuchen und echter Variabilität (über 40 %).",
+      "alter_jahre": 4,
+      "alter_monate": 6,
+      "source": "TBD verifizieren — angelehnt an PLAKSS-II",
+      "kind_produktionen": [
+        ["ˈzɔnə", "ˈdɔnə", "ˈzɔmə"],
+        ["ˈtasə", "ˈkasə", "ˈtatə"],
+        "ˈaɪs",
+        ["baˈnaːnə", "maˈnaːnə", "baˈnaːmə"],
+        "ˈkuː",
+        ["ˈɡaːbl̩", "ˈdaːbl̩", "ˈɡaːdl̩"],
+        ["ˈʃuːlə", "ˈsuːlə", "ˈtuːlə"],
+        "ˈfɪʃ",
+        "ˈdoːzə",
+        "ˈvasɐ",
+        ["ˈkatsə", "ˈtatsə", "ˈkasə"],
+        "ˈnaːzə",
+        ["ˈpfeːɐ̯t", "ˈfeːɐ̯t", "ˈpeːɐ̯t"],
+        "ˈtsuːk",
+        "ˈbluːmə",
+        ["ˈʃtɛɐ̯n", "ˈtɛɐ̯n", "ˈʃtɛɐ̯m"],
+        ["ˈʃmɛtɐlɪŋ", "ˈmɛtɐlɪŋ", "ˈʃmɛtɐlɪn"],
+        "ˈjʊŋə",
+        ["ˈhʊnt", "ˈhʊn", "ˈʊnt"],
+        ["ˈmaʊs", "ˈmaʊ", "ˈnaʊs"],
+        "ˈbal",
+        "ˈbʁɪlə",
+        "ˈmɪlç",
+        "ˈbuːx",
+        ["ˈkʊtʃə", "ˈkʊʃə", "ˈtʊtʃə"]
+      ]
+    }
+  ]
+}
