@@ -42,9 +42,12 @@
   // zusammenführen. DATA.words wird IN PLACE aktualisiert, damit bestehende
   // Referenzen (z. B. im Trainer) den neuen Stand sehen.
   function aktualisiereWortpool() {
-    var eigene = LT_Storage.getUserWords().map(normalizeWord);
+    // Standard + eigene Wörter zu einem Pool mergen (eigene überschreiben bei
+    // Dublette). IN PLACE, damit bestehende Referenzen (Trainer) den neuen
+    // Stand sehen.
+    var merged = LT_Storage.mergeWithUserWords(DATA.standardWords);
     DATA.words.length = 0;
-    DATA.standardWords.concat(eigene).forEach(function (w) { DATA.words.push(w); });
+    merged.forEach(function (w) { DATA.words.push(normalizeWord(w)); });
   }
 
   function findIpaForWord(wort, liste) {
@@ -63,12 +66,14 @@
   // Standard-Wortliste (gleiche Reihenfolge). Sonst Warnung in der Konsole.
   function pruefeKonsistenz() {
     var n = DATA.standardWords.length;
-    ((DATA.examples && DATA.examples.sets) || []).forEach(function (set) {
-      var kp = set.kind_produktionen || [];
-      if (kp.length !== n) {
-        console.warn("[Konsistenz] Beispiel-Set \"" + set.id + "\" hat " + kp.length +
-          " Einträge, words.json hat " + n + ". Länge/Reihenfolge müssen übereinstimmen.");
-      }
+    ((DATA.examples && DATA.examples.kategorien) || []).forEach(function (kat) {
+      (kat.varianten || []).forEach(function (v) {
+        var kp = v.kind_produktionen || [];
+        if (kp.length !== n) {
+          console.warn("[Konsistenz] Beispiel-Variante \"" + kat.id + " / " + v.name + "\" hat " +
+            kp.length + " Einträge, words.json hat " + n + ". Länge/Reihenfolge müssen übereinstimmen.");
+        }
+      });
     });
   }
 
@@ -117,6 +122,7 @@
   // --- Dodd-Analyse UI ------------------------------------------------------
 
   var doddRows = []; // {zielwort, ziel_ipa, kind_ipa, versuch}
+  var letzteAnalyse = null; // Snapshot der letzten Analyse (für PDF-Export)
 
   function leereZeile() { return { zielwort: "", ziel_ipa: "", kind_ipa: "", versuch: 1 }; }
 
@@ -131,9 +137,11 @@
     doddRows.forEach(function (row, i) {
       tbody.appendChild(buildDoddRow(row, i));
     });
+    var verborgen = DATA.standardWords.length - sichtbareStandard().length;
     document.getElementById("dodd-count").textContent =
       doddRows.length + " Produktion" + (doddRows.length === 1 ? "" : "en") +
-      " · Wortquelle: words.json (" + DATA.standardWords.length + " PLAKSS-Wörter)";
+      " · Pool: words.json (" + DATA.standardWords.length + " Standard" +
+      (verborgen ? ", " + verborgen + " verborgen" : "") + ")";
   }
 
   function buildDoddRow(row, i) {
@@ -156,6 +164,7 @@
     addBtn.addEventListener("click", function () {
       if (LT_Storage.addUserWord({ wort: row.zielwort, ipa: row.ziel_ipa, source: "Eigene Eingabe" })) {
         aktualisiereWortpool();
+        zeigeToast("„" + (row.zielwort || "").trim() + "“ zur Wortliste hinzugefügt");
       }
       aktualisiereAddBtn();
     });
@@ -174,7 +183,14 @@
         aktualisiereAddBtn();
         if (fokussiere !== false) kind.focus(); // Cursor springt ins Kind-IPA-Feld
       },
-      function () { aktualisiereAddBtn(); }      // bei jeder Änderung
+      function () { aktualisiereAddBtn(); },     // bei jeder Änderung
+      function (wort) {                          // freie Eingabe ohne Treffer
+        // G2P-Vorschlag aus der Orthografie erzeugen (umgekehrte Hybrid-Eingabe),
+        // ins Ziel-IPA schreiben + dezenten "automatisch erzeugt"-Hinweis zeigen.
+        var vorschlag = LT_Ortho.orthoToIpa(wort);
+        if (vorschlag) ziel.setVorschlag(vorschlag);
+        aktualisiereAddBtn();
+      }
     );
 
     tr.appendChild(zielwort.td);
@@ -228,7 +244,7 @@
 
   // Zielwort-Feld mit Autovervollständigung aus dem Wortpool (words.json +
   // eigene Wörter). Dropdown unter dem Feld, Tastatur-Navigation.
-  function makeZielwortCell(row, onChosen, onChange) {
+  function makeZielwortCell(row, onChosen, onChange, onFreitext) {
     var td = document.createElement("td");
     td.className = "zielwort-cell";
     var wrap = el("div", "autocomplete-wrap");
@@ -304,6 +320,8 @@
       if (row.zielwort && !(row.ziel_ipa || "").trim()) {
         var ipa = findIpaForWord(row.zielwort, DATA.words);
         if (ipa) { onChosen(row.zielwort, ipa, false); return; }
+        // Kein Treffer im Pool -> G2P-Vorschlag fürs Ziel-IPA erzeugen.
+        if (onFreitext) { onFreitext(row.zielwort); return; }
       }
       if (onChange) onChange();
     });
@@ -349,10 +367,15 @@
     var preview = el("div", "hybrid-ipa-preview");
     preview.hidden = true;
 
+    // Dezenter Hinweis, wenn der Wert automatisch per G2P erzeugt wurde.
+    var autoHint = el("div", "hybrid-ipa-auto", "IPA automatisch erzeugt – bitte prüfen");
+    autoHint.hidden = true;
+
     wrap.appendChild(input);
     wrap.appendChild(pencil);
     td.appendChild(wrap);
     td.appendChild(preview);
+    td.appendChild(autoHint);
 
     // große Tastatur unten kann dieses Feld als Ziel nutzen
     LT_Keyboard.attach(input);
@@ -368,6 +391,7 @@
       td.classList.add("state-edit");
       td.classList.remove("state-display");
       pencil.hidden = true;
+      autoHint.hidden = true;        // beim Bearbeiten kein "auto erzeugt"-Hinweis
       input.value = row[feld] || ""; // alter Wert vorbelegt
       aktualisiereVorschau();
     }
@@ -391,6 +415,7 @@
         row[feld] = val;
       }
       zeigeAnzeige();
+      autoHint.hidden = true;        // manuell gespeichert -> Hinweis weg
       if (onChange) onChange();
     });
 
@@ -398,6 +423,7 @@
       openIpaPopup(row[feld] || "", label, function (neu) {
         row[feld] = neu;
         zeigeAnzeige();
+        autoHint.hidden = true;      // manuell korrigiert -> Hinweis weg
         if (onChange) onChange();
       });
     });
@@ -405,10 +431,14 @@
     // Startzustand: vorhandener Wert -> Anzeige (C), sonst leer (A/B)
     if (row[feld]) zeigeAnzeige(); else td.classList.add("state-edit");
 
-    // Programmatisch setzen (z. B. Auto-Fill aus der Zielwort-Auswahl).
-    function setWert(v) { row[feld] = v; zeigeAnzeige(); }
+    // Programmatisch setzen (z. B. Auto-Fill aus der Zielwort-Auswahl). Ohne
+    // "auto erzeugt"-Hinweis, weil der Wert aus dem Pool (verifiziert) kommt.
+    function setWert(v) { row[feld] = v; zeigeAnzeige(); autoHint.hidden = true; }
 
-    return { td: td, setWert: setWert, focus: function () { input.focus(); } };
+    // G2P-Vorschlag setzen: wie setWert, aber mit dezentem "auto erzeugt"-Hinweis.
+    function setVorschlag(v) { row[feld] = v; zeigeAnzeige(); autoHint.hidden = false; }
+
+    return { td: td, setWert: setWert, setVorschlag: setVorschlag, focus: function () { input.focus(); } };
   }
 
   // Mini-Popup zur manuellen IPA-Korrektur mit kompakter IPA-Tastatur.
@@ -468,6 +498,8 @@
     document.getElementById("dodd-loadall").addEventListener("click", ladeAllePlakss);
     document.getElementById("dodd-analyze").addEventListener("click", analysiere);
     document.getElementById("dodd-clear").addEventListener("click", zuruecksetzen);
+    var pdfBtn = document.getElementById("dodd-pdf");
+    if (pdfBtn) pdfBtn.addEventListener("click", exportiereDoddPdf);
     setupBeispielDropdown();
     // Startzustand: eine leere Zeile
     doddRows = [leereZeile()];
@@ -481,12 +513,22 @@
     });
   }
 
-  // Bequemlichkeit: füllt die Tabelle mit allen Standard-PLAKSS-Wörtern
-  // (Zielwort + Ziel-IPA), Kind-IPA leer, Versuch 1.
+  // Sichtbare Standard-Wörter: nicht-verborgen, mit angewandten Overrides.
+  function sichtbareStandard() {
+    var ov = LT_Storage.getOverrides();
+    return DATA.standardWords
+      .filter(function (w) { return !LT_Storage.isHidden(w.wort); })
+      .map(function (w) { return ov[w.wort] ? normalizeWord(ov[w.wort]) : w; });
+  }
+
+  // Bequemlichkeit: füllt die Tabelle mit den (sichtbaren) Standard-PLAKSS-
+  // Wörtern. Verborgene Wörter werden NICHT geladen (können < 25 sein).
   function ladeAllePlakss() {
-    if (hatDaten() && !confirm("Aktuelle Eingaben verwerfen und alle " +
-      DATA.standardWords.length + " PLAKSS-Wörter laden?")) return;
-    doddRows = DATA.standardWords.map(function (w) {
+    var sichtbar = sichtbareStandard();
+    var verborgen = DATA.standardWords.length - sichtbar.length;
+    if (hatDaten() && !confirm("Aktuelle Eingaben verwerfen und " + sichtbar.length +
+      " Standard-Wörter laden?" + (verborgen ? " (" + verborgen + " verborgen)" : ""))) return;
+    doddRows = sichtbar.map(function (w) {
       return { zielwort: w.wort, ziel_ipa: w.ipa, kind_ipa: "", versuch: 1 };
     });
     document.getElementById("dodd-result").innerHTML = "";
@@ -497,7 +539,20 @@
     if (hatDaten() && !confirm("Alle Eingaben verwerfen?")) return;
     doddRows = [leereZeile()];                 // eine leere Zeile bleibt stehen
     document.getElementById("dodd-result").innerHTML = "";
+    letzteAnalyse = null;                       // PDF-Export erst nach neuer Analyse
+    var pdfBtn = document.getElementById("dodd-pdf");
+    if (pdfBtn) { pdfBtn.disabled = true; pdfBtn.title = "Bitte zuerst auf ‚Analysieren‘ klicken."; }
     renderDoddRows();                          // Alter-Feld bleibt unverändert
+  }
+
+  // PDF-Export der zuletzt durchgeführten Analyse (kein erneutes Analysieren).
+  function exportiereDoddPdf() {
+    if (!letzteAnalyse) { alert("Bitte zuerst auf ‚Analysieren‘ klicken."); return; }
+    if (!global.LT_PdfExport) { alert("PDF-Export ist nicht verfügbar (Bibliothek nicht geladen)."); return; }
+    LT_PdfExport.export(letzteAnalyse).catch(function (err) {
+      console.error(err);
+      alert("PDF-Export fehlgeschlagen: " + (err && err.message ? err.message : err));
+    });
   }
 
   // --- Beispiel-Dropdown ----------------------------------------------------
@@ -510,23 +565,30 @@
     var menu = document.getElementById("dodd-example-menu");
     if (!dropdown || !toggle || !menu) return;
 
-    var sets = (DATA.examples && DATA.examples.sets) || [];
+    var kategorien = (DATA.examples && DATA.examples.kategorien) || [];
     menu.innerHTML = "";
-    sets.forEach(function (set) {
+
+    function macheItem(label, desc, onClick) {
       var item = document.createElement("button");
       item.type = "button";
       item.className = "dropdown-item";
       item.setAttribute("role", "menuitem");
-      var titel = el("span", "dropdown-item-title", set.label);
-      item.appendChild(titel);
-      if (set.kurzbeschreibung) {
-        item.appendChild(el("span", "dropdown-item-desc", set.kurzbeschreibung));
-      }
-      item.addEventListener("click", function () {
-        ladeBeispielSet(set);
-        schliesseMenu();
-      });
+      item.appendChild(el("span", "dropdown-item-title", label));
+      if (desc) item.appendChild(el("span", "dropdown-item-desc", desc));
+      item.addEventListener("click", function () { onClick(); schliesseMenu(); });
       menu.appendChild(item);
+    }
+
+    // Gruppe 1: kuratierte Lehrbuch-Fälle (zufällige Variante je Kategorie).
+    menu.appendChild(el("div", "dropdown-header", "Lehrbuch-Fälle"));
+    kategorien.forEach(function (kat) {
+      macheItem(kat.label, kat.kurzbeschreibung, function () { ladeBeispielKategorie(kat); });
+    });
+
+    // Gruppe 2: prozedural generierte Zufallsfälle (jedes Mal neu, plausibel).
+    menu.appendChild(el("div", "dropdown-header", "Zufallsfall (plausibel generiert)"));
+    kategorien.forEach(function (kat) {
+      macheItem(kat.label, "Neuer Zufallsfall – jedes Mal anders", function () { ladeGeneriertenFall(kat); });
     });
 
     function oeffneMenu() {
@@ -552,13 +614,37 @@
     });
   }
 
-  // Lädt ein Beispiel-Set: Zielwörter + Ziel-IPA kommen aus words.json, die
-  // kind_produktionen (in gleicher Reihenfolge) liefern die Kind-IPA. Ein
-  // Listeneintrag kann ein String (1 Versuch) oder ein Array (mehrere Versuche)
-  // sein – Letzteres erzeugt mehrere Zeilen für dasselbe Wort.
-  function ladeBeispielSet(set) {
-    if (hatDaten() && !confirm("Aktuelle Eingaben verwerfen und Beispiel „" + set.label + "“ laden?")) return;
-    var kp = set.kind_produktionen || [];
+  // Lädt eine Beispiel-Kategorie NICHT-DETERMINISTISCH: pro Klick wird zufällig
+  // eine der hinterlegten Varianten gezogen. Zielwörter + Ziel-IPA kommen aus
+  // words.json, die kind_produktionen der Variante (gleiche Reihenfolge) liefern
+  // die Kind-IPA. Ein Eintrag kann ein String (1 Versuch) oder ein Array
+  // (mehrere Versuche desselben Wortes) sein. Der Variantenname wird NICHT im
+  // UI angezeigt (kein Spoiler), nur in der Konsole geloggt (Debug).
+  // Lehrbuch-Fall: zufällige (kuratierte) Variante einer Kategorie laden.
+  function ladeBeispielKategorie(kat) {
+    var varianten = (kat && kat.varianten) || [];
+    if (!varianten.length) return;
+    if (hatDaten() && !confirm("Aktuelle Eingaben verwerfen und Beispiel „" + kat.label + "“ laden?")) return;
+    var v = varianten[Math.floor(Math.random() * varianten.length)];
+    console.log("[Beispiel] Lehrbuch \"" + kat.label + "\" – Variante: \"" + v.name + "\"");
+    ladeFall(v);
+  }
+
+  // Zufallsfall: prozedural generierten, plausiblen Fall laden (jedes Mal neu).
+  function ladeGeneriertenFall(kat) {
+    if (!global.LT_CaseGenerator) return;
+    if (hatDaten() && !confirm("Aktuelle Eingaben verwerfen und einen Zufallsfall „" + kat.label + "“ laden?")) return;
+    var fall = LT_CaseGenerator.generate(kat.id, DATA.standardWords, DATA.processes);
+    if (!fall) { alert("Konnte keinen Fall generieren – bitte erneut versuchen."); return; }
+    console.log("[Beispiel] Zufallsfall \"" + kat.label + "\" generiert – erwartete Kategorie: " +
+      fall.expected_category + "; angewandte Prozesse: " + (fall.applied || []).join(", "));
+    ladeFall(fall);
+  }
+
+  // Gemeinsames Laden: kind_produktionen (String = 1 Versuch, Array = mehrere)
+  // in der Reihenfolge von words.json; Alter setzen; Ergebnis leeren.
+  function ladeFall(fall) {
+    var kp = fall.kind_produktionen || [];
     doddRows = [];
     DATA.standardWords.forEach(function (w, idx) {
       var prod = kp[idx];
@@ -570,8 +656,8 @@
         doddRows.push({ zielwort: w.wort, ziel_ipa: w.ipa, kind_ipa: prod || "", versuch: 1 });
       }
     });
-    document.getElementById("dodd-jahre").value = set.alter_jahre != null ? set.alter_jahre : 0;
-    document.getElementById("dodd-monate").value = set.alter_monate != null ? set.alter_monate : 0;
+    document.getElementById("dodd-jahre").value = fall.alter_jahre != null ? fall.alter_jahre : 0;
+    document.getElementById("dodd-monate").value = fall.alter_monate != null ? fall.alter_monate : 0;
     document.getElementById("dodd-result").innerHTML = "";
     renderDoddRows();
   }
@@ -589,6 +675,23 @@
     var input = { alter_jahre: jahre, alter_monate: monate, produktionen: produktionen };
     var ergebnis = LT_DoddAnalyzer.analyze(input, DATA.processes);
     renderDoddResult(ergebnis, input);
+
+    // Snapshot für den PDF-Export (nutzt die AKTUELL sichtbare Klassifikation).
+    var pseudInput = document.getElementById("dodd-pseudonym");
+    letzteAnalyse = {
+      pseudonym: pseudInput ? pseudInput.value : "",
+      alter_jahre: jahre, alter_monate: monate,
+      rows: produktionen.map(function (r) {
+        return { zielwort: r.zielwort, ziel_ipa: r.ziel_ipa, kind_ipa: r.kind_ipa, versuch: r.versuch };
+      }),
+      klassifikation: {
+        kategorie: ergebnis.klassifikation.kategorie,
+        begruendung: ergebnis.klassifikation.begruendung,
+        prozesse: ergebnis.prozesse.map(function (p) { return { name: p.name, typ: p.typ, beispiele: p.beispiele }; })
+      }
+    };
+    var pdfBtn = document.getElementById("dodd-pdf");
+    if (pdfBtn) { pdfBtn.disabled = false; pdfBtn.title = "Aktuelle Analyse als PDF speichern"; }
 
     LT_Storage.addDoddAnalysis({
       timestamp: new Date().toISOString(),
@@ -615,6 +718,12 @@
 
     var disclaimer = el("p", "dodd-disclaimer", e.klassifikation.hinweis);
     c.appendChild(disclaimer);
+
+    // Gut sichtbarer PDF-Export direkt im Ergebnisbereich.
+    var pdfBtn = el("button", "btn btn-primary dodd-result-pdf", "Ergebnis als PDF speichern");
+    pdfBtn.type = "button";
+    pdfBtn.addEventListener("click", exportiereDoddPdf);
+    c.appendChild(pdfBtn);
 
     // Begründung
     var bg = el("div", "dodd-section");
@@ -717,6 +826,252 @@
     c.appendChild(t);
   }
 
+  // --- Wortlisten-Verwaltung (Tab 4) ----------------------------------------
+  // Zeigt den gemergten Pool annotiert (Standard / Standard (geändert) / Eigene),
+  // mit Suche, Filter, Hinzufügen, Bearbeiten, Löschen (eigene) bzw. Verbergen
+  // (Standard, reversibel). Alle Änderungen laufen über LocalStorage-Overrides;
+  // data/words.json bleibt unverändert.
+
+  var wlFilter = "alle";    // alle | standard | eigene
+  var wlShowHidden = false; // bei Filter "standard": auch verborgene zeigen
+
+  function setupWortliste() {
+    var kbd = document.getElementById("kbd-wortliste");
+    if (kbd) LT_Keyboard.render(kbd);
+
+    var search = document.getElementById("wl-search");
+    if (search) search.addEventListener("input", renderWortliste);
+
+    document.querySelectorAll(".wl-filter-btn").forEach(function (b) {
+      b.addEventListener("click", function () {
+        wlFilter = b.dataset.filter;
+        document.querySelectorAll(".wl-filter-btn").forEach(function (x) { x.classList.remove("active"); });
+        b.classList.add("active");
+        renderWortliste();
+      });
+    });
+
+    var showHidden = document.getElementById("wl-showhidden");
+    if (showHidden) showHidden.addEventListener("change", function () {
+      wlShowHidden = showHidden.checked; renderWortliste();
+    });
+
+    setupWlAddForm();
+    renderWortliste();
+  }
+
+  // Eigenständiges IPA-Feld (Input + Bleistift-Popup + ortho->IPA bei Blur),
+  // unabhängig von der Dodd-Tabelle. Für Hinzufügen- und Bearbeiten-Formular.
+  function makeIpaField(initial, label) {
+    var wrap = el("div", "wl-ipa-wrap");
+    var input = document.createElement("input");
+    input.type = "text"; input.className = "wl-input ipa-input ipa-text";
+    input.autocomplete = "off"; input.spellcheck = false;
+    input.value = initial || ""; input.placeholder = label || "IPA";
+    var pencil = el("button", "btn btn-small hybrid-ipa-edit", "✎");
+    pencil.type = "button"; pencil.title = (label || "IPA") + " mit IPA-Tastatur bearbeiten";
+    wrap.appendChild(input); wrap.appendChild(pencil);
+    LT_Keyboard.attach(input);
+    input.addEventListener("blur", function () {
+      var v = input.value.trim();
+      if (v && !LT_Ortho.isAlreadyIpa(v)) input.value = LT_Ortho.orthoToIpa(v);
+    });
+    pencil.addEventListener("click", function () {
+      openIpaPopup(input.value || "", label || "IPA", function (neu) { input.value = neu; });
+    });
+    return {
+      el: wrap,
+      getValue: function () { return input.value; },
+      setValue: function (v) { input.value = v || ""; },
+      focus: function () { input.focus(); }
+    };
+  }
+
+  function setupWlAddForm() {
+    var toggle = document.getElementById("wl-add-toggle");
+    var form = document.getElementById("wl-addform");
+    var wortInput = document.getElementById("wl-add-wort");
+    var ipaCell = document.getElementById("wl-add-ipa-cell");
+    var saveBtn = document.getElementById("wl-add-save");
+    var cancelBtn = document.getElementById("wl-add-cancel");
+    var hint = document.getElementById("wl-add-hint");
+    if (!toggle || !form) return;
+
+    var ipaField = makeIpaField("", "Ziel-IPA");
+    ipaCell.innerHTML = ""; ipaCell.appendChild(ipaField.el);
+
+    // G2P-Vorschlag beim Verlassen des Wort-Feldes, wenn IPA noch leer.
+    wortInput.addEventListener("blur", function () {
+      var w = wortInput.value.trim();
+      if (w && !ipaField.getValue().trim()) {
+        var vorschlag = LT_Ortho.orthoToIpa(w);
+        if (vorschlag) { ipaField.setValue(vorschlag); hint.textContent = "IPA automatisch erzeugt – bitte prüfen."; }
+      }
+    });
+
+    function reset() { wortInput.value = ""; ipaField.setValue(""); hint.textContent = ""; }
+    toggle.addEventListener("click", function () {
+      form.hidden = !form.hidden;
+      if (!form.hidden) wortInput.focus();
+    });
+    cancelBtn.addEventListener("click", function () { reset(); form.hidden = true; });
+    saveBtn.addEventListener("click", function () {
+      var w = wortInput.value.trim(), ip = ipaField.getValue().trim();
+      if (!w || !ip) { alert("Bitte Wort und IPA angeben."); return; }
+      if (LT_Storage.addUserWord({ wort: w, ipa: ip, source: "Eigene Eingabe" })) {
+        aktualisiereWortpool();
+        zeigeToast("„" + w + "“ hinzugefügt");
+        reset(); form.hidden = true;
+        renderWortliste();
+      } else {
+        alert("„" + w + "“ ist bereits in der Wortliste.");
+      }
+    });
+  }
+
+  // Baut die annotierte Liste (Standard + Standard-Override + Eigene).
+  function wortlisteEintraege() {
+    var ov = LT_Storage.getOverrides();
+    var rows = [];
+    DATA.standardWords.forEach(function (w) {
+      var o = ov[w.wort];
+      rows.push({
+        original: w.wort,
+        wort: o ? o.wort : w.wort,
+        ipa: o ? o.ipa : w.ipa,
+        typ: o ? "Standard (geändert)" : "Standard",
+        art: "standard", hidden: LT_Storage.isHidden(w.wort), override: !!o
+      });
+    });
+    LT_Storage.getUserWords().forEach(function (w) {
+      rows.push({ original: w.wort, wort: w.wort, ipa: w.ipa, typ: "Eigene", art: "eigene", hidden: false, override: false });
+    });
+    return rows;
+  }
+
+  function renderWortliste() {
+    var tbody = document.getElementById("wl-rows");
+    var empty = document.getElementById("wl-empty");
+    if (!tbody) return;
+    var q = (document.getElementById("wl-search").value || "").trim().toLowerCase();
+
+    var rows = wortlisteEintraege().filter(function (r) {
+      if (wlFilter === "standard" && r.art !== "standard") return false;
+      if (wlFilter === "eigene" && r.art !== "eigene") return false;
+      // Verborgene: bei "standard" nur wenn Toggle aktiv; bei "alle" mitzeigen.
+      if (r.hidden && wlFilter === "standard" && !wlShowHidden) return false;
+      return true;
+    });
+    if (q) rows = rows.filter(function (r) {
+      return r.wort.toLowerCase().indexOf(q) !== -1 || (r.ipa || "").toLowerCase().indexOf(q) !== -1;
+    });
+
+    tbody.innerHTML = "";
+    rows.forEach(function (r) { tbody.appendChild(buildWlRow(r)); });
+    if (empty) empty.hidden = rows.length > 0;
+  }
+
+  function wlTypTag(r) {
+    var cls = r.art === "eigene" ? "wl-tag-eigene" : (r.override ? "wl-tag-override" : "wl-tag-standard");
+    return el("span", "wl-tag " + cls, r.typ);
+  }
+
+  function buildWlRow(r) {
+    var tr = document.createElement("tr");
+    tr.className = "wl-row" + (r.hidden ? " wl-row-hidden" : "");
+
+    var tdTyp = document.createElement("td");
+    tdTyp.appendChild(wlTypTag(r));
+    if (r.hidden) tdTyp.appendChild(el("span", "wl-tag wl-tag-hidden", "verborgen"));
+
+    var tdAkt = document.createElement("td");
+    tdAkt.className = "wl-actions";
+
+    if (r.hidden) {
+      var einblenden = el("button", "btn btn-small", "Wieder einblenden");
+      einblenden.type = "button";
+      einblenden.addEventListener("click", function () {
+        LT_Storage.unhideWord(r.original); aktualisiereWortpool(); renderWortliste();
+        zeigeToast("„" + r.original + "“ wieder eingeblendet");
+      });
+      tdAkt.appendChild(einblenden);
+    } else {
+      var edit = el("button", "btn btn-small", "Bearbeiten");
+      edit.type = "button";
+      edit.addEventListener("click", function () { editWlRow(tr, r); });
+      tdAkt.appendChild(edit);
+
+      if (r.art === "eigene") {
+        var del = el("button", "btn btn-small btn-danger", "Löschen");
+        del.type = "button"; del.title = "Eigenen Eintrag löschen";
+        del.addEventListener("click", function () {
+          if (confirm("Eintrag „" + r.wort + "“ löschen?")) {
+            LT_Storage.removeUserWord(r.original); aktualisiereWortpool(); renderWortliste();
+            zeigeToast("„" + r.wort + "“ gelöscht");
+          }
+        });
+        tdAkt.appendChild(del);
+      } else {
+        var verbergen = el("button", "btn btn-small btn-danger", "Verbergen");
+        verbergen.type = "button"; verbergen.title = "Standard-Eintrag verbergen";
+        verbergen.addEventListener("click", function () {
+          if (confirm("Standard-Eintrag „" + r.wort + "“ verbergen?\n\nDieser Eintrag wird in keinem Modus mehr verwendet (auch nicht bei ‚Alle 25 laden‘), bis Sie ihn in der Wortliste wieder einblenden.")) {
+            LT_Storage.hideWord(r.original); aktualisiereWortpool(); renderWortliste();
+            zeigeToast("„" + r.wort + "“ verborgen");
+          }
+        });
+        tdAkt.appendChild(verbergen);
+      }
+    }
+
+    tr.appendChild(td(r.wort));
+    tr.appendChild(td(r.ipa, "ipa-text"));
+    tr.appendChild(tdTyp);
+    tr.appendChild(tdAkt);
+    return tr;
+  }
+
+  // Inline-Bearbeitung einer Zeile (Wort + IPA editierbar, Speichern/Abbrechen).
+  function editWlRow(tr, r) {
+    tr.innerHTML = "";
+    tr.className = "wl-row wl-row-edit";
+
+    var tdWort = document.createElement("td");
+    var wortInput = document.createElement("input");
+    wortInput.type = "text"; wortInput.className = "wl-input";
+    wortInput.autocomplete = "off"; wortInput.spellcheck = false; wortInput.value = r.wort;
+    tdWort.appendChild(wortInput);
+
+    var tdIpa = document.createElement("td");
+    var ipaField = makeIpaField(r.ipa, "IPA");
+    tdIpa.appendChild(ipaField.el);
+
+    var tdTyp = document.createElement("td");
+    tdTyp.appendChild(wlTypTag(r));
+
+    var tdAkt = document.createElement("td"); tdAkt.className = "wl-actions";
+    var save = el("button", "btn btn-small btn-primary", "Speichern"); save.type = "button";
+    var cancel = el("button", "btn btn-small btn-ghost", "Abbrechen"); cancel.type = "button";
+    tdAkt.appendChild(save); tdAkt.appendChild(cancel);
+
+    save.addEventListener("click", function () {
+      var nw = wortInput.value.trim(), nip = ipaField.getValue().trim();
+      if (!nw || !nip) { alert("Bitte Wort und IPA angeben."); return; }
+      if (r.art === "eigene") {
+        LT_Storage.updateUserWord(r.original, { wort: nw, ipa: nip });
+      } else {
+        if (!confirm("Standard-Eintrag bearbeiten?\n\nDie Änderung gilt nur in dieser Browser-Installation.")) return;
+        LT_Storage.setOverride(r.original, { wort: nw, ipa: nip });
+      }
+      aktualisiereWortpool(); renderWortliste();
+      zeigeToast("„" + nw + "“ gespeichert");
+    });
+    cancel.addEventListener("click", renderWortliste);
+
+    tr.appendChild(tdWort); tr.appendChild(tdIpa); tr.appendChild(tdTyp); tr.appendChild(tdAkt);
+    wortInput.focus();
+  }
+
   // --- Export / Import ------------------------------------------------------
 
   function setupDatenButtons() {
@@ -761,6 +1116,19 @@
     return c;
   }
 
+  // Kurze, nicht-blockierende Bestätigung (Toast). Blendet sich selbst aus.
+  var toastTimer = null;
+  function zeigeToast(text) {
+    var t = el("div", "lt-toast", text);
+    document.body.appendChild(t);
+    requestAnimationFrame(function () { t.classList.add("visible"); });
+    if (toastTimer) clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () {
+      t.classList.remove("visible");
+      setTimeout(function () { t.remove(); }, 260);
+    }, 2400);
+  }
+
   // --- Init -----------------------------------------------------------------
 
   function init() {
@@ -769,6 +1137,7 @@
     ladeDaten().then(function () {
       setupTrainer();
       setupDodd();
+      setupWortliste();
     }).catch(function (err) {
       console.error(err);
       zeigeLadefehler();

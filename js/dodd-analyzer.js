@@ -28,6 +28,7 @@
     // Normalisieren: Tie-Bars, Betonungs-, Silben- und Klammerzeichen entfernen
     var s = String(str).normalize("NFC")
       .replace(/[͡͠]/g, "")   // Tie-Bar (Affrikaten-Bogen)
+      .replace(/ɡ/g, "g")           // IPA-Script-g (ɡ) -> ASCII-g: Daten/Regeln mischen beide
       .replace(/[ˈˌ.\[\]\/ ]/g, "");     // Betonung, Silbengrenze, Klammern, Leerzeichen
     var tokens = [];
     var i = 0;

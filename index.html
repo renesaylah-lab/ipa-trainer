@@ -4,6 +4,20 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Logopädie-Trainer</title>
+  <!-- Theme vor dem ersten Paint setzen (verhindert Aufblitzen / FOUC) -->
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem("lt-theme");
+        var theme = saved || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        document.documentElement.setAttribute("data-theme", theme);
+      } catch (e) { document.documentElement.setAttribute("data-theme", "light"); }
+    })();
+  </script>
+  <!-- Schriften: Charis SIL (IPA-tauglich) + Hanken Grotesk (UI) über Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Charis+SIL:ital,wght@0,400;0,700;1,400&family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -17,6 +31,10 @@
         <button id="btn-export" class="btn btn-ghost" type="button">Daten exportieren</button>
         <button id="btn-import" class="btn btn-ghost" type="button">Daten importieren</button>
         <input id="import-file" type="file" accept="application/json" hidden>
+        <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Hell/Dunkel umschalten">
+          <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M19.1 4.9l-1.8 1.8M6.7 17.3l-1.8 1.8"/></svg>
+          <svg class="ico-moon" viewBox="0 0 24 24" fill="currentColor"><path d="M20 14.5A8 8 0 019.5 4 7 7 0 1020 14.5z"/></svg>
+        </button>
       </div>
     </div>
   </header>
@@ -25,6 +43,7 @@
     <button class="tab-btn active" role="tab" aria-selected="true" data-tab="tab-wort2ipa" type="button">Wort → IPA</button>
     <button class="tab-btn" role="tab" aria-selected="false" data-tab="tab-ipa2wort" type="button">IPA → Wort</button>
     <button class="tab-btn" role="tab" aria-selected="false" data-tab="tab-dodd" type="button">Dodd-Analyse</button>
+    <button class="tab-btn" role="tab" aria-selected="false" data-tab="tab-wortliste" type="button">Wortliste</button>
   </nav>
 
   <main>
@@ -59,7 +78,13 @@
           <label>
             <input id="dodd-monate" type="number" min="0" max="11" value="0" class="age-input"> Monate
           </label>
+          <label class="dodd-pseudonym-label">Klient (Pseudonym, optional):
+            <input id="dodd-pseudonym" type="text" class="pseudonym-input" maxlength="40"
+                   placeholder="z. B. Kind A"
+                   title="Bitte keinen Klarnamen – nur Code/Pseudonym (z. B. ‚Kind A‘, ‚2024-03-Sigma‘).">
+          </label>
         </div>
+        <p class="muted pseudonym-hint">Hinweis: Bitte keinen Klarnamen eintragen – nur ein Code/Pseudonym (z. B. „Kind A", „2024-03-Sigma").</p>
 
         <div class="dodd-table-wrap">
           <table class="dodd-input-table">
@@ -87,6 +112,7 @@
             </div>
             <button id="dodd-clear" class="btn btn-ghost" type="button">Zurücksetzen</button>
             <button id="dodd-analyze" class="btn btn-primary" type="button">Analysieren</button>
+            <button id="dodd-pdf" class="btn" type="button" disabled title="Bitte zuerst auf ‚Analysieren‘ klicken.">Als PDF exportieren</button>
           </div>
         </div>
       </div>
@@ -100,6 +126,50 @@
         <div id="dodd-history"></div>
       </div>
     </section>
+
+    <!-- Tab 4: Wortlisten-Verwaltung -->
+    <section id="tab-wortliste" class="tab-panel" role="tabpanel">
+      <div class="card">
+        <h2>Wortliste</h2>
+        <p class="muted">
+          Verwaltung des Wortpools (Standard-Wörter aus PLAKSS-II-Anlehnung und eigene Einträge).
+          Änderungen gelten nur in dieser Browser-Installation; <code>data/words.json</code> bleibt unverändert.
+        </p>
+
+        <div class="wl-controls">
+          <input id="wl-search" type="search" class="wl-search" placeholder="Suchen (Wort oder IPA)…" autocomplete="off">
+          <div class="wl-filter" role="group" aria-label="Filter">
+            <button class="btn btn-small wl-filter-btn active" data-filter="alle" type="button">Alle</button>
+            <button class="btn btn-small wl-filter-btn" data-filter="standard" type="button">Standard</button>
+            <button class="btn btn-small wl-filter-btn" data-filter="eigene" type="button">Eigene</button>
+          </div>
+          <label class="wl-showhidden"><input id="wl-showhidden" type="checkbox"> auch verborgene zeigen</label>
+          <button id="wl-add-toggle" class="btn btn-small" type="button">+ Wort hinzufügen</button>
+        </div>
+
+        <div id="wl-addform" class="wl-addform" hidden>
+          <div class="wl-addform-row">
+            <input id="wl-add-wort" type="text" class="wl-input" placeholder="Wort" autocomplete="off" spellcheck="false">
+            <div id="wl-add-ipa-cell" class="wl-add-ipa"></div>
+            <button id="wl-add-save" class="btn btn-primary btn-small" type="button">Speichern</button>
+            <button id="wl-add-cancel" class="btn btn-ghost btn-small" type="button">Abbrechen</button>
+          </div>
+          <p id="wl-add-hint" class="muted"></p>
+        </div>
+
+        <div class="wl-table-wrap">
+          <table class="wl-table">
+            <thead>
+              <tr><th>Wort</th><th>IPA</th><th>Typ</th><th>Aktionen</th></tr>
+            </thead>
+            <tbody id="wl-rows"></tbody>
+          </table>
+        </div>
+        <p id="wl-empty" class="muted" hidden>Keine Einträge gefunden.</p>
+      </div>
+
+      <div id="kbd-wortliste" class="card kbd-card"></div>
+    </section>
   </main>
 
   <footer class="app-footer">
@@ -109,11 +179,17 @@
     </p>
   </footer>
 
+  <script src="js/theme.js"></script>
   <script src="js/storage.js"></script>
   <script src="js/spaced-repetition.js"></script>
   <script src="js/ipa-keyboard.js"></script>
   <script src="js/dodd-analyzer.js"></script>
   <script src="js/ortho-to-ipa.js"></script>
+  <script src="js/case-generator.js"></script>
+  <!-- PDF-Export: jsPDF + AutoTable (CDN). Nur für den PDF-Export der Dodd-Analyse. -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+  <script src="js/pdf-export.js"></script>
   <script src="js/ipa-trainer.js"></script>
   <script src="js/app.js"></script>
 </body>

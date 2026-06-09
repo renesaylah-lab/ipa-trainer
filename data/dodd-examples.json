@@ -1,86 +1,236 @@
 {
-  "hinweis": "Vier Beispiel-Sets zum Testen/Demonstrieren des Dodd-Analyse-Tools – eines pro Dodd-Kategorie. Die Zielwörter und Ziel-IPA kommen aus data/words.json (single source of truth). 'kind_produktionen' ist ein flaches Array in EXAKT der Reihenfolge von words.json. Ein Eintrag kann a) ein String (ein Versuch) oder b) ein Array von Strings (mehrere Versuche desselben Wortes, z. B. für das Inkonsequenz-Set) sein. Schwellen (40 % Inkonsequenz, Altersgrenzen) stammen aus der Klassifikations-Logik bzw. processes.json, nicht von hier.",
+  "hinweis": "Beispiel-Kategorien zum Testen/Demonstrieren des Dodd-Analyse-Tools – eine pro Dodd-Kategorie, jeweils mit mehreren fachlich plausiblen Varianten. Beim Laden im UI wird pro Klick zufällig EINE Variante gezogen (nicht-deterministisch), damit sich prüfen lässt, ob die Klassifikation nicht nur bei Lehrbuch-Fällen greift. Zielwörter und Ziel-IPA kommen aus data/words.json (single source of truth). 'kind_produktionen' ist ein flaches Array in EXAKT der Reihenfolge von words.json. Ein Eintrag kann a) ein String (ein Versuch) oder b) ein Array von Strings (mehrere Versuche desselben Wortes, z. B. für Inkonsequenz) sein. 'name' jeder Variante dient nur der internen Nachvollziehbarkeit und wird im UI NICHT angezeigt. Schwellen (40 % Inkonsequenz, Altersgrenzen) stammen aus der Klassifikations-Logik bzw. processes.json.",
   "wortliste_source": "TBD verifizieren — angelehnt an PLAKSS-II (Fox-Boyer). 25-Wörter-Auswahl; vollständige PLAKSS-II umfasst mehr Items.",
-  "sets": [
+  "kategorien": [
     {
       "id": "artikulationsstoerung",
-      "label": "Artikulationsstörung (Sigmatismus interdentalis)",
+      "label": "Artikulationsstörung",
       "category": "Artikulationsstörung",
-      "kurzbeschreibung": "Ein einziger phonetischer Fehler: /s, z/ konsequent interdental ([θ, ð]). Alle übrigen Laute korrekt.",
-      "alter_jahre": 5,
-      "alter_monate": 0,
+      "kurzbeschreibung": "Phonetische Fehlbildung einzelner Laute (z. B. Sigmatismus/Schetismus) – kein phonologisches Prozessmuster.",
       "source": "TBD verifizieren — angelehnt an PLAKSS-II",
-      "kind_produktionen": [
-        "ˈðɔnə", "ˈtaθə", "ˈaɪθ", "baˈnaːnə", "ˈkuː", "ˈɡaːbl̩", "ˈʃuːlə", "ˈfɪʃ",
-        "ˈdoːðə", "ˈvaθɐ", "ˈkatsə", "ˈnaːðə", "ˈpfeːɐ̯t", "ˈtsuːk", "ˈbluːmə",
-        "ˈʃtɛɐ̯n", "ˈʃmɛtɐlɪŋ", "ˈjʊŋə", "ˈhʊnt", "ˈmaʊθ", "ˈbal", "ˈbʁɪlə",
-        "ˈmɪlç", "ˈbuːx", "ˈkʊtʃə"
+      "varianten": [
+        {
+          "name": "Sigmatismus interdentalis (s, z → θ, ð)",
+          "alter_jahre": 5,
+          "alter_monate": 0,
+          "kind_produktionen": [
+            "ˈðɔnə", "ˈtaθə", "ˈaɪθ", "baˈnaːnə", "ˈkuː", "ˈɡaːbl̩", "ˈʃuːlə", "ˈfɪʃ",
+            "ˈdoːðə", "ˈvaθɐ", "ˈkatsə", "ˈnaːðə", "ˈpfeːɐ̯t", "ˈtsuːk", "ˈbluːmə",
+            "ˈʃtɛɐ̯n", "ˈʃmɛtɐlɪŋ", "ˈjʊŋə", "ˈhʊnt", "ˈmaʊθ", "ˈbal", "ˈbʁɪlə",
+            "ˈmɪlç", "ˈbuːx", "ˈkʊtʃə"
+          ]
+        },
+        {
+          "name": "Schetismus (ʃ → ç)",
+          "alter_jahre": 5,
+          "alter_monate": 6,
+          "kind_produktionen": [
+            "ˈzɔnə", "ˈtasə", "ˈaɪs", "baˈnaːnə", "ˈkuː", "ˈɡaːbl̩", "ˈçuːlə", "ˈfɪç",
+            "ˈdoːzə", "ˈvasɐ", "ˈkatsə", "ˈnaːzə", "ˈpfeːɐ̯t", "ˈtsuːk", "ˈbluːmə",
+            "ˈçtɛɐ̯n", "ˈçmɛtɐlɪŋ", "ˈjʊŋə", "ˈhʊnt", "ˈmaʊs", "ˈbal", "ˈbʁɪlə",
+            "ˈmɪlç", "ˈbuːx", "ˈkʊtʃə"
+          ]
+        },
+        {
+          "name": "Sigmatismus + Schetismus kombiniert",
+          "alter_jahre": 4,
+          "alter_monate": 9,
+          "kind_produktionen": [
+            "ˈðɔnə", "ˈtaθə", "ˈaɪθ", "baˈnaːnə", "ˈkuː", "ˈɡaːbl̩", "ˈçuːlə", "ˈfɪç",
+            "ˈdoːðə", "ˈvaθɐ", "ˈkatsə", "ˈnaːðə", "ˈpfeːɐ̯t", "ˈtsuːk", "ˈbluːmə",
+            "ˈçtɛɐ̯n", "ˈçmɛtɐlɪŋ", "ˈjʊŋə", "ˈhʊnt", "ˈmaʊθ", "ˈbal", "ˈbʁɪlə",
+            "ˈmɪlç", "ˈbuːx", "ˈkʊtʃə"
+          ]
+        }
       ]
     },
     {
       "id": "phonologische-verzoegerung",
-      "label": "Phonologische Verzögerung (altersuntypische Prozesse)",
+      "label": "Phonologische Verzögerung",
       "category": "Phonologische Verzögerung",
-      "kurzbeschreibung": "Mehrere typische Prozesse – Vorverlagerung, Plosivierung, Deaffrizierung – konsequent angewandt, aber bei 5;0 über ihren Altersgrenzen.",
-      "alter_jahre": 5,
-      "alter_monate": 0,
+      "kurzbeschreibung": "Typische (physiologische) Prozesse, aber konsequent über ihrer Altersgrenze angewandt. Keine untypischen Prozesse.",
       "source": "TBD verifizieren — angelehnt an PLAKSS-II",
-      "kind_produktionen": [
-        "ˈdɔnə", "ˈtatə", "ˈaɪt", "baˈnaːnə", "ˈtuː", "ˈdaːbl̩", "ˈtuːlə", "ˈpɪt",
-        "ˈdoːdə", "ˈbatɐ", "ˈtasə", "ˈnaːdə", "ˈfeːɐ̯t", "ˈsuːt", "ˈbluːmə",
-        "ˈtɛɐ̯n", "ˈtmɛtɐlɪn", "ˈjʊnə", "ˈhʊnt", "ˈmaʊt", "ˈbal", "ˈbʁɪlə",
-        "ˈmɪlt", "ˈbuːk", "ˈtʊʃə"
+      "varianten": [
+        {
+          "name": "Vorverlagerung + Plosivierung",
+          "alter_jahre": 5,
+          "alter_monate": 0,
+          "kind_produktionen": [
+            "ˈdɔnə", "ˈtatə", "ˈaɪt", "baˈnaːnə", "ˈtuː", "ˈdaːbl̩", "ˈtuːlə", "ˈpɪt",
+            "ˈdoːdə", "ˈbatɐ", "ˈtasə", "ˈnaːdə", "ˈfeːɐ̯t", "ˈsuːt", "ˈbluːmə",
+            "ˈtɛɐ̯n", "ˈtmɛtɐlɪn", "ˈjʊnə", "ˈhʊnt", "ˈmaʊt", "ˈbal", "ˈbʁɪlə",
+            "ˈmɪlt", "ˈbuːk", "ˈtʊʃə"
+          ]
+        },
+        {
+          "name": "Finale Konsonantentilgung + Clusterreduktion",
+          "alter_jahre": 5,
+          "alter_monate": 0,
+          "kind_produktionen": [
+            "ˈzɔnə", "ˈtasə", "ˈaɪ", "baˈnaːnə", "ˈkuː", "ˈɡaːbl̩", "ˈʃuːlə", "ˈfɪ",
+            "ˈdoːzə", "ˈvasɐ", "ˈkatsə", "ˈnaːzə", "ˈpfeːɐ̯", "ˈtsuː", "ˈbluːmə",
+            "ˈʃtɛɐ̯", "ˈʃmɛtɐlɪ", "ˈjʊŋə", "ˈhʊn", "ˈmaʊ", "ˈba", "ˈbʁɪlə",
+            "ˈmɪl", "ˈbuː", "ˈkʊtʃə"
+          ]
+        },
+        {
+          "name": "Vorverlagerung /ʃ/ + Deaffrizierung + Velar-Fronting",
+          "alter_jahre": 5,
+          "alter_monate": 0,
+          "kind_produktionen": [
+            "ˈzɔnə", "ˈtasə", "ˈaɪs", "baˈnaːnə", "ˈtuː", "ˈdaːbl̩", "ˈsuːlə", "ˈfɪs",
+            "ˈdoːzə", "ˈvasɐ", "ˈtasə", "ˈnaːzə", "ˈfeːɐ̯t", "ˈsuːt", "ˈbluːmə",
+            "ˈstɛɐ̯n", "ˈsmɛtɐlɪn", "ˈjʊnə", "ˈhʊnt", "ˈmaʊs", "ˈbal", "ˈbʁɪlə",
+            "ˈmɪlç", "ˈbuːx", "ˈtʊʃə"
+          ]
+        }
       ]
     },
     {
       "id": "konsequente-phonologische-stoerung",
       "label": "Konsequente Phonologische Störung",
       "category": "Konsequente phonologische Störung",
-      "kurzbeschreibung": "Ungewöhnliche Prozesse (Rückverlagerung/Backing, Initialkonsonanten-Tilgung) konsequent angewandt, kombiniert mit typischen Prozessen. Mindestens ein untypischer Prozess.",
-      "alter_jahre": 5,
-      "alter_monate": 0,
+      "kurzbeschreibung": "Mindestens ein untypischer Prozess (z. B. Rückverlagerung, Initialkonsonanten-Tilgung, Denasalierung), konsequent angewandt.",
       "source": "TBD verifizieren — angelehnt an PLAKSS-II",
-      "kind_produktionen": [
-        "ˈzɔŋə", "ˈkaxə", "ˈaɪx", "baˈŋaːŋə", "ˈkuː", "ˈɡaːbl̩", "ˈuːlə", "ˈɪʃ",
-        "ˈɡoːzə", "ˈaxɐ", "ˈkasə", "ˈŋaːzə", "ˈfeːɐ̯k", "ˈsuːk", "ˈbluːmə",
-        "ˈkɛɐ̯ŋ", "ˈmɛkɐlɪŋ", "ˈjʊŋə", "ˈʊŋk", "ˈmaʊx", "ˈbal", "ˈbʁɪlə",
-        "ˈmɪlk", "ˈbuːx", "ˈkʊʃə"
+      "varianten": [
+        {
+          "name": "Rückverlagerung / Backing (t,d,n,s → k,g,ŋ,x)",
+          "alter_jahre": 5,
+          "alter_monate": 0,
+          "kind_produktionen": [
+            "ˈzɔŋə", "ˈkaxə", "ˈaɪx", "baˈŋaːŋə", "ˈkuː", "ˈɡaːbl̩", "ˈʃuːlə", "ˈfɪʃ",
+            "ˈɡoːzə", "ˈvaxɐ", "ˈkatsə", "ˈŋaːzə", "ˈpfeːɐ̯k", "ˈtsuːk", "ˈbluːmə",
+            "ˈʃkɛɐ̯ŋ", "ˈʃmɛkɐlɪŋ", "ˈjʊŋə", "ˈhʊŋk", "ˈmaʊx", "ˈbal", "ˈbʁɪlə",
+            "ˈmɪlç", "ˈbuːx", "ˈkʊtʃə"
+          ]
+        },
+        {
+          "name": "Denasalierung (m,n,ŋ → b,d,g)",
+          "alter_jahre": 4,
+          "alter_monate": 6,
+          "kind_produktionen": [
+            "ˈzɔdə", "ˈtasə", "ˈaɪs", "baˈdaːdə", "ˈkuː", "ˈɡaːbl̩", "ˈʃuːlə", "ˈfɪʃ",
+            "ˈdoːzə", "ˈvasɐ", "ˈkatsə", "ˈdaːzə", "ˈpfeːɐ̯t", "ˈtsuːk", "ˈbluːbə",
+            "ˈʃtɛɐ̯d", "ˈʃbɛtɐlɪɡ", "ˈjʊɡə", "ˈhʊdt", "ˈbaʊs", "ˈbal", "ˈbʁɪlə",
+            "ˈbɪlç", "ˈbuːx", "ˈkʊtʃə"
+          ]
+        },
+        {
+          "name": "Initiale Konsonantentilgung",
+          "alter_jahre": 5,
+          "alter_monate": 6,
+          "kind_produktionen": [
+            "ˈɔnə", "ˈasə", "ˈaɪs", "aˈnaːnə", "ˈuː", "ˈaːbl̩", "ˈuːlə", "ˈɪʃ",
+            "ˈoːzə", "ˈasɐ", "ˈatsə", "ˈaːzə", "ˈpfeːɐ̯t", "ˈuːk", "ˈbluːmə",
+            "ˈʃtɛɐ̯n", "ˈʃmɛtɐlɪŋ", "ˈʊŋə", "ˈʊnt", "ˈaʊs", "ˈal", "ˈbʁɪlə",
+            "ˈɪlç", "ˈuːx", "ˈʊtʃə"
+          ]
+        }
       ]
     },
     {
       "id": "inkonsequente-phonologische-stoerung",
       "label": "Inkonsequente Phonologische Störung",
       "category": "Inkonsequente phonologische Störung",
-      "kurzbeschreibung": "Dasselbe Wort über mehrere Versuche unterschiedlich produziert. 12 von 25 Wörtern mit 3 Versuchen und echter Variabilität (über 40 %).",
-      "alter_jahre": 4,
-      "alter_monate": 6,
+      "kurzbeschreibung": "Dasselbe Wort über mehrere Versuche unterschiedlich produziert (Inkonsequenz-Score über 40 %).",
       "source": "TBD verifizieren — angelehnt an PLAKSS-II",
-      "kind_produktionen": [
-        ["ˈzɔnə", "ˈdɔnə", "ˈzɔmə"],
-        ["ˈtasə", "ˈkasə", "ˈtatə"],
-        "ˈaɪs",
-        ["baˈnaːnə", "maˈnaːnə", "baˈnaːmə"],
-        "ˈkuː",
-        ["ˈɡaːbl̩", "ˈdaːbl̩", "ˈɡaːdl̩"],
-        ["ˈʃuːlə", "ˈsuːlə", "ˈtuːlə"],
-        "ˈfɪʃ",
-        "ˈdoːzə",
-        "ˈvasɐ",
-        ["ˈkatsə", "ˈtatsə", "ˈkasə"],
-        "ˈnaːzə",
-        ["ˈpfeːɐ̯t", "ˈfeːɐ̯t", "ˈpeːɐ̯t"],
-        "ˈtsuːk",
-        "ˈbluːmə",
-        ["ˈʃtɛɐ̯n", "ˈtɛɐ̯n", "ˈʃtɛɐ̯m"],
-        ["ˈʃmɛtɐlɪŋ", "ˈmɛtɐlɪŋ", "ˈʃmɛtɐlɪn"],
-        "ˈjʊŋə",
-        ["ˈhʊnt", "ˈhʊn", "ˈʊnt"],
-        ["ˈmaʊs", "ˈmaʊ", "ˈnaʊs"],
-        "ˈbal",
-        "ˈbʁɪlə",
-        "ˈmɪlç",
-        "ˈbuːx",
-        ["ˈkʊtʃə", "ˈkʊʃə", "ˈtʊtʃə"]
+      "varianten": [
+        {
+          "name": "Variabel: 12 Wörter mit 3 Versuchen",
+          "alter_jahre": 4,
+          "alter_monate": 6,
+          "kind_produktionen": [
+            ["ˈzɔnə", "ˈdɔnə", "ˈzɔmə"],
+            ["ˈtasə", "ˈkasə", "ˈtatə"],
+            "ˈaɪs",
+            ["baˈnaːnə", "maˈnaːnə", "baˈnaːmə"],
+            "ˈkuː",
+            ["ˈɡaːbl̩", "ˈdaːbl̩", "ˈɡaːdl̩"],
+            ["ˈʃuːlə", "ˈsuːlə", "ˈtuːlə"],
+            "ˈfɪʃ",
+            "ˈdoːzə",
+            "ˈvasɐ",
+            ["ˈkatsə", "ˈtatsə", "ˈkasə"],
+            "ˈnaːzə",
+            ["ˈpfeːɐ̯t", "ˈfeːɐ̯t", "ˈpeːɐ̯t"],
+            "ˈtsuːk",
+            "ˈbluːmə",
+            ["ˈʃtɛɐ̯n", "ˈtɛɐ̯n", "ˈʃtɛɐ̯m"],
+            ["ˈʃmɛtɐlɪŋ", "ˈmɛtɐlɪŋ", "ˈʃmɛtɐlɪn"],
+            "ˈjʊŋə",
+            ["ˈhʊnt", "ˈhʊn", "ˈʊnt"],
+            ["ˈmaʊs", "ˈmaʊ", "ˈnaʊs"],
+            "ˈbal",
+            "ˈbʁɪlə",
+            "ˈmɪlç",
+            "ˈbuːx",
+            ["ˈkʊtʃə", "ˈkʊʃə", "ˈtʊtʃə"]
+          ]
+        },
+        {
+          "name": "Variabel: anderes Wortset (11 Wörter)",
+          "alter_jahre": 5,
+          "alter_monate": 0,
+          "kind_produktionen": [
+            ["ˈzɔnə", "ˈdɔnə", "ˈzɔŋə"],
+            ["ˈtasə", "ˈkasə", "ˈtatə"],
+            "ˈaɪs",
+            ["baˈnaːnə", "maˈnaːnə", "baˈnaːmə"],
+            "ˈkuː",
+            "ˈɡaːbl̩",
+            ["ˈʃuːlə", "ˈsuːlə", "ˈtuːlə"],
+            "ˈfɪʃ",
+            "ˈdoːzə",
+            ["ˈvasɐ", "ˈvatɐ", "ˈbasɐ"],
+            ["ˈkatsə", "ˈtatsə", "ˈkasə"],
+            "ˈnaːzə",
+            ["ˈpfeːɐ̯t", "ˈfeːɐ̯t", "ˈpeːɐ̯t"],
+            "ˈtsuːk",
+            "ˈbluːmə",
+            ["ˈʃtɛɐ̯n", "ˈtɛɐ̯n", "ˈʃtɛɐ̯m"],
+            "ˈʃmɛtɐlɪŋ",
+            "ˈjʊŋə",
+            ["ˈhʊnt", "ˈhʊn", "ˈʊnt"],
+            ["ˈmaʊs", "ˈmaʊ", "ˈnaʊs"],
+            "ˈbal",
+            "ˈbʁɪlə",
+            "ˈmɪlç",
+            "ˈbuːx",
+            ["ˈkʊtʃə", "ˈkʊʃə", "ˈtʊtʃə"]
+          ]
+        },
+        {
+          "name": "Variabel: gemischtes Wortset (11 Wörter)",
+          "alter_jahre": 4,
+          "alter_monate": 0,
+          "kind_produktionen": [
+            ["ˈzɔnə", "ˈzɔmə", "ˈdɔnə"],
+            "ˈtasə",
+            ["ˈaɪs", "ˈaɪ", "ˈaɪt"],
+            "baˈnaːnə",
+            ["ˈkuː", "ˈtuː", "ˈɡuː"],
+            "ˈɡaːbl̩",
+            "ˈʃuːlə",
+            ["ˈfɪʃ", "ˈfɪs", "ˈpɪʃ"],
+            ["ˈdoːzə", "ˈdoːsə", "ˈɡoːzə"],
+            "ˈvasɐ",
+            "ˈkatsə",
+            ["ˈnaːzə", "ˈnaːsə", "ˈdaːzə"],
+            "ˈpfeːɐ̯t",
+            ["ˈtsuːk", "ˈsuːk", "ˈtsuːt"],
+            "ˈbluːmə",
+            "ˈʃtɛɐ̯n",
+            ["ˈʃmɛtɐlɪŋ", "ˈmɛtɐlɪŋ", "ˈʃmɛtɐlɪn"],
+            ["ˈjʊŋə", "ˈjʊnə", "ˈdʊŋə"],
+            "ˈhʊnt",
+            "ˈmaʊs",
+            ["ˈbal", "ˈba", "ˈbat"],
+            "ˈbʁɪlə",
+            ["ˈmɪlç", "ˈmɪl", "ˈmɪlt"],
+            "ˈbuːx",
+            "ˈkʊtʃə"
+          ]
+        }
       ]
     }
   ]

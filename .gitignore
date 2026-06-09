@@ -8,3 +8,9 @@ Thumbs.db
 
 # Logs / temp
 *.log
+
+# Lokaler Test-Server-Helfer (nicht committen)
+.lt-server.js
+
+# Optionale lokale PDF-Schrift (groß, nicht ins Repo)
+assets/fonts/*.ttf

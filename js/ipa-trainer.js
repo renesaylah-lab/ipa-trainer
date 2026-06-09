@@ -47,12 +47,20 @@
     this.batch = [];
     this.index = 0;
     this.answers = [];
+    this.streak = 0;            // fortlaufende Serie korrekter Antworten (über Batches hinweg)
+    this.batchRichtig = 0;      // richtige Antworten im laufenden Batch
+    this.batchBeantwortet = 0;  // bereits bewertete Wörter im laufenden Batch
+    this.letztesKorrekt = null; // Ergebnis des zuletzt bewerteten Wortes (für Mini-Feedback)
   }
 
   State.prototype.start = function () {
     this.batch = global.LT_SpacedRepetition.buildBatch(this.words, BATCH);
     this.index = 0;
     this.answers = [];
+    // Batch-Quote zurücksetzen; die Serie läuft bewusst über Batches weiter.
+    this.batchRichtig = 0;
+    this.batchBeantwortet = 0;
+    this.letztesKorrekt = null;
     this.renderFrage();
   };
 
@@ -96,6 +104,10 @@
     var hinweis = el("div", "trainer-hint", "Keine sofortige Lösung – Auswertung nach dem 10. Wort.");
     c.appendChild(hinweis);
 
+    // Mini-Feedback (richtig/falsch des letzten Wortes, Serie, Batch-Quote) –
+    // bewusst OHNE Lösung; die kommt gebündelt in der Auswertung.
+    c.appendChild(self.renderFeedback());
+
     function submit() {
       self.answers[self.index] = input.value;
       self.bewerteWort(w, input.value);
@@ -115,6 +127,29 @@
     if (this.mode === "ipa2wort") input.focus();
   };
 
+  // Mini-Feedback-Leiste unter dem Eingabefeld: Ergebnis des zuletzt bewerteten
+  // Wortes (richtig/falsch, OHNE Lösung), laufende Serie und Trefferquote des
+  // aktuellen Batches als Balken. Vor dem ersten beantworteten Wort nur die Serie.
+  State.prototype.renderFeedback = function () {
+    var fb = el("div", "trainer-feedback");
+    if (this.letztesKorrekt != null) {
+      fb.appendChild(el("span",
+        "tf-result " + (this.letztesKorrekt ? "status-ok" : "status-bad"),
+        this.letztesKorrekt ? "Letztes Wort: richtig" : "Letztes Wort: falsch"));
+    }
+    fb.appendChild(el("span", "tf-streak", "Serie: " + this.streak));
+    if (this.batchBeantwortet > 0) {
+      var bar = el("span", "tf-bar");
+      var fill = document.createElement("span");
+      fill.style.width = Math.round(this.batchRichtig / this.batchBeantwortet * 100) + "%";
+      bar.appendChild(fill);
+      fb.appendChild(bar);
+      fb.appendChild(el("span", "tf-count",
+        this.batchRichtig + " / " + this.batchBeantwortet + " richtig"));
+    }
+    return fb;
+  };
+
   // Bewertet ein einzelnes Wort und aktualisiert SR + Statistik (Feedback
   // wird aber erst in der Auswertung gezeigt).
   State.prototype.bewerteWort = function (w, eingabe) {
@@ -130,6 +165,10 @@
     }
     global.LT_SpacedRepetition.update(w.id, korrekt);
     global.LT_Storage.recordResult(korrekt, ziel, fehler);
+    // Mini-Feedback aktualisieren: Serie läuft über Batches, Quote gilt im Batch.
+    this.batchBeantwortet += 1;
+    if (korrekt) { this.streak += 1; this.batchRichtig += 1; } else { this.streak = 0; }
+    this.letztesKorrekt = korrekt;
     // Ergebnis für die Auswertungstabelle merken
     this._ergebnisse = this._ergebnisse || {};
     this._ergebnisse[this.index] = { korrekt: korrekt };

@@ -275,6 +275,20 @@ h4 { font-size: 0.95rem; font-weight: 650; margin: 18px 0 8px; }
 .trainer-hint { color: var(--faint); font-size: 0.82rem; margin-top: 14px; }
 .trainer-score { font-size: 1.15rem; font-weight: 700; margin-bottom: 16px; }
 
+/* Mini-Feedback-Leiste pro Wort (richtig/falsch, Serie, Batch-Quote) */
+.trainer-feedback {
+  margin-top: 16px;
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
+  gap: 14px; font-size: 0.9rem; font-weight: 600; color: var(--muted);
+}
+.tf-bar {
+  width: 120px; height: 8px; border-radius: 999px;
+  background: var(--surface-2); border: 1px solid var(--border);
+  overflow: hidden;
+}
+.tf-bar > span { display: block; height: 100%; background: var(--ok); transition: width .25s ease; }
+.tf-count { color: var(--muted); }
+
 .weak-box {
   margin-top: 18px; padding: 14px 16px;
   background: var(--warn-bg); border: 1px solid var(--warn-border);
@@ -348,7 +362,7 @@ h4 { font-size: 0.95rem; font-weight: 650; margin: 18px 0 8px; }
   text-transform: uppercase; letter-spacing: 0.05em; color: var(--faint);
   padding: 8px 9px;
 }
-.dodd-input-table td { padding: 5px 9px; }
+.dodd-input-table td { padding: 5px 9px; vertical-align: top; }
 .dodd-input-table input {
   width: 100%; padding: 9px 11px;
   border: 1.5px solid var(--border-strong); border-radius: 8px;
@@ -419,6 +433,24 @@ h4 { font-size: 0.95rem; font-weight: 650; margin: 18px 0 8px; }
 .hybrid-ipa-preview[hidden] { display: none; }
 .hybrid-ipa-preview .hp-arrow { opacity: .7; font-style: normal; }
 
+/* Dezenter Hinweis bei automatisch erzeugtem (G2P-)Ziel-IPA */
+.hybrid-ipa-auto {
+  margin-top: 4px; font-size: 0.78rem; font-style: italic; color: var(--muted);
+}
+.hybrid-ipa-auto[hidden] { display: none; }
+
+/* Toast – kurze, nicht-blockierende Bestätigung */
+.lt-toast {
+  position: fixed; left: 50%; bottom: 26px;
+  transform: translateX(-50%) translateY(12px); z-index: 120;
+  background: var(--text); color: var(--bg);
+  font-size: 0.9rem; font-weight: 600;
+  padding: 11px 18px; border-radius: 999px; box-shadow: var(--shadow-lg);
+  opacity: 0; pointer-events: none;
+  transition: opacity .22s ease, transform .22s ease;
+}
+.lt-toast.visible { opacity: 1; transform: translateX(-50%) translateY(0); }
+
 /* ============================================================================
    Korrektur-Popup (Modal)
    ========================================================================== */
@@ -476,6 +508,14 @@ h4 { font-size: 0.95rem; font-weight: 650; margin: 18px 0 8px; }
 .dropdown-item + .dropdown-item { margin-top: 2px; }
 .dropdown-item-title { font-weight: 650; font-size: 0.92rem; }
 .dropdown-item-desc { font-size: 0.8rem; color: var(--muted); line-height: 1.4; }
+
+/* Gruppen-Überschrift im Beispiel-Dropdown (Lehrbuch vs. Zufallsfall) */
+.dropdown-header {
+  padding: 9px 12px 4px; font-size: 0.7rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.06em; color: var(--faint);
+}
+.dropdown-header + .dropdown-item { margin-top: 0; }
+.dropdown-header:not(:first-child) { border-top: 1px solid var(--border); margin-top: 6px; }
 
 @media (max-width: 720px) {
   .dropdown { position: static; }
@@ -540,6 +580,71 @@ h4 { font-size: 0.95rem; font-weight: 650; margin: 18px 0 8px; }
 code { background: var(--surface-2); padding: 1px 6px; border-radius: 5px; font-size: 0.9em; }
 
 .app-footer { max-width: 1100px; margin: 0 auto; padding: 24px 22px 40px; color: var(--faint); font-size: 0.82rem; }
+
+/* ============================================================================
+   Klienten-Pseudonym (Dodd) + Ergebnis-PDF-Button
+   ========================================================================== */
+.pseudonym-input {
+  width: 160px; padding: 7px 9px; margin-left: 4px;
+  border: 1.5px solid var(--border-strong); border-radius: 7px;
+  background: var(--surface); color: var(--text); font-size: 1rem; font-family: var(--ui-font);
+}
+.pseudonym-input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px var(--ring); }
+.pseudonym-hint { margin: 4px 0 0; font-size: 0.8rem; }
+.dodd-result-pdf { margin-top: 16px; }
+
+/* ============================================================================
+   Wortlisten-Verwaltung (Tab 4)
+   ========================================================================== */
+.wl-controls {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: 16px 0 14px;
+}
+.wl-search {
+  flex: 1 1 220px; min-width: 180px; padding: 9px 12px;
+  border: 1.5px solid var(--border-strong); border-radius: var(--radius-sm);
+  background: var(--surface); color: var(--text); font-size: 0.95rem; font-family: var(--ui-font);
+}
+.wl-search:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px var(--ring); }
+.wl-filter { display: flex; gap: 4px; }
+.wl-filter-btn.active {
+  background: var(--primary); color: var(--on-primary); border-color: transparent;
+}
+.wl-showhidden { font-size: 0.85rem; color: var(--muted); display: flex; align-items: center; gap: 5px; }
+
+.wl-addform {
+  background: var(--surface-2); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: 14px 16px; margin-bottom: 16px;
+}
+.wl-addform-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.wl-input {
+  padding: 8px 11px; border: 1.5px solid var(--border-strong); border-radius: 8px;
+  background: var(--surface); color: var(--text); font-size: 1rem;
+}
+.wl-add-ipa, .wl-ipa-wrap { display: flex; align-items: center; gap: 5px; }
+.wl-ipa-wrap .wl-input { flex: 1; min-width: 120px; }
+
+.wl-table { width: 100%; border-collapse: collapse; min-width: 560px; }
+.wl-table-wrap { overflow-x: auto; }
+.wl-table th {
+  text-align: left; font-size: 0.74rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.05em; color: var(--faint); padding: 8px 10px;
+  border-bottom: 1px solid var(--border);
+}
+.wl-table td { padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+.wl-row-hidden td { color: var(--faint); text-decoration: line-through; }
+.wl-row-hidden td.wl-actions { text-decoration: none; }
+.wl-actions { white-space: nowrap; text-align: right; }
+.wl-actions .btn { margin-left: 4px; }
+
+.wl-tag {
+  display: inline-block; padding: 2px 9px; border-radius: 999px;
+  font-size: 0.72rem; font-weight: 650; margin-right: 4px;
+}
+.wl-tag-standard  { background: var(--surface-2); color: var(--muted); border: 1px solid var(--border); }
+.wl-tag-override  { background: var(--warn-bg); color: var(--warn); }
+.wl-tag-eigene    { background: var(--primary-soft); color: var(--primary-strong); }
+.wl-tag-hidden    { background: var(--bad-bg); color: var(--bad); }
+:root[data-theme="dark"] .wl-tag-eigene, .theme-dark .wl-tag-eigene { color: var(--primary); }
 
 /* ============================================================================
    Responsive

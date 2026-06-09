@@ -11,7 +11,9 @@
     stats: "lt_stats",             // Gesamtstatistik / schwächste Laute
     dodd: "lt_dodd_history",       // Verlauf der letzten ~20 Dodd-Analysen
     settings: "lt_settings",       // ggf. Einstellungen
-    userWords: "words_user_added"  // eigene Wörter der Nutzerin (Override für words.json)
+    userWords: "words_user_added", // eigene Wörter der Nutzerin (Override für words.json)
+    overrides: "words_standard_overrides", // bearbeitete Standard-Einträge (pro Original-Wort)
+    hidden: "words_hidden"         // verborgene Standard-Wörter (Sperr-Liste)
   };
 
   var DODD_HISTORY_MAX = 20;
@@ -124,6 +126,102 @@
     return true;
   }
 
+  function lc(w) { return String((w && w.wort) || w || "").trim().toLowerCase(); }
+
+  /* Aktualisiert einen eigenen Eintrag (gefunden über das Original-Wort). */
+  function updateUserWord(originalWort, entry) {
+    if (!entry || !entry.wort || !entry.ipa) return false;
+    var list = getUserWords();
+    var ziel = String(originalWort).trim().toLowerCase();
+    var gefunden = false;
+    list = list.map(function (w) {
+      if (lc(w) === ziel) { gefunden = true; return { wort: entry.wort.trim(), ipa: entry.ipa.trim(), source: w.source || "Eigene Eingabe" }; }
+      return w;
+    });
+    if (!gefunden) return false;
+    write(KEYS.userWords, list);
+    return true;
+  }
+
+  /* Entfernt einen eigenen Eintrag endgültig. */
+  function removeUserWord(wort) {
+    var ziel = String(wort).trim().toLowerCase();
+    var list = getUserWords().filter(function (w) { return lc(w) !== ziel; });
+    write(KEYS.userWords, list);
+    return true;
+  }
+
+  // --- Standard-Overrides (bearbeitete Standard-Einträge) -------------------
+
+  function getOverrides() {
+    var o = read(KEYS.overrides, {});
+    return (o && typeof o === "object") ? o : {};
+  }
+  /* Override für einen Standard-Eintrag setzen (Schlüssel = Original-Wort). */
+  function setOverride(originalWort, entry) {
+    if (!entry || !entry.wort || !entry.ipa) return false;
+    var o = getOverrides();
+    o[originalWort] = { wort: entry.wort.trim(), ipa: entry.ipa.trim(), source: "Standard (geändert)" };
+    write(KEYS.overrides, o);
+    return true;
+  }
+  function removeOverride(originalWort) {
+    var o = getOverrides();
+    if (originalWort in o) { delete o[originalWort]; write(KEYS.overrides, o); }
+    return true;
+  }
+
+  // --- Verborgene Standard-Wörter (Sperr-Liste, NICHT echtes Löschen) -------
+
+  function getHidden() {
+    var list = read(KEYS.hidden, []);
+    return Array.isArray(list) ? list : [];
+  }
+  function isHidden(wort) {
+    var ziel = String(wort).trim().toLowerCase();
+    return getHidden().some(function (w) { return String(w).trim().toLowerCase() === ziel; });
+  }
+  function hideWord(wort) {
+    if (isHidden(wort)) return true;
+    var list = getHidden(); list.push(String(wort).trim());
+    write(KEYS.hidden, list);
+    return true;
+  }
+  function unhideWord(wort) {
+    var ziel = String(wort).trim().toLowerCase();
+    write(KEYS.hidden, getHidden().filter(function (w) { return String(w).trim().toLowerCase() !== ziel; }));
+    return true;
+  }
+
+  /* Gemergter Pool für ALLE Tabs (Trainer, Dodd-Autovervollständigung):
+   *   1) Start mit der Standard-Wortliste (words.json)
+   *   2) verborgene Standard-Wörter herausfiltern
+   *   3) bearbeitete Standard-Einträge durch ihren Override ersetzen
+   *   4) eigene Wörter anhängen (Dublette: eigener Eintrag gewinnt)
+   * Reihenfolge der Standardliste bleibt erhalten. */
+  function mergeWithUserWords(standardList) {
+    var standard = Array.isArray(standardList) ? standardList : [];
+    var overrides = getOverrides();
+    var eigene = getUserWords();
+
+    var merged = standard
+      .filter(function (w) { return !isHidden(w.wort); })
+      .map(function (w) { return overrides[w.wort] ? overrides[w.wort] : w; });
+
+    var vorhanden = {};
+    merged.forEach(function (w) { vorhanden[lc(w)] = true; });
+    eigene.forEach(function (w) {
+      if (vorhanden[lc(w)]) {
+        // Dublette: eigenen Eintrag bevorzugen (überschreibt)
+        merged = merged.map(function (m) { return lc(m) === lc(w) ? w : m; });
+      } else {
+        merged.push(w);
+      }
+    });
+
+    return merged;
+  }
+
   // --- Dodd-Analyse-Verlauf -------------------------------------------------
 
   function getDoddHistory() {
@@ -148,7 +246,9 @@
       stats: getStats(),
       dodd: getDoddHistory(),
       settings: read(KEYS.settings, {}),
-      userWords: getUserWords()
+      userWords: getUserWords(),
+      overrides: getOverrides(),
+      hidden: getHidden()
     };
   }
 
@@ -177,6 +277,8 @@
     write(KEYS.dodd, obj.dodd || []);
     write(KEYS.settings, obj.settings || {});
     write(KEYS.userWords, obj.userWords || []);
+    write(KEYS.overrides, obj.overrides || {});
+    write(KEYS.hidden, obj.hidden || []);
     return true;
   }
 
@@ -197,6 +299,16 @@
     getWeakestPhonemes: getWeakestPhonemes,
     getUserWords: getUserWords,
     addUserWord: addUserWord,
+    updateUserWord: updateUserWord,
+    removeUserWord: removeUserWord,
+    getOverrides: getOverrides,
+    setOverride: setOverride,
+    removeOverride: removeOverride,
+    getHidden: getHidden,
+    isHidden: isHidden,
+    hideWord: hideWord,
+    unhideWord: unhideWord,
+    mergeWithUserWords: mergeWithUserWords,
     getDoddHistory: getDoddHistory,
     addDoddAnalysis: addDoddAnalysis,
     exportAll: exportAll,
