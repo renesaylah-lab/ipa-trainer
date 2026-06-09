@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>1 · Design-Tokens · Logopädie-Trainer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Charis+SIL:ital,wght@0,400;0,700;1,400&family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="theme.css" />
+  <link rel="stylesheet" href="studio.css" />
+</head>
+<body class="studio">
+  <header class="studio-top">
+    <div class="studio-kicker">Seite 1 von 4</div>
+    <h1 class="studio-title">Design-Tokens</h1>
+    <p class="studio-lede">
+      Alle Werte als CSS-Variablen, jeweils in einer Light- und einer Dark-Fassung.
+      Im Code leben sie auf <code>:root</code> bzw. <code>:root[data-theme="dark"]</code>.
+    </p>
+    <nav class="studio-nav">
+      <a href="index.html">Überblick</a>
+      <a class="current" href="01-tokens.html">1 · Design-Tokens</a>
+      <a href="02-components.html">2 · Komponenten</a>
+      <a href="03-tabs.html">3 · Tabs</a>
+      <a href="04-hybrid.html">4 · Hybrid-Eingabe</a>
+      <a href="IMPLEMENTATION_PROMPT.md">5 · Prompt ↗</a>
+    </nav>
+  </header>
+
+  <section class="mk-section">
+    <h2 class="mk-h2">Farben</h2>
+    <p class="mk-note">
+      Warme, neutrale Basis + eine Heather-Akzentfarbe + klar getrennte Status-Farben.
+      Links Light, rechts Dark. Die Dark-Werte sind keine Inversion: Anthrazit mit Sepia-Stich,
+      Akzent heller/entsättigt, Status gedämpft.
+    </p>
+
+    <div class="token-cols">
+      <!-- LIGHT -->
+      <div class="token-col">
+        <div class="token-col-head"><span class="dot" style="width:12px;height:12px;border-radius:99px;background:#f4efe7;border:1px solid #d7c9b4;"></span> Light</div>
+
+        <div class="mk-h3" style="margin-top:0;">Neutral</div>
+        <div class="swatch-grid">
+          <div class="swatch"><div class="swatch-chip" style="background:#f4efe7"></div><div class="swatch-meta"><div class="swatch-name">Hintergrund</div><div class="swatch-var">--bg</div><div class="swatch-hex">#f4efe7</div></div></div>
+          <div class="swatch"><div class="swatch-chip" style="background:#fffdf9"></div><div class="swatch-meta"><div class="swatch-name">Fläche</div><div class="swatch-var">--surface</div><div class="swatch-hex">#fffdf9</div></div></div>
+          <div class="swatch"><div class="swatch-chip" style="background:#f6f1e8"></div><div class="swatch-meta"><div class="swatch-name">Fläche 2</div><div class="swatch-var">--surface-2</div><div class="swatch-hex">#f6f1e8</div></div></div>
+          <div class="swatch"><div class="swatch-chip" style="background:#e7ddce"></div><div class="swatch-meta"><div class="swatch-name">Rand</div><div class="swatch-var">--border</div><div class="swatch-hex">#e7ddce</div></div></div>
+          <div class="swatch"><div class="swatch-chip" style="background:#2c2722"></div><div class="swatch-meta"><div class="swatch-name">Text</div><div class="swatch-var">--text</div><div class="swatch-hex">#2c2722</div></div></div>
+          <div class="swatch"><div class="swatch-chip" style="background:#6f6557"></div><div class="swatch-meta"><div class="swatch-name">Gedämpft</div><div class="swatch-var">--muted</div><div class="swatch-hex">#6f6557</div></div></div>
+        </div>
+
+        <div class="mk-h3">Akzent</div>
+        <div class="swatch-grid">
+          <div class="swatch"><div class="swatch-chip" style="background:#6b4f9e"></div><div class="swatch-meta"><div class="swatch-name">Primär</div><div class="swatch-var">--primary</div><div class="swatch-hex">#6b4f9e</div></div></div>
+          <div class="swatch"><div class="swatch-chip" style="background:#563f82"></div><div class="swatch-meta"><div class="swatch-name">Primär stark</div><div class="swatch-var">--primary-strong</div><div class="swatch-hex">#563f82</div></div></div>
+          <div class="swatch"><div class="swatch-chip" style="background:#ece6f6"></div><div class="swatch-meta"><div class="swatch-name">Primär soft</div><div class="swatch-var">--primary-soft</div><div class="swatch-hex">#ece6f6</div></div></div>
+        </div>
+
+        <div class="mk-h3">Status</div>
+        <div class="swatch-grid">
+          <div class="swatch"><div class="swatch-chip" style="background:#3f7d57"></div><div class="swatch-meta"><div class="swatch-name">Erfolg</div><div class="swatch-var">--ok</div><div class="swatch-hex">#3f7d57</div></div></div>
+          <div class="swatch"><div class="swatch-chip" style="background:#98690f"></div><div class="swatch-meta"><div class="swatch-name">Warnung</div><div class="swatch-var">--warn</div><div class="swatch-hex">#98690f</div></div></div>
+          <div class="swatch"><div class="swatch-chip" style="background:#b04a3a"></div><div class="swatch-meta"><div class="swatch-name">Fehler</div><div class="swatch-var">--bad</div><div class="swatch-hex">#b04a3a</div></div></div>
+        </div>
+      </div>
+
+      <!-- DARK -->
+      <div class="token-col dark">
+        <div class="token-col-head"><span class="dot" style="width:12px;height:12px;border-radius:99px;background:#1b1714;border:1px solid #4b4135;"></span> Dark</div>
+
+        <div class="mk-h3" style="margin-top:0;color:#f0e9dd;">Neutral</div>
+        <div class="swatch-grid">
+          <div class="swatch"><div class="swatch-chip" style="background:#1b1714"></div><div class="swatch-meta"><div class="swatch-name">Hintergrund</div><div class="swatch-var">--bg</div><div class="swatch-hex">#1b1714</div></div></div>
+          <div class="swatch"><div class="swatch-chip" style="background:#262019"></div><div class="swatch-meta"><div class="swatch-name">Fläche</div><div class="swatch-var">--surface</div><div class="swatch-hex">#262019</div></div></div>
+          <div class="swatch"><div class="swatch-chip" style="background:#2f2920"></div><div class="swatch-meta"><div class="swatch-name">Fläche 2</div><div class="swatch-var">--surface-2</div><div class="swatch-hex">#2f2920</div></div></div>
+          <div class="swatch"><div class="swatch-chip" style="background:#3a3228"></div><div class="swatch-meta"><div class="swatch-name">Rand</div><div class="swatch-var">--border</div><div class="swatch-hex">#3a3228</div></div></div>
+          <div class="swatch"><div class="swatch-chip" style="background:#f0e9dd"></div><div class="swatch-meta"><div class="swatch-name">Text</div><div class="swatch-var">--text</div><div class="swatch-hex">#f0e9dd</div></div></div>
+          <div class="swatch"><div class="swatch-chip" style="background:#b4a892"></div><div class="swatch-meta"><div class="swatch-name">Gedämpft</div><div class="swatch-var">--muted</div><div class="swatch-hex">#b4a892</div></div></div>
+        </div>
+
+        <div class="mk-h3" style="color:#f0e9dd;">Akzent</div>
+        <div class="swatch-grid">
+          <div class="swatch"><div class="swatch-chip" style="background:#bda7e8"></div><div class="swatch-meta"><div class="swatch-name">Primär</div><div class="swatch-var">--primary</div><div class="swatch-hex">#bda7e8</div></div></div>
+          <div class="swatch"><div class="swatch-chip" style="background:#d0c0f1"></div><div class="swatch-meta"><div class="swatch-name">Primär stark</div><div class="swatch-var">--primary-strong</div><div class="swatch-hex">#d0c0f1</div></div></div>
+          <div class="swatch"><div class="swatch-chip" style="background:#2f2740"></div><div class="swatch-meta"><div class="swatch-name">Primär soft</div><div class="swatch-var">--primary-soft</div><div class="swatch-hex">#2f2740</div></div></div>
+        </div>
+
+        <div class="mk-h3" style="color:#f0e9dd;">Status</div>
+        <div class="swatch-grid">
+          <div class="swatch"><div class="swatch-chip" style="background:#84bd94"></div><div class="swatch-meta"><div class="swatch-name">Erfolg</div><div class="swatch-var">--ok</div><div class="swatch-hex">#84bd94</div></div></div>
+          <div class="swatch"><div class="swatch-chip" style="background:#d8aa5d"></div><div class="swatch-meta"><div class="swatch-name">Warnung</div><div class="swatch-var">--warn</div><div class="swatch-hex">#d8aa5d</div></div></div>
+          <div class="swatch"><div class="swatch-chip" style="background:#e3917f"></div><div class="swatch-meta"><div class="swatch-name">Fehler</div><div class="swatch-var">--bad</div><div class="swatch-hex">#e3917f</div></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="mk-divider" />
+
+  <section class="mk-section">
+    <h2 class="mk-h2">Typografie</h2>
+    <p class="mk-note">
+      Zwei Familien: <strong>Hanken Grotesk</strong> für UI/Text, <strong>Charis SIL</strong>
+      für alle IPA-Zeichen (Klasse <code>.ipa-text</code> / <code>.ipa-input</code>).
+    </p>
+    <div class="pair">
+      <div class="frame">
+        <div class="frame-label is-light"><span class="dot"></span>Skala · Light</div>
+        <div class="demo theme-light">
+          <div style="color:var(--text);font-weight:800;font-size:2rem;letter-spacing:-.02em;">Aa Prompt · 2.0rem / 800</div>
+          <div style="color:var(--text);font-weight:700;font-size:1.25rem;margin-top:8px;">Aa Überschrift · 1.25rem / 700</div>
+          <div style="color:var(--text);font-size:1rem;margin-top:8px;">Aa Fließtext · 1rem / 400 — gut lesbar, warm.</div>
+          <div style="color:var(--muted);font-size:.84rem;margin-top:8px;">Aa Gedämpft · 0.84rem — Hinweise & Meta.</div>
+          <div style="color:var(--faint);font-size:.74rem;text-transform:uppercase;letter-spacing:.08em;margin-top:8px;font-weight:600;">Aa Label · 0.74rem / 600 · uppercase</div>
+        </div>
+      </div>
+      <div class="frame">
+        <div class="frame-label is-dark"><span class="dot"></span>IPA · Dark</div>
+        <div class="demo theme-dark">
+          <div class="ipa-text" style="color:var(--text);font-size:2.4rem;">[ˈʃuːlə]</div>
+          <div class="ipa-text" style="color:var(--text);font-size:1.4rem;margin-top:10px;">ɔʏ̯ · aɪ̯ · aʊ̯ · ɐ̯ · l̩ · n̩ · ŋ · ç · ʁ · pf · ts</div>
+          <div style="color:var(--muted);font-size:.86rem;margin-top:10px;">AAA-Kontrast: helles Warmweiß auf warmem Anthrazit.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="mk-divider" />
+
+  <section class="mk-section">
+    <h2 class="mk-h2">Form · Radius, Schatten, Abstand</h2>
+    <div class="pair">
+      <div class="frame">
+        <div class="frame-label is-light"><span class="dot"></span>Radius & Schatten · Light</div>
+        <div class="demo theme-light" style="display:flex;gap:16px;flex-wrap:wrap;align-items:flex-end;">
+          <div style="text-align:center;"><div style="width:74px;height:54px;background:var(--surface);border:1px solid var(--border);border-radius:9px;box-shadow:var(--shadow-sm);"></div><div style="font-size:.72rem;color:var(--muted);margin-top:6px;">sm · 9px</div></div>
+          <div style="text-align:center;"><div style="width:74px;height:54px;background:var(--surface);border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow-md);"></div><div style="font-size:.72rem;color:var(--muted);margin-top:6px;">md · 14px</div></div>
+          <div style="text-align:center;"><div style="width:74px;height:54px;background:var(--surface);border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow-lg);"></div><div style="font-size:.72rem;color:var(--muted);margin-top:6px;">lg · Overlay</div></div>
+        </div>
+      </div>
+      <div class="frame">
+        <div class="frame-label is-dark"><span class="dot"></span>Abstandsskala</div>
+        <div class="demo theme-dark" style="display:flex;gap:10px;align-items:flex-end;">
+          <div style="text-align:center;"><div style="width:6px;height:6px;background:var(--primary);"></div><div style="font-size:.7rem;color:var(--muted);margin-top:6px;">6</div></div>
+          <div style="text-align:center;"><div style="width:10px;height:10px;background:var(--primary);"></div><div style="font-size:.7rem;color:var(--muted);margin-top:6px;">10</div></div>
+          <div style="text-align:center;"><div style="width:14px;height:14px;background:var(--primary);"></div><div style="font-size:.7rem;color:var(--muted);margin-top:6px;">14</div></div>
+          <div style="text-align:center;"><div style="width:20px;height:20px;background:var(--primary);"></div><div style="font-size:.7rem;color:var(--muted);margin-top:6px;">20</div></div>
+          <div style="text-align:center;"><div style="width:26px;height:26px;background:var(--primary);"></div><div style="font-size:.7rem;color:var(--muted);margin-top:6px;">26</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="studio-foot">Token-Quelle: <code>theme.css</code> — wird in der Implementierung 1:1 als CSS-Variablen übernommen.</footer>
+</body>
+</html>

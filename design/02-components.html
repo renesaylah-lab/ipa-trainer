@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>2 · Komponenten · Logopädie-Trainer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Charis+SIL:ital,wght@0,400;0,700;1,400&family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="theme.css" />
+  <link rel="stylesheet" href="studio.css" />
+  <style>
+    /* Mockup-only: Menüs in den Komponenten-Kacheln statisch zeigen */
+    .demo .dropdown-menu.static,
+    .demo .autocomplete-menu.static { position: static; box-shadow: var(--shadow-sm); margin-top: 8px; }
+    .lt-tip.show::after { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body class="studio">
+  <header class="studio-top">
+    <div class="studio-kicker">Seite 2 von 4</div>
+    <h1 class="studio-title">Komponenten-Bibliothek</h1>
+    <p class="studio-lede">Jede Komponente in Light und Dark, mit den echten Klassennamen aus dem Repo.</p>
+    <nav class="studio-nav">
+      <a href="index.html">Überblick</a>
+      <a href="01-tokens.html">1 · Design-Tokens</a>
+      <a class="current" href="02-components.html">2 · Komponenten</a>
+      <a href="03-tabs.html">3 · Tabs</a>
+      <a href="04-hybrid.html">4 · Hybrid-Eingabe</a>
+      <a href="IMPLEMENTATION_PROMPT.md">5 · Prompt ↗</a>
+    </nav>
+  </header>
+
+  <section class="mk-section">
+
+    <!-- HEADER + TABS -->
+    <div class="cmp">
+      <div class="cmp-title">App-Header, Tab-Navigation & Dark-Mode-Toggle</div>
+      <p class="cmp-desc">Dezente IPA-Wortmarke statt Logo. Rechts der neue Sonne/Mond-Umschalter (zeigt im Light die Sonne, im Dark den Mond).</p>
+      <div class="pair">
+        <div class="frame">
+          <div class="frame-label is-light"><span class="dot"></span>Light</div>
+          <div class="demo flush theme-light">
+            <header class="app-header"><div class="app-header-inner">
+              <div class="brand"><div><h1>Logopädie-Trainer</h1><p class="subtitle">IPA-Transkription &amp; Dodd-Analyse · Lern- und Reflexionshilfe</p></div></div>
+              <div class="header-actions">
+                <button class="btn btn-ghost" type="button">Exportieren</button>
+                <button class="btn btn-ghost" type="button">Importieren</button>
+                <button class="theme-toggle" type="button" aria-label="Theme wechseln">
+                  <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M19.1 4.9l-1.8 1.8M6.7 17.3l-1.8 1.8"/></svg>
+                  <svg class="ico-moon" viewBox="0 0 24 24" fill="currentColor"><path d="M20 14.5A8 8 0 019.5 4 7 7 0 1020 14.5z"/></svg>
+                </button>
+              </div>
+            </div></header>
+            <nav class="tabs">
+              <button class="tab-btn active" type="button">Wort → IPA</button>
+              <button class="tab-btn" type="button">IPA → Wort</button>
+              <button class="tab-btn" type="button">Dodd-Analyse</button>
+            </nav>
+          </div>
+        </div>
+        <div class="frame">
+          <div class="frame-label is-dark"><span class="dot"></span>Dark</div>
+          <div class="demo flush theme-dark">
+            <header class="app-header"><div class="app-header-inner">
+              <div class="brand"><div><h1>Logopädie-Trainer</h1><p class="subtitle">IPA-Transkription &amp; Dodd-Analyse · Lern- und Reflexionshilfe</p></div></div>
+              <div class="header-actions">
+                <button class="btn btn-ghost" type="button">Exportieren</button>
+                <button class="btn btn-ghost" type="button">Importieren</button>
+                <button class="theme-toggle" type="button" aria-label="Theme wechseln">
+                  <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M19.1 4.9l-1.8 1.8M6.7 17.3l-1.8 1.8"/></svg>
+                  <svg class="ico-moon" viewBox="0 0 24 24" fill="currentColor"><path d="M20 14.5A8 8 0 019.5 4 7 7 0 1020 14.5z"/></svg>
+                </button>
+              </div>
+            </div></header>
+            <nav class="tabs">
+              <button class="tab-btn active" type="button">Wort → IPA</button>
+              <button class="tab-btn" type="button">IPA → Wort</button>
+              <button class="tab-btn" type="button">Dodd-Analyse</button>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BUTTONS -->
+    <div class="cmp">
+      <div class="cmp-title">Buttons</div>
+      <p class="cmp-desc">Primär (Heather), Standard, Ghost, Small, Danger. Hover hebt leicht an; Fokus-Ring in Akzentfarbe.</p>
+      <div class="pair">
+        <div class="frame"><div class="frame-label is-light"><span class="dot"></span>Light</div>
+          <div class="demo theme-light" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+            <button class="btn btn-primary">Analysieren</button>
+            <button class="btn">Produktion hinzufügen</button>
+            <button class="btn btn-ghost">Beispiel laden ▾</button>
+            <button class="btn btn-small">+ Versuch</button>
+            <button class="btn btn-danger">×</button>
+          </div></div>
+        <div class="frame"><div class="frame-label is-dark"><span class="dot"></span>Dark</div>
+          <div class="demo theme-dark" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+            <button class="btn btn-primary">Analysieren</button>
+            <button class="btn">Produktion hinzufügen</button>
+            <button class="btn btn-ghost">Beispiel laden ▾</button>
+            <button class="btn btn-small">+ Versuch</button>
+            <button class="btn btn-danger">×</button>
+          </div></div>
+      </div>
+    </div>
+
+    <!-- TRAINER PROMPT + INPUT -->
+    <div class="cmp">
+      <div class="cmp-title">Trainings-Karte (Wort → IPA / IPA → Wort)</div>
+      <p class="cmp-desc">Großer Prompt, zentriertes Eingabefeld (IPA-Schrift im Wort→IPA-Modus), Fortschritt im 10er-Batch, kein Sofort-Feedback.</p>
+      <div class="pair">
+        <div class="frame"><div class="frame-label is-light"><span class="dot"></span>Light</div>
+          <div class="demo theme-light"><div class="card trainer">
+            <div class="trainer-progress">Wort 3 / 10</div>
+            <div class="trainer-prompt">Schule</div>
+            <div class="trainer-label">IPA-Transkription eingeben:</div>
+            <input class="trainer-input ipa-input ipa-text" value="ˈʃuː" />
+            <button class="btn btn-primary">Weiter</button>
+            <div class="trainer-hint">Keine sofortige Lösung – Auswertung nach dem 10. Wort.</div>
+          </div></div></div>
+        <div class="frame"><div class="frame-label is-dark"><span class="dot"></span>Dark</div>
+          <div class="demo theme-dark"><div class="card trainer">
+            <div class="trainer-progress">Wort 7 / 10</div>
+            <div class="trainer-prompt ipa-text">[ˈpfeːɐ̯t]</div>
+            <div class="trainer-label">Deutsches Wort eingeben:</div>
+            <input class="trainer-input" value="Pferd" />
+            <button class="btn btn-primary">Batch auswerten</button>
+            <div class="trainer-hint">Keine sofortige Lösung – Auswertung nach dem 10. Wort.</div>
+          </div></div></div>
+      </div>
+    </div>
+
+    <!-- IPA KEYBOARD -->
+    <div class="cmp">
+      <div class="cmp-title">IPA-Tastatur (vollformatig)</div>
+      <p class="cmp-desc">Gruppen wie im Code: Vokale, Diphthonge, Konsonanten, Affrikaten, Diakritika, Klammern, Aktionen. Hover = Heather-Tint, aktiv = gefüllt.</p>
+      <div class="pair">
+        <div class="frame"><div class="frame-label is-light"><span class="dot"></span>Light</div>
+          <div class="demo theme-light"><div class="card kbd-card"><div class="ipa-keyboard">
+            <div class="ipa-group"><div class="ipa-group-title">Vokale</div><div class="ipa-keys"><button class="ipa-key">a</button><button class="ipa-key">e</button><button class="ipa-key">i</button><button class="ipa-key">o</button><button class="ipa-key">u</button><button class="ipa-key">ə</button><button class="ipa-key">ɐ</button><button class="ipa-key">ɛ</button><button class="ipa-key">ɪ</button><button class="ipa-key">ɔ</button><button class="ipa-key">ʊ</button><button class="ipa-key">y</button><button class="ipa-key">ø</button><button class="ipa-key">œ</button><button class="ipa-key">ʏ</button></div></div>
+            <div class="ipa-group"><div class="ipa-group-title">Diphthonge</div><div class="ipa-keys"><button class="ipa-key">aɪ</button><button class="ipa-key">aʊ</button><button class="ipa-key">ɔʏ</button></div></div>
+            <div class="ipa-group"><div class="ipa-group-title">Konsonanten</div><div class="ipa-keys"><button class="ipa-key">p</button><button class="ipa-key">b</button><button class="ipa-key">t</button><button class="ipa-key">d</button><button class="ipa-key">k</button><button class="ipa-key">g</button><button class="ipa-key">f</button><button class="ipa-key">v</button><button class="ipa-key">s</button><button class="ipa-key">z</button><button class="ipa-key">ʃ</button><button class="ipa-key">ç</button><button class="ipa-key">x</button><button class="ipa-key">h</button><button class="ipa-key">m</button><button class="ipa-key">n</button><button class="ipa-key">ŋ</button><button class="ipa-key">l</button><button class="ipa-key">ʁ</button><button class="ipa-key">j</button></div></div>
+            <div class="ipa-group"><div class="ipa-group-title">Affrikaten</div><div class="ipa-keys"><button class="ipa-key">ts</button><button class="ipa-key">pf</button><button class="ipa-key">tʃ</button><button class="ipa-key">dʒ</button></div></div>
+            <div class="ipa-group"><div class="ipa-group-title">Diakritika</div><div class="ipa-keys"><button class="ipa-key">ː</button><button class="ipa-key">ˈ</button><button class="ipa-key">ˌ</button><button class="ipa-key">◌̩</button><button class="ipa-key">◌̯</button></div></div>
+            <div class="ipa-group"><div class="ipa-group-title">Aktionen</div><div class="ipa-keys"><button class="ipa-key ipa-key-action">← Löschen</button><button class="ipa-key ipa-key-action">Clear</button></div></div>
+          </div></div></div></div>
+        <div class="frame"><div class="frame-label is-dark"><span class="dot"></span>Dark</div>
+          <div class="demo theme-dark"><div class="card kbd-card"><div class="ipa-keyboard">
+            <div class="ipa-group"><div class="ipa-group-title">Vokale</div><div class="ipa-keys"><button class="ipa-key">a</button><button class="ipa-key">e</button><button class="ipa-key">i</button><button class="ipa-key">o</button><button class="ipa-key">u</button><button class="ipa-key">ə</button><button class="ipa-key">ɐ</button><button class="ipa-key">ɛ</button><button class="ipa-key">ɪ</button><button class="ipa-key">ɔ</button><button class="ipa-key">ʊ</button><button class="ipa-key">y</button><button class="ipa-key">ø</button><button class="ipa-key">œ</button><button class="ipa-key">ʏ</button></div></div>
+            <div class="ipa-group"><div class="ipa-group-title">Diphthonge</div><div class="ipa-keys"><button class="ipa-key">aɪ</button><button class="ipa-key">aʊ</button><button class="ipa-key">ɔʏ</button></div></div>
+            <div class="ipa-group"><div class="ipa-group-title">Konsonanten</div><div class="ipa-keys"><button class="ipa-key">p</button><button class="ipa-key">b</button><button class="ipa-key">t</button><button class="ipa-key">d</button><button class="ipa-key">k</button><button class="ipa-key">g</button><button class="ipa-key">f</button><button class="ipa-key">v</button><button class="ipa-key">s</button><button class="ipa-key">z</button><button class="ipa-key">ʃ</button><button class="ipa-key">ç</button><button class="ipa-key">x</button><button class="ipa-key">h</button><button class="ipa-key">m</button><button class="ipa-key">n</button><button class="ipa-key">ŋ</button><button class="ipa-key">l</button><button class="ipa-key">ʁ</button><button class="ipa-key">j</button></div></div>
+            <div class="ipa-group"><div class="ipa-group-title">Affrikaten</div><div class="ipa-keys"><button class="ipa-key">ts</button><button class="ipa-key">pf</button><button class="ipa-key">tʃ</button><button class="ipa-key">dʒ</button></div></div>
+            <div class="ipa-group"><div class="ipa-group-title">Diakritika</div><div class="ipa-keys"><button class="ipa-key">ː</button><button class="ipa-key">ˈ</button><button class="ipa-key">ˌ</button><button class="ipa-key">◌̩</button><button class="ipa-key">◌̯</button></div></div>
+            <div class="ipa-group"><div class="ipa-group-title">Aktionen</div><div class="ipa-keys"><button class="ipa-key ipa-key-action">← Löschen</button><button class="ipa-key ipa-key-action">Clear</button></div></div>
+          </div></div></div></div>
+      </div>
+    </div>
+
+    <!-- RESULT TABLE -->
+    <div class="cmp">
+      <div class="cmp-title">Auswertungs-Tabelle (richtig / falsch / Erklärung)</div>
+      <p class="cmp-desc">Grün/Rot getönte Zeilen, Erklärungszeile darunter. IPA in Charis SIL.</p>
+      <div class="pair">
+        <div class="frame"><div class="frame-label is-light"><span class="dot"></span>Light</div>
+          <div class="demo theme-light"><div class="card"><table class="result-table">
+            <thead><tr><th>Wort</th><th>Ihre Antwort</th><th>Korrekte Antwort</th><th>Ergebnis</th></tr></thead>
+            <tbody>
+              <tr class="row-ok"><td>Sonne</td><td class="ipa-text">ˈzɔnə</td><td class="ipa-text">[ˈzɔnə]</td><td class="mark-ok">✓</td></tr>
+              <tr class="row-bad"><td>Pferd</td><td class="ipa-text">ˈpfeːt</td><td class="ipa-text">[ˈpfeːɐ̯t]</td><td class="mark-bad">✗</td></tr>
+              <tr class="row-explain"><td colspan="4" class="explain">Hinweis: [ɐ̯] fehlt in der Eingabe.</td></tr>
+            </tbody>
+          </table></div></div></div>
+        <div class="frame"><div class="frame-label is-dark"><span class="dot"></span>Dark</div>
+          <div class="demo theme-dark"><div class="card"><table class="result-table">
+            <thead><tr><th>Wort</th><th>Ihre Antwort</th><th>Korrekte Antwort</th><th>Ergebnis</th></tr></thead>
+            <tbody>
+              <tr class="row-ok"><td>Sonne</td><td class="ipa-text">ˈzɔnə</td><td class="ipa-text">[ˈzɔnə]</td><td class="mark-ok">✓</td></tr>
+              <tr class="row-bad"><td>Pferd</td><td class="ipa-text">ˈpfeːt</td><td class="ipa-text">[ˈpfeːɐ̯t]</td><td class="mark-bad">✗</td></tr>
+              <tr class="row-explain"><td colspan="4" class="explain">Hinweis: [ɐ̯] fehlt in der Eingabe.</td></tr>
+            </tbody>
+          </table></div></div></div>
+      </div>
+    </div>
+
+    <!-- KLASSIFIKATION + BADGES -->
+    <div class="cmp">
+      <div class="cmp-title">Dodd-Klassifikation, Badges & Status</div>
+      <p class="cmp-desc">Ergebnis-Kopf mit Heather-Tönung, Disclaimer bleibt sichtbar. Prozess-Typen als Badges (typisch / untypisch / artikulatorisch).</p>
+      <div class="pair">
+        <div class="frame"><div class="frame-label is-light"><span class="dot"></span>Light</div>
+          <div class="demo theme-light"><div class="card">
+            <div class="dodd-klass">
+              <div class="dodd-klass-label">Klassifikation nach Dodd</div>
+              <div class="dodd-klass-value">Phonologische Verzögerung</div>
+              <div class="dodd-klass-meta">Alter: 5;0 · Produktionen: 25 · Inkonsequenz: 12%</div>
+            </div>
+            <p class="dodd-disclaimer">Lern-/Reflexionshilfe – ersetzt keine fachliche Diagnose.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;">
+              <span class="badge badge-typisch">typisch</span>
+              <span class="badge badge-untypisch">untypisch</span>
+              <span class="badge badge-artikulatorisch">artikulatorisch</span>
+              <span class="badge badge-unbekannt">unbekannt</span>
+            </div>
+            <p style="margin:14px 0 0;font-size:.9rem;"><span class="status-bad">● verzögert</span> &nbsp; <span class="status-ok">● im Rahmen</span> &nbsp; <span class="status-neutral">● n/a</span></p>
+          </div></div></div>
+        <div class="frame"><div class="frame-label is-dark"><span class="dot"></span>Dark</div>
+          <div class="demo theme-dark"><div class="card">
+            <div class="dodd-klass">
+              <div class="dodd-klass-label">Klassifikation nach Dodd</div>
+              <div class="dodd-klass-value">Inkonsequente phonologische Störung</div>
+              <div class="dodd-klass-meta">Alter: 4;6 · Produktionen: 37 · Inkonsequenz: 58%</div>
+            </div>
+            <p class="dodd-disclaimer">Lern-/Reflexionshilfe – ersetzt keine fachliche Diagnose.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;">
+              <span class="badge badge-typisch">typisch</span>
+              <span class="badge badge-untypisch">untypisch</span>
+              <span class="badge badge-artikulatorisch">artikulatorisch</span>
+              <span class="badge badge-unbekannt">unbekannt</span>
+            </div>
+            <p style="margin:14px 0 0;font-size:.9rem;"><span class="status-bad">● verzögert</span> &nbsp; <span class="status-ok">● im Rahmen</span> &nbsp; <span class="status-neutral">● n/a</span></p>
+          </div></div></div>
+      </div>
+    </div>
+
+    <!-- DROPDOWN + AUTOCOMPLETE -->
+    <div class="cmp">
+      <div class="cmp-title">Dropdown „Beispiel laden" & Zielwort-Autovervollständigung</div>
+      <p class="cmp-desc">Menüs (hier statisch dargestellt). Hover-Zeile in Heather-Tint, IPA gedämpft.</p>
+      <div class="pair">
+        <div class="frame"><div class="frame-label is-light"><span class="dot"></span>Light · Beispiel-Menü</div>
+          <div class="demo theme-light tall"><div class="dropdown">
+            <button class="btn btn-ghost dropdown-toggle">Beispiel laden <span class="caret">▾</span></button>
+            <div class="dropdown-menu static">
+              <button class="dropdown-item"><span class="dropdown-item-title">Artikulationsstörung (Sigmatismus)</span><span class="dropdown-item-desc">Ein phonetischer Fehler: /s,z/ konsequent interdental.</span></button>
+              <button class="dropdown-item"><span class="dropdown-item-title">Phonologische Verzögerung</span><span class="dropdown-item-desc">Typische Prozesse, aber über Altersgrenze.</span></button>
+              <button class="dropdown-item"><span class="dropdown-item-title">Inkonsequente phonologische Störung</span><span class="dropdown-item-desc">Dasselbe Wort über Versuche variabel.</span></button>
+            </div>
+          </div></div></div>
+        <div class="frame"><div class="frame-label is-dark"><span class="dot"></span>Dark · Autovervollständigung</div>
+          <div class="demo theme-dark tall"><div class="autocomplete-wrap" style="max-width:280px;">
+            <input class="zielwort-input" value="Sch" />
+            <div class="autocomplete-menu static">
+              <button class="autocomplete-item active"><span class="autocomplete-wort">Schule</span><span class="autocomplete-ipa ipa-text">/ˈʃuːlə/</span></button>
+              <button class="autocomplete-item"><span class="autocomplete-wort">Schmetterling</span><span class="autocomplete-ipa ipa-text">/ˈʃmɛtɐlɪŋ/</span></button>
+            </div>
+          </div></div></div>
+      </div>
+    </div>
+
+    <!-- STATES -->
+    <div class="cmp">
+      <div class="cmp-title">Zustände: Erfolg · Leer · Fehler · Tooltip</div>
+      <p class="cmp-desc">Batch-Erfolg mit schwächsten Lauten, leerer Verlauf, Ladefehler-Box, und der dezente Tooltip (hier dauerhaft sichtbar gezeigt).</p>
+      <div class="pair">
+        <div class="frame"><div class="frame-label is-light"><span class="dot"></span>Light · Erfolg + Schwächste Laute</div>
+          <div class="demo theme-light"><div class="card" style="text-align:center;">
+            <div class="trainer-score">9 / 10 korrekt (90%)</div>
+            <div class="weak-box"><strong>Schwächste Laute bisher: </strong><span class="ipa-text">[ç] 64% · [ɐ̯] 58% · [ts] 41%</span></div>
+          </div></div></div>
+        <div class="frame"><div class="frame-label is-dark"><span class="dot"></span>Dark · Leerer Verlauf</div>
+          <div class="demo theme-dark"><div class="card">
+            <h3>Verlauf der letzten Analysen</h3>
+            <p class="muted">Noch keine gespeicherten Analysen.</p>
+          </div></div></div>
+      </div>
+      <div class="pair" style="margin-top:20px;">
+        <div class="frame"><div class="frame-label is-light"><span class="dot"></span>Light · Ladefehler</div>
+          <div class="demo theme-light"><div class="error-box">
+            <h2>Daten konnten nicht geladen werden</h2>
+            <p class="muted" style="margin:8px 0 10px;">Die App lädt JSON aus <code>data/</code> per <code>fetch</code> – über <code>file://</code> blockieren Browser das.</p>
+            <pre>python -m http.server 8000</pre>
+          </div></div></div>
+        <div class="frame"><div class="frame-label is-dark"><span class="dot"></span>Dark · Tooltip</div>
+          <div class="demo theme-dark" style="min-height:150px;">
+            <p style="color:var(--text);margin:0 0 60px;">Orthografisch tippen
+              <span class="lt-tip show" data-tip="Tippe das Wort so, wie das Kind es ausspricht (z. B. „tule“) – wird automatisch in IPA umgewandelt." style="color:var(--primary);font-weight:700;cursor:help;border-bottom:1.5px dotted var(--primary);">&nbsp;Wie funktioniert das?&nbsp;</span>
+            </p>
+          </div></div>
+      </div>
+    </div>
+
+  </section>
+
+  <footer class="studio-foot">Alle Komponenten verwenden ausschließlich die Klassen, die das bestehende JS bereits erzeugt.</footer>
+</body>
+</html>

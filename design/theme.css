@@ -1,0 +1,553 @@
+/* ============================================================================
+   theme.css — Logopädie-Trainer · Redesign (Light + Dark)
+   ----------------------------------------------------------------------------
+   Vollständiger Ersatz für css/style.css. Trifft die bestehenden Klassennamen
+   1:1 (keine JS-Änderung nötig). Warm-bildungsorientierte Palette, IPA-taugliche
+   Serifenschrift, vollwertiger Dark Mode.
+
+   Theme-Steuerung:
+     • Produktion:  <html data-theme="light|dark">  (Toggle + localStorage, s. Prompt)
+     • Mockup/Demo: <div class="theme-dark"> … </div> blendet eine Dark-Insel ein,
+                    ohne die ganze Seite umzuschalten.
+   Beide Wege funktionieren, weil die Tokens auf :root UND auf .theme-* liegen.
+   ========================================================================== */
+
+/* ---------- Design-Tokens · LIGHT ---------- */
+:root,
+.theme-light {
+  /* Neutrale, warme Basis (Sand/Creme, taupe-getöntes Grau) */
+  --bg:            #f4efe7;
+  --bg-subtle:     #ece4d8;
+  --surface:       #fffdf9;
+  --surface-2:     #f6f1e8;
+  --border:        #e7ddce;
+  --border-strong: #d7c9b4;
+  --text:          #2c2722;
+  --muted:         #6f6557;
+  --faint:         #a99c89;
+
+  /* Akzent = warme Heather/Pflaume — bewusst NICHT Blau (zu klinisch) und klar
+     getrennt von den Status-Farben (Grün/Bernstein/Rot). */
+  --primary:        #6b4f9e;
+  --primary-strong: #563f82;
+  --primary-soft:   #ece6f6;
+  --on-primary:     #fffdfb;
+
+  /* Status — gut unterscheidbar, im Light kräftig genug für feine Glyphen */
+  --ok:        #3f7d57;  --ok-bg:   #e7f1e8;  --ok-border:   #cfe2cf;
+  --warn:      #98690f;  --warn-bg: #fbf0d9;  --warn-border: #efdcb4;
+  --bad:       #b04a3a;  --bad-bg:  #f8e6e0;  --bad-border:  #eecabe;
+  --info-bg:   #ece6f6;  --info-border: #d7cbef;
+
+  --ring: color-mix(in oklab, var(--primary) 38%, transparent);
+
+  --shadow-sm: 0 1px 2px rgba(58,42,22,.05), 0 1px 3px rgba(58,42,22,.05);
+  --shadow-md: 0 2px 6px rgba(58,42,22,.06), 0 10px 26px rgba(58,42,22,.07);
+  --shadow-lg: 0 18px 48px rgba(46,34,18,.16);
+
+  --radius:    14px;
+  --radius-sm: 9px;
+
+  --ipa-font: "Charis SIL", "Doulos SIL", "Gentium Plus", Georgia, "Times New Roman", serif;
+  --ui-font:  "Hanken Grotesk", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+/* ---------- Design-Tokens · DARK ---------- */
+:root[data-theme="dark"],
+.theme-dark {
+  /* Warmes Anthrazit mit Sepia-Stich, kein Pure-Black → Lern-Wärme bleibt. */
+  --bg:            #1b1714;
+  --bg-subtle:     #211c18;
+  --surface:       #262019;
+  --surface-2:     #2f2920;
+  --border:        #3a3228;
+  --border-strong: #4b4135;
+  --text:          #f0e9dd;
+  --muted:         #b4a892;
+  --faint:         #847866;
+
+  /* Heather im Dark heller & leicht entsättigt: weniger Glare, feine IPA-Zeichen
+     und Fokus-Ringe bleiben lesbar (anderes Gewicht als im Light – Absicht). */
+  --primary:        #bda7e8;
+  --primary-strong: #d0c0f1;
+  --primary-soft:   #2f2740;
+  --on-primary:     #1b1714;
+
+  /* Status entsättigt, damit sie im Dunkeln nicht „schreien". */
+  --ok:   #84bd94;  --ok-bg:   #202a20;  --ok-border:   #37492f;
+  --warn: #d8aa5d;  --warn-bg: #2c2417;  --warn-border: #4a3c22;
+  --bad:  #e3917f;  --bad-bg:  #30211b;  --bad-border:  #4e362c;
+  --info-bg: #272036;  --info-border: #3d3357;
+
+  --ring: color-mix(in oklab, var(--primary) 50%, transparent);
+
+  --shadow-sm: 0 1px 2px rgba(0,0,0,.34);
+  --shadow-md: 0 4px 16px rgba(0,0,0,.42);
+  --shadow-lg: 0 22px 56px rgba(0,0,0,.55);
+}
+
+/* ============================================================================
+   Basis
+   ========================================================================== */
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0; padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--ui-font);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  transition: background .3s ease, color .3s ease;
+}
+
+.ipa-text,
+.ipa-input {
+  font-family: var(--ipa-font);
+  font-feature-settings: "kern" 1;
+}
+
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+::selection { background: var(--primary-soft); }
+
+/* ============================================================================
+   Header
+   ========================================================================== */
+.app-header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+.app-header-inner {
+  max-width: 1100px; margin: 0 auto;
+  padding: 16px 22px;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px; flex-wrap: wrap;
+}
+.brand { display: flex; align-items: center; gap: 13px; }
+/* Dezente IPA-Wortmarke statt Logo (kein Branding gewünscht) */
+.brand::before {
+  content: "ʃ";
+  font-family: var(--ipa-font);
+  font-size: 22px; line-height: 1;
+  width: 40px; height: 40px; flex: none;
+  display: grid; place-items: center;
+  color: var(--on-primary); background: var(--primary);
+  border-radius: 11px; box-shadow: var(--shadow-sm);
+}
+.brand h1 {
+  margin: 0; font-size: 1.3rem; font-weight: 700; letter-spacing: -0.015em;
+}
+.subtitle { margin: 1px 0 0; color: var(--muted); font-size: 0.84rem; }
+.header-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+
+/* Dark-Mode-Umschalter (neu) */
+.theme-toggle {
+  appearance: none; cursor: pointer;
+  width: 40px; height: 40px; flex: none;
+  border: 1px solid var(--border); border-radius: 11px;
+  background: var(--surface); color: var(--text);
+  display: grid; place-items: center;
+  box-shadow: var(--shadow-sm);
+  transition: background .15s ease, transform .12s ease, border-color .15s ease;
+}
+.theme-toggle:hover { background: var(--surface-2); transform: translateY(-1px); }
+.theme-toggle svg { width: 19px; height: 19px; }
+/* Sonne im Light zeigen, Mond im Dark zeigen */
+.theme-toggle .ico-moon { display: none; }
+.theme-toggle .ico-sun  { display: block; }
+:root[data-theme="dark"] .theme-toggle .ico-sun,
+.theme-dark .theme-toggle .ico-sun  { display: none; }
+:root[data-theme="dark"] .theme-toggle .ico-moon,
+.theme-dark .theme-toggle .ico-moon { display: block; }
+
+/* ============================================================================
+   Tabs
+   ========================================================================== */
+.tabs {
+  max-width: 1100px; margin: 0 auto;
+  padding: 0 22px;
+  display: flex; gap: 2px;
+  border-bottom: 1px solid var(--border);
+}
+.tab-btn {
+  appearance: none; background: transparent; border: none;
+  border-bottom: 2.5px solid transparent;
+  padding: 15px 18px; margin-bottom: -1px;
+  font-family: inherit; font-size: 0.97rem; font-weight: 600;
+  color: var(--muted); cursor: pointer;
+  transition: color .15s ease, border-color .15s ease;
+}
+.tab-btn:hover { color: var(--text); }
+.tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); }
+:root[data-theme="dark"] .tab-btn.active,
+.theme-dark .tab-btn.active { color: var(--primary-strong); border-bottom-color: var(--primary); }
+
+/* ============================================================================
+   Layout · Cards
+   ========================================================================== */
+main { max-width: 1100px; margin: 0 auto; padding: 26px 22px 52px; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+.card, .card-result {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+  padding: 26px;
+  margin-bottom: 20px;
+}
+.card-result:empty { display: none; }
+
+h2 { font-size: 1.25rem; font-weight: 700; margin: 0 0 8px; letter-spacing: -0.01em; }
+h3 { font-size: 1.05rem; font-weight: 650; margin: 0 0 14px; }
+h4 { font-size: 0.95rem; font-weight: 650; margin: 18px 0 8px; }
+.muted { color: var(--muted); font-size: 0.9rem; }
+
+/* ============================================================================
+   Buttons
+   ========================================================================== */
+.btn {
+  appearance: none; font-family: inherit;
+  font-size: 0.95rem; font-weight: 600;
+  padding: 10px 17px; border-radius: var(--radius-sm);
+  border: 1px solid var(--border-strong);
+  background: var(--surface); color: var(--text);
+  cursor: pointer;
+  transition: background .13s ease, border-color .13s ease, transform .1s ease, box-shadow .13s ease;
+}
+.btn:hover { background: var(--surface-2); transform: translateY(-1px); }
+.btn:active { transform: translateY(0); }
+
+.btn-primary {
+  background: var(--primary); border-color: transparent; color: var(--on-primary);
+  box-shadow: 0 4px 14px color-mix(in oklab, var(--primary) 30%, transparent);
+}
+.btn-primary:hover { background: var(--primary-strong); }
+
+.btn-ghost { background: transparent; border-color: var(--border); color: var(--muted); }
+.btn-ghost:hover { background: var(--surface-2); color: var(--text); }
+
+.btn-small { padding: 5px 11px; font-size: 0.85rem; border-radius: 7px; }
+
+.btn-danger {
+  color: var(--bad); border-color: transparent; background: transparent;
+  font-size: 1.05rem; line-height: 1; padding: 6px 10px;
+}
+.btn-danger:hover { background: var(--bad-bg); }
+
+/* ============================================================================
+   Trainer (Modi 1 + 2)
+   ========================================================================== */
+.trainer { text-align: center; }
+.trainer-progress {
+  color: var(--muted); font-size: 0.8rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  margin-bottom: 18px;
+}
+.trainer-prompt {
+  font-size: clamp(2.4rem, 6vw, 3.4rem); font-weight: 700;
+  margin: 6px 0 22px; word-break: break-word; letter-spacing: -0.02em;
+}
+.trainer-prompt.ipa-text { font-weight: 500; letter-spacing: 0; }
+.trainer-label { color: var(--muted); font-size: 0.9rem; margin-bottom: 10px; }
+.trainer-input {
+  width: 100%; max-width: 460px; display: block; margin: 0 auto 18px;
+  font-size: 1.5rem; text-align: center;
+  padding: 14px 16px;
+  background: var(--surface-2);
+  border: 1.5px solid var(--border-strong); border-radius: var(--radius-sm);
+  color: var(--text);
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+.trainer-input::placeholder { color: var(--faint); }
+.trainer-input:focus {
+  outline: none; border-color: var(--primary);
+  box-shadow: 0 0 0 4px var(--ring);
+}
+.trainer-hint { color: var(--faint); font-size: 0.82rem; margin-top: 14px; }
+.trainer-score { font-size: 1.15rem; font-weight: 700; margin-bottom: 16px; }
+
+.weak-box {
+  margin-top: 18px; padding: 14px 16px;
+  background: var(--warn-bg); border: 1px solid var(--warn-border);
+  border-radius: var(--radius-sm); font-size: 0.9rem; text-align: left;
+}
+.weak-box strong { color: var(--text); }
+
+/* ============================================================================
+   IPA-Tastatur
+   ========================================================================== */
+.kbd-card { padding: 18px 22px; }
+.ipa-keyboard { display: flex; flex-wrap: wrap; gap: 20px; }
+.ipa-group { display: flex; flex-direction: column; gap: 8px; }
+.ipa-group-title {
+  font-size: 0.7rem; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.08em; color: var(--faint);
+}
+.ipa-keys { display: flex; flex-wrap: wrap; gap: 7px; }
+.ipa-key {
+  font-family: var(--ipa-font); font-size: 1.18rem;
+  min-width: 44px; height: 46px; padding: 0 10px;
+  border: 1px solid var(--border-strong); border-radius: 10px;
+  background: var(--surface); color: var(--text);
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: background .12s ease, border-color .12s ease, transform .08s ease, color .12s ease;
+}
+.ipa-key:hover { background: var(--primary-soft); border-color: var(--primary); transform: translateY(-1px); }
+.ipa-key:active { background: var(--primary); border-color: var(--primary); color: var(--on-primary); transform: translateY(0) scale(.96); }
+.ipa-key-action {
+  font-family: var(--ui-font); font-size: 0.85rem; font-weight: 600;
+  color: var(--muted);
+}
+.ipa-key-action:hover { color: var(--text); }
+
+/* ============================================================================
+   Ergebnis-Tabellen
+   ========================================================================== */
+.result-table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 0.92rem; }
+.result-table th, .result-table td {
+  text-align: left; padding: 10px 13px;
+  border-bottom: 1px solid var(--border); vertical-align: top;
+}
+.result-table th {
+  font-size: 0.74rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.05em; color: var(--faint);
+}
+.row-ok  { background: var(--ok-bg); }
+.row-bad { background: var(--bad-bg); }
+.row-explain td { background: var(--surface-2); }
+.mark-ok  { color: var(--ok);  font-weight: 700; }
+.mark-bad { color: var(--bad); font-weight: 700; }
+.explain  { color: var(--muted); font-size: 0.86rem; font-style: italic; }
+
+/* ============================================================================
+   Dodd-Analyse
+   ========================================================================== */
+.dodd-age { display: flex; gap: 24px; align-items: center; margin: 18px 0; flex-wrap: wrap; }
+.dodd-age label { font-size: 0.92rem; color: var(--muted); }
+.age-input {
+  width: 66px; padding: 7px 9px; margin-left: 4px;
+  border: 1.5px solid var(--border-strong); border-radius: 7px;
+  background: var(--surface); color: var(--text); font-size: 1rem;
+}
+.age-input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px var(--ring); }
+
+.dodd-table-wrap { overflow: visible; }
+.dodd-input-table { width: 100%; border-collapse: collapse; min-width: 660px; }
+.dodd-input-table th {
+  text-align: left; font-size: 0.74rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.05em; color: var(--faint);
+  padding: 8px 9px;
+}
+.dodd-input-table td { padding: 5px 9px; }
+.dodd-input-table input {
+  width: 100%; padding: 9px 11px;
+  border: 1.5px solid var(--border-strong); border-radius: 8px;
+  background: var(--surface); color: var(--text); font-size: 1rem;
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+.dodd-input-table input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px var(--ring); }
+.versuch-input { width: 70px; }
+.versuch-cell { text-align: center; color: var(--muted); font-size: 0.9rem; vertical-align: middle; }
+
+/* Zielwort-Autovervollständigung */
+.zielwort-cell { overflow: visible; }
+.autocomplete-wrap { position: relative; }
+.zielwort-input {
+  width: 100%; padding: 9px 11px;
+  border: 1.5px solid var(--border-strong); border-radius: 8px;
+  background: var(--surface); color: var(--text); font-size: 1rem;
+}
+.zielwort-input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px var(--ring); }
+.autocomplete-menu {
+  position: absolute; top: calc(100% + 5px); left: 0;
+  min-width: 250px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 10px; box-shadow: var(--shadow-lg);
+  padding: 5px; z-index: 70; max-height: 280px; overflow-y: auto;
+}
+.autocomplete-menu[hidden] { display: none; }
+.autocomplete-item {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 12px;
+  width: 100%; text-align: left; background: transparent; border: none;
+  border-radius: 7px; padding: 8px 10px; cursor: pointer;
+  font-family: inherit; color: var(--text);
+}
+.autocomplete-item:hover, .autocomplete-item.active { background: var(--primary-soft); }
+.autocomplete-wort { font-weight: 600; font-size: 0.92rem; }
+.autocomplete-ipa { color: var(--muted); font-size: 0.9rem; }
+
+/* "+ zur Wortliste" + Zeilen-Aktionen */
+.wortliste-add { flex: 0 0 auto; color: var(--primary); white-space: nowrap; font-size: 0.8rem; border-color: var(--border); }
+.wortliste-add[hidden] { display: none; }
+.dodd-actions { white-space: nowrap; }
+.dodd-actions .btn { margin-left: 4px; }
+
+/* ---------- Hybrid-Eingabe Kind-/Ziel-IPA (orthografisch → IPA) ----------
+   JS erzeugt: .hybrid-ipa-cell (+ state-edit | state-display),
+   .hybrid-ipa-wrap > .hybrid-ipa-input + .hybrid-ipa-edit, .hybrid-ipa-preview */
+.hybrid-ipa-cell { position: relative; }
+.hybrid-ipa-wrap { display: flex; align-items: center; gap: 5px; }
+.hybrid-ipa-input { flex: 1; min-width: 0; }
+.hybrid-ipa-edit {
+  flex: 0 0 auto; padding: 7px 9px; line-height: 1; font-size: 0.95rem;
+  color: var(--primary); border-color: var(--border);
+}
+.hybrid-ipa-edit[hidden] { display: none; }
+
+/* Zustand C (gespeichert): Feld ruhiger, „fertig"-Look + Bleistift sichtbar */
+.hybrid-ipa-cell.state-display .hybrid-ipa-input {
+  background: var(--surface-2);
+  border-color: var(--border);
+  border-style: dashed;
+}
+/* Live-Vorschau (Zustand B) */
+.hybrid-ipa-preview {
+  margin-top: 4px; font-size: 0.82rem; font-style: italic;
+  color: var(--primary);
+  display: flex; align-items: center; gap: 5px;
+}
+.hybrid-ipa-preview[hidden] { display: none; }
+.hybrid-ipa-preview .hp-arrow { opacity: .7; font-style: normal; }
+
+/* ============================================================================
+   Korrektur-Popup (Modal)
+   ========================================================================== */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 100;
+  background: color-mix(in oklab, var(--text) 38%, transparent);
+  display: flex; align-items: center; justify-content: center; padding: 20px;
+  animation: lt-fade .18s ease;
+}
+.modal {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); box-shadow: var(--shadow-lg);
+  padding: 24px; width: 100%; max-width: 560px; max-height: 90vh; overflow-y: auto;
+  animation: lt-pop .24s cubic-bezier(.2,.9,.3,1.15);
+}
+.modal-title { margin: 0 0 6px; }
+.modal-sub { color: var(--muted); font-size: 0.86rem; margin: 0 0 16px; }
+.modal-input {
+  width: 100%; font-size: 1.4rem; text-align: center;
+  padding: 12px 14px; margin-bottom: 18px;
+  background: var(--surface-2); border: 1.5px solid var(--border-strong);
+  border-radius: var(--radius-sm); color: var(--text);
+}
+.modal-input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 4px var(--ring); }
+.modal-kbd { margin-bottom: 18px; }
+.modal-kbd .ipa-keyboard { gap: 14px; }
+.modal-kbd .ipa-key { min-width: 36px; height: 38px; font-size: 1.05rem; }
+.modal-actions { display: flex; justify-content: flex-end; gap: 8px; }
+
+@keyframes lt-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes lt-pop  { from { opacity: 0; transform: translateY(14px) scale(.98); } to { opacity: 1; transform: none; } }
+
+/* ============================================================================
+   Dodd-Controls + Beispiel-Dropdown
+   ========================================================================== */
+.dodd-controls { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-top: 18px; flex-wrap: wrap; }
+.dodd-buttons { display: flex; gap: 8px; flex-wrap: wrap; position: relative; }
+
+.dropdown { position: relative; display: inline-block; }
+.dropdown-toggle .caret { font-size: 0.8em; margin-left: 4px; }
+.dropdown-menu {
+  position: absolute; top: calc(100% + 6px); left: 0;
+  min-width: 310px; max-width: min(390px, 92vw);
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 10px; box-shadow: var(--shadow-lg);
+  padding: 6px; z-index: 60;
+}
+.dropdown-menu[hidden] { display: none; }
+.dropdown-item {
+  display: flex; flex-direction: column; gap: 3px; width: 100%;
+  text-align: left; background: transparent; border: none; border-radius: 8px;
+  padding: 10px 12px; cursor: pointer; font-family: inherit; color: var(--text);
+}
+.dropdown-item:hover { background: var(--primary-soft); }
+.dropdown-item + .dropdown-item { margin-top: 2px; }
+.dropdown-item-title { font-weight: 650; font-size: 0.92rem; }
+.dropdown-item-desc { font-size: 0.8rem; color: var(--muted); line-height: 1.4; }
+
+@media (max-width: 720px) {
+  .dropdown { position: static; }
+  .dropdown-menu { left: 0; right: 0; width: auto; min-width: 0; max-width: none; }
+}
+
+/* ============================================================================
+   Dodd-Ergebnis (Klassifikation, Badges, Status)
+   ========================================================================== */
+.dodd-klass {
+  background: var(--info-bg); border: 1px solid var(--info-border);
+  border-radius: var(--radius); padding: 20px 22px; margin-bottom: 14px;
+}
+.dodd-klass-label { font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); }
+.dodd-klass-value { font-size: 1.5rem; font-weight: 700; color: var(--primary-strong); margin: 3px 0; letter-spacing: -0.01em; }
+:root[data-theme="dark"] .dodd-klass-value, .theme-dark .dodd-klass-value { color: var(--primary); }
+.dodd-klass-meta { font-size: 0.85rem; color: var(--muted); }
+.dodd-disclaimer { font-size: 0.82rem; color: var(--muted); font-style: italic; margin: 0 0 8px; }
+.dodd-section { margin-top: 22px; }
+.dodd-section ul { margin: 0; padding-left: 20px; }
+.dodd-section li { margin-bottom: 5px; }
+
+.badge {
+  display: inline-block; padding: 3px 9px; border-radius: 999px;
+  font-size: 0.74rem; font-weight: 650; text-transform: capitalize;
+}
+.badge-typisch        { background: var(--ok-bg);   color: var(--ok);   }
+.badge-untypisch      { background: var(--bad-bg);  color: var(--bad);  }
+.badge-artikulatorisch{ background: var(--warn-bg); color: var(--warn); }
+.badge-unbekannt      { background: var(--surface-2); color: var(--muted); }
+
+.status-ok      { color: var(--ok); }
+.status-bad     { color: var(--bad); }
+.status-neutral { color: var(--muted); }
+
+/* ============================================================================
+   Tooltip (neu, dezent) — für Hybrid-Hinweis o. Ä.
+   Markup:  <span class="lt-tip" data-tip="…">Trigger</span>
+   (Repo nutzt native title=""; dieser Tooltip ist optionaler Ersatz.)
+   ========================================================================== */
+.lt-tip { position: relative; }
+.lt-tip::after {
+  content: attr(data-tip);
+  position: absolute; left: 0; top: calc(100% + 8px); z-index: 90;
+  width: max-content; max-width: 260px;
+  background: var(--text); color: var(--bg);
+  font-family: var(--ui-font); font-size: 0.78rem; font-style: normal; line-height: 1.4;
+  padding: 8px 11px; border-radius: 8px; box-shadow: var(--shadow-md);
+  opacity: 0; transform: translateY(-3px); pointer-events: none;
+  transition: opacity .14s ease, transform .14s ease;
+}
+.lt-tip:hover::after, .lt-tip:focus-visible::after { opacity: 1; transform: translateY(0); }
+
+/* ============================================================================
+   Fehler-Box · Footer · Code
+   ========================================================================== */
+.error-box {
+  background: var(--surface); border: 1px solid var(--border);
+  border-left: 4px solid var(--bad); border-radius: var(--radius); padding: 26px;
+}
+.error-box pre { background: var(--surface-2); padding: 12px 15px; border-radius: 8px; overflow-x: auto; }
+code { background: var(--surface-2); padding: 1px 6px; border-radius: 5px; font-size: 0.9em; }
+
+.app-footer { max-width: 1100px; margin: 0 auto; padding: 24px 22px 40px; color: var(--faint); font-size: 0.82rem; }
+
+/* ============================================================================
+   Responsive
+   ========================================================================== */
+@media (max-width: 720px) {
+  .app-header-inner { flex-direction: column; align-items: flex-start; }
+  .header-actions { width: 100%; }
+  .tab-btn { padding: 13px 13px; font-size: 0.9rem; }
+  .ipa-key { min-width: 40px; height: 44px; font-size: 1.08rem; }
+  .card, .card-result { padding: 20px; }
+}

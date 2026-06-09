@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>4 · Hybrid-Eingabe · Logopädie-Trainer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Charis+SIL:ital,wght@0,400;0,700;1,400&family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="theme.css" />
+  <link rel="stylesheet" href="studio.css" />
+  <style>
+    .state-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    @media (max-width: 760px) { .state-grid { grid-template-columns: 1fr; } }
+    .state-cap { font-size: .8rem; font-weight: 700; color: var(--muted); margin: 0 0 8px; }
+    .cell-host { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px; }
+    /* Popup als statische Insel (kein fixed, damit es im Rahmen bleibt) */
+    .faux-overlay { background: color-mix(in oklab, var(--text) 30%, transparent); border-radius: 12px; padding: 22px; display: grid; place-items: center; }
+    .faux-overlay .modal { position: static; max-width: 440px; animation: none; }
+  </style>
+</head>
+<body class="studio">
+  <header class="studio-top">
+    <div class="studio-kicker">Seite 4 von 4</div>
+    <h1 class="studio-title">Hybrid-Eingabe · Kind-IPA</h1>
+    <p class="studio-lede">
+      Orthografisch tippen, automatisch in IPA umwandeln. Drei Zustände plus Korrektur-Popup.
+      Im Code bereits angelegt (<code>.hybrid-ipa-*</code>, <code>state-edit</code>/<code>state-display</code>);
+      das Redesign liefert die Optik in Light und Dark.
+    </p>
+    <nav class="studio-nav">
+      <a href="index.html">Überblick</a>
+      <a href="01-tokens.html">1 · Design-Tokens</a>
+      <a href="02-components.html">2 · Komponenten</a>
+      <a href="03-tabs.html">3 · Tabs</a>
+      <a class="current" href="04-hybrid.html">4 · Hybrid-Eingabe</a>
+      <a href="IMPLEMENTATION_PROMPT.md">5 · Prompt ↗</a>
+    </nav>
+  </header>
+
+  <section class="mk-section">
+    <h2 class="mk-h2">Die drei Zustände</h2>
+    <p class="mk-note">
+      <strong>A · leer</strong> → Eingabe-Modus, Placeholder „Kind-IPA". &nbsp;
+      <strong>B · beim Tippen</strong> → orthografische Eingabe, darunter gedämpfte Live-Vorschau der IPA. &nbsp;
+      <strong>C · gespeichert</strong> → nach Verlassen zeigt das Feld das IPA (ruhiger, gestrichelter Rahmen), rechts der Bleistift zum Korrigieren.
+    </p>
+
+    <div class="cmp">
+      <div class="cmp-title">Light</div>
+      <div class="frame"><div class="frame-label is-light"><span class="dot"></span>Kind-IPA · Zustände A → B → C</div>
+        <div class="demo theme-light">
+          <div class="state-grid">
+            <div>
+              <p class="state-cap">A · leer (Eingabe-Modus)</p>
+              <div class="cell-host"><div class="hybrid-ipa-cell state-edit"><div class="hybrid-ipa-wrap"><input class="ipa-input ipa-text hybrid-ipa-input" placeholder="Kind-IPA" /><button class="btn btn-small hybrid-ipa-edit" hidden>✎</button></div></div></div>
+            </div>
+            <div>
+              <p class="state-cap">B · beim Tippen (Live-Vorschau)</p>
+              <div class="cell-host"><div class="hybrid-ipa-cell state-edit"><div class="hybrid-ipa-wrap"><input class="ipa-input ipa-text hybrid-ipa-input" value="tule" /><button class="btn btn-small hybrid-ipa-edit" hidden>✎</button></div><div class="hybrid-ipa-preview"><span class="hp-arrow">→</span> ˈtuːlə</div></div></div>
+            </div>
+            <div>
+              <p class="state-cap">C · gespeichert (+ Bleistift)</p>
+              <div class="cell-host"><div class="hybrid-ipa-cell state-display"><div class="hybrid-ipa-wrap"><input class="ipa-input ipa-text hybrid-ipa-input" value="ˈtuːlə" /><button class="btn btn-small hybrid-ipa-edit">✎</button></div></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cmp">
+      <div class="cmp-title">Dark</div>
+      <div class="frame"><div class="frame-label is-dark"><span class="dot"></span>Kind-IPA · Zustände A → B → C</div>
+        <div class="demo theme-dark">
+          <div class="state-grid">
+            <div>
+              <p class="state-cap">A · leer (Eingabe-Modus)</p>
+              <div class="cell-host"><div class="hybrid-ipa-cell state-edit"><div class="hybrid-ipa-wrap"><input class="ipa-input ipa-text hybrid-ipa-input" placeholder="Kind-IPA" /><button class="btn btn-small hybrid-ipa-edit" hidden>✎</button></div></div></div>
+            </div>
+            <div>
+              <p class="state-cap">B · beim Tippen (Live-Vorschau)</p>
+              <div class="cell-host"><div class="hybrid-ipa-cell state-edit"><div class="hybrid-ipa-wrap"><input class="ipa-input ipa-text hybrid-ipa-input" value="tule" /><button class="btn btn-small hybrid-ipa-edit" hidden>✎</button></div><div class="hybrid-ipa-preview"><span class="hp-arrow">→</span> ˈtuːlə</div></div></div>
+            </div>
+            <div>
+              <p class="state-cap">C · gespeichert (+ Bleistift)</p>
+              <div class="cell-host"><div class="hybrid-ipa-cell state-display"><div class="hybrid-ipa-wrap"><input class="ipa-input ipa-text hybrid-ipa-input" value="ˈtuːlə" /><button class="btn btn-small hybrid-ipa-edit">✎</button></div></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="mk-divider" />
+
+  <section class="mk-section">
+    <h2 class="mk-h2">Korrektur-Popup (Bleistift)</h2>
+    <p class="mk-note">Öffnet sich über dem Bleistift: vorbelegtes IPA-Feld + kompakte IPA-Tastatur zum manuellen Feinschliff. Enter/Speichern übernimmt, Esc/Abbrechen verwirft.</p>
+    <div class="pair">
+      <div class="frame"><div class="frame-label is-light"><span class="dot"></span>Light</div>
+        <div class="demo theme-light flush"><div class="faux-overlay"><div class="modal">
+          <h3 class="modal-title">Kind-IPA bearbeiten</h3>
+          <p class="modal-sub">Zeichen über die Tastatur einfügen oder direkt tippen.</p>
+          <input class="ipa-input ipa-text modal-input" value="ˈtuːlə" />
+          <div class="modal-kbd"><div class="ipa-keyboard">
+            <div class="ipa-group"><div class="ipa-group-title">Vokale</div><div class="ipa-keys"><button class="ipa-key">a</button><button class="ipa-key">ə</button><button class="ipa-key">ɪ</button><button class="ipa-key">ʊ</button><button class="ipa-key">u</button></div></div>
+            <div class="ipa-group"><div class="ipa-group-title">Konsonanten</div><div class="ipa-keys"><button class="ipa-key">t</button><button class="ipa-key">d</button><button class="ipa-key">k</button><button class="ipa-key">l</button><button class="ipa-key">ʃ</button></div></div>
+            <div class="ipa-group"><div class="ipa-group-title">Diakritika</div><div class="ipa-keys"><button class="ipa-key">ː</button><button class="ipa-key">ˈ</button></div></div>
+          </div></div>
+          <div class="modal-actions"><button class="btn">Abbrechen</button><button class="btn btn-primary">Speichern</button></div>
+        </div></div></div>
+      </div>
+      <div class="frame"><div class="frame-label is-dark"><span class="dot"></span>Dark</div>
+        <div class="demo theme-dark flush"><div class="faux-overlay"><div class="modal">
+          <h3 class="modal-title">Kind-IPA bearbeiten</h3>
+          <p class="modal-sub">Zeichen über die Tastatur einfügen oder direkt tippen.</p>
+          <input class="ipa-input ipa-text modal-input" value="ˈtuːlə" />
+          <div class="modal-kbd"><div class="ipa-keyboard">
+            <div class="ipa-group"><div class="ipa-group-title">Vokale</div><div class="ipa-keys"><button class="ipa-key">a</button><button class="ipa-key">ə</button><button class="ipa-key">ɪ</button><button class="ipa-key">ʊ</button><button class="ipa-key">u</button></div></div>
+            <div class="ipa-group"><div class="ipa-group-title">Konsonanten</div><div class="ipa-keys"><button class="ipa-key">t</button><button class="ipa-key">d</button><button class="ipa-key">k</button><button class="ipa-key">l</button><button class="ipa-key">ʃ</button></div></div>
+            <div class="ipa-group"><div class="ipa-group-title">Diakritika</div><div class="ipa-keys"><button class="ipa-key">ː</button><button class="ipa-key">ˈ</button></div></div>
+          </div></div>
+          <div class="modal-actions"><button class="btn">Abbrechen</button><button class="btn btn-primary">Speichern</button></div>
+        </div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="mk-divider" />
+
+  <section class="mk-section">
+    <h2 class="mk-h2">Verhaltens-Spezifikation</h2>
+    <p class="mk-note">Gilt <strong>nur</strong> für die IPA-Felder im Dodd-Tab (Ziel-IPA &amp; Kind-IPA). Die Trainings-Felder bleiben unberührt.</p>
+    <ol class="spec-list">
+      <li><b>Fokus → Zustand B.</b> Beim Hineinklicken wechselt die Zelle in <code>state-edit</code>; der Bleistift wird ausgeblendet. Tooltip am Feld erklärt den Modus dezent.</li>
+      <li><b>Tippen → Live-Vorschau.</b> Während der Eingabe erscheint unter dem Feld <code>→ IPA</code> (gedämpft, kursiv). Erkennt die Funktion bereits IPA (<code>isAlreadyIpa</code>), bleibt die Vorschau aus — IPA-Direkteingabe funktioniert weiterhin.</li>
+      <li><b>Verlassen (Blur) → Zustand C.</b> Der konvertierte Wert wird gespeichert, das Feld zeigt das IPA mit ruhigerem, gestricheltem Rahmen; rechts erscheint der Bleistift.</li>
+      <li><b>Referenz für Länge/Betonung.</b> Kind-IPA nutzt das Ziel-IPA derselben Zeile als Referenz (<code>refFeld = "ziel_ipa"</code>), damit Vokallänge/Betonung plausibel übernommen werden.</li>
+      <li><b>Bleistift → Popup.</b> Öffnet das Korrektur-Modal mit vorbelegtem Wert und kompakter Tastatur. Speichern übernimmt nach <code>state-display</code> zurück.</li>
+      <li><b>Tastatur unten</b> bleibt zusätzlich nutzbar: Das zuletzt fokussierte Feld ist Ziel (<code>LT_Keyboard.attach</code>).</li>
+    </ol>
+    <p class="mk-note" style="margin-top:18px;">
+      <span class="mk-tag warn">G2P separat</span>&nbsp;
+      Dieses Konzept betrifft nur die <strong>UI</strong> der Hybrid-Eingabe. Die eigentliche
+      Graphem-zu-Phonem-Logik (<code>ortho-to-ipa.js</code>) wird separat gebaut/verbessert.
+    </p>
+  </section>
+
+  <footer class="studio-foot">Weiter zu <a href="IMPLEMENTATION_PROMPT.md" style="color:var(--studio-ink);font-weight:700;">5 · Implementierungs-Prompt</a> für Claude Code.</footer>
+</body>
+</html>

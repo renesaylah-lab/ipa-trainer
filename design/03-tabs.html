@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3 · Tabs · Logopädie-Trainer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Charis+SIL:ital,wght@0,400;0,700;1,400&family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="theme.css" />
+  <link rel="stylesheet" href="studio.css" />
+  <style>
+    .demo .dropdown-menu.static { position: static; box-shadow: var(--shadow-sm); margin-top: 8px; }
+  </style>
+</head>
+<body class="studio">
+  <header class="studio-top">
+    <div class="studio-kicker">Seite 3 von 4</div>
+    <h1 class="studio-title">Tab-Mockups</h1>
+    <p class="studio-lede">
+      Die drei Tabs als vollständige Layouts, je in Light und Dark. Der gemeinsame
+      App-Header/die Tab-Leiste sind auf Seite 2 dokumentiert — hier liegt der Fokus auf
+      dem Inhaltsbereich (<code>&lt;main&gt;</code>) jedes Tabs.
+    </p>
+    <nav class="studio-nav">
+      <a href="index.html">Überblick</a>
+      <a href="01-tokens.html">1 · Design-Tokens</a>
+      <a href="02-components.html">2 · Komponenten</a>
+      <a class="current" href="03-tabs.html">3 · Tabs</a>
+      <a href="04-hybrid.html">4 · Hybrid-Eingabe</a>
+      <a href="IMPLEMENTATION_PROMPT.md">5 · Prompt ↗</a>
+    </nav>
+  </header>
+
+  <!-- ============ TAB 1: Wort → IPA ============ -->
+  <section class="mk-section">
+    <h2 class="mk-h2">Tab 1 · Wort → IPA</h2>
+    <p class="mk-note">Wort als Prompt, IPA-Eingabe mit Tastatur darunter. Auswertung im 10er-Batch.</p>
+    <div class="pair">
+      <div class="frame"><div class="frame-label is-light"><span class="dot"></span>Light</div>
+        <div class="demo theme-light">
+          <div class="card trainer">
+            <div class="trainer-progress">Wort 3 / 10</div>
+            <div class="trainer-prompt">Schule</div>
+            <div class="trainer-label">IPA-Transkription eingeben:</div>
+            <input class="trainer-input ipa-input ipa-text" value="ˈʃuːlə" />
+            <button class="btn btn-primary">Weiter</button>
+            <div class="trainer-hint">Keine sofortige Lösung – Auswertung nach dem 10. Wort.</div>
+          </div>
+          <div class="card kbd-card"><div class="ipa-keyboard">
+            <div class="ipa-group"><div class="ipa-group-title">Vokale</div><div class="ipa-keys"><button class="ipa-key">a</button><button class="ipa-key">e</button><button class="ipa-key">i</button><button class="ipa-key">o</button><button class="ipa-key">u</button><button class="ipa-key">ə</button><button class="ipa-key">ɐ</button><button class="ipa-key">ɛ</button><button class="ipa-key">ɪ</button><button class="ipa-key">ɔ</button><button class="ipa-key">ʊ</button></div></div>
+            <div class="ipa-group"><div class="ipa-group-title">Diphthonge</div><div class="ipa-keys"><button class="ipa-key">aɪ</button><button class="ipa-key">aʊ</button><button class="ipa-key">ɔʏ</button></div></div>
+            <div class="ipa-group"><div class="ipa-group-title">Konsonanten</div><div class="ipa-keys"><button class="ipa-key">ʃ</button><button class="ipa-key">ç</button><button class="ipa-key">ŋ</button><button class="ipa-key">ʁ</button><button class="ipa-key">pf</button><button class="ipa-key">ts</button></div></div>
+            <div class="ipa-group"><div class="ipa-group-title">Diakritika</div><div class="ipa-keys"><button class="ipa-key">ː</button><button class="ipa-key">ˈ</button><button class="ipa-key">◌̯</button></div></div>
+            <div class="ipa-group"><div class="ipa-group-title">Aktionen</div><div class="ipa-keys"><button class="ipa-key ipa-key-action">← Löschen</button><button class="ipa-key ipa-key-action">Clear</button></div></div>
+          </div></div>
+        </div>
+      </div>
+      <div class="frame"><div class="frame-label is-dark"><span class="dot"></span>Dark</div>
+        <div class="demo theme-dark">
+          <div class="card trainer">
+            <div class="trainer-progress">Wort 3 / 10</div>
+            <div class="trainer-prompt">Schule</div>
+            <div class="trainer-label">IPA-Transkription eingeben:</div>
+            <input class="trainer-input ipa-input ipa-text" value="ˈʃuːlə" />
+            <button class="btn btn-primary">Weiter</button>
+            <div class="trainer-hint">Keine sofortige Lösung – Auswertung nach dem 10. Wort.</div>
+          </div>
+          <div class="card kbd-card"><div class="ipa-keyboard">
+            <div class="ipa-group"><div class="ipa-group-title">Vokale</div><div class="ipa-keys"><button class="ipa-key">a</button><button class="ipa-key">e</button><button class="ipa-key">i</button><button class="ipa-key">o</button><button class="ipa-key">u</button><button class="ipa-key">ə</button><button class="ipa-key">ɐ</button><button class="ipa-key">ɛ</button><button class="ipa-key">ɪ</button><button class="ipa-key">ɔ</button><button class="ipa-key">ʊ</button></div></div>
+            <div class="ipa-group"><div class="ipa-group-title">Diphthonge</div><div class="ipa-keys"><button class="ipa-key">aɪ</button><button class="ipa-key">aʊ</button><button class="ipa-key">ɔʏ</button></div></div>
+            <div class="ipa-group"><div class="ipa-group-title">Konsonanten</div><div class="ipa-keys"><button class="ipa-key">ʃ</button><button class="ipa-key">ç</button><button class="ipa-key">ŋ</button><button class="ipa-key">ʁ</button><button class="ipa-key">pf</button><button class="ipa-key">ts</button></div></div>
+            <div class="ipa-group"><div class="ipa-group-title">Diakritika</div><div class="ipa-keys"><button class="ipa-key">ː</button><button class="ipa-key">ˈ</button><button class="ipa-key">◌̯</button></div></div>
+            <div class="ipa-group"><div class="ipa-group-title">Aktionen</div><div class="ipa-keys"><button class="ipa-key ipa-key-action">← Löschen</button><button class="ipa-key ipa-key-action">Clear</button></div></div>
+          </div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="mk-divider" />
+
+  <!-- ============ TAB 2: IPA → Wort ============ -->
+  <section class="mk-section">
+    <h2 class="mk-h2">Tab 2 · IPA → Wort</h2>
+    <p class="mk-note">IPA als Prompt (Charis SIL), freie Worteingabe — hier ohne IPA-Tastatur (so im Code angelegt).</p>
+    <div class="pair">
+      <div class="frame"><div class="frame-label is-light"><span class="dot"></span>Light</div>
+        <div class="demo theme-light"><div class="card trainer">
+          <div class="trainer-progress">Wort 5 / 10</div>
+          <div class="trainer-prompt ipa-text">[ˈɡaːbl̩]</div>
+          <div class="trainer-label">Deutsches Wort eingeben:</div>
+          <input class="trainer-input" value="Gabel" />
+          <button class="btn btn-primary">Weiter</button>
+          <div class="trainer-hint">Keine sofortige Lösung – Auswertung nach dem 10. Wort.</div>
+        </div></div>
+      </div>
+      <div class="frame"><div class="frame-label is-dark"><span class="dot"></span>Dark</div>
+        <div class="demo theme-dark"><div class="card trainer">
+          <div class="trainer-progress">Wort 5 / 10</div>
+          <div class="trainer-prompt ipa-text">[ˈɡaːbl̩]</div>
+          <div class="trainer-label">Deutsches Wort eingeben:</div>
+          <input class="trainer-input" value="Gabel" />
+          <button class="btn btn-primary">Weiter</button>
+          <div class="trainer-hint">Keine sofortige Lösung – Auswertung nach dem 10. Wort.</div>
+        </div></div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="mk-divider" />
+
+  <!-- ============ TAB 3: Dodd-Analyse ============ -->
+  <section class="mk-section">
+    <h2 class="mk-h2">Tab 3 · Dodd-Analyse</h2>
+    <p class="mk-note">
+      Alter, Produktions-Tabelle (mit Hybrid-Eingabe in Ziel- und Kind-IPA), Steuerleiste,
+      IPA-Tastatur und Ergebnis. Wegen der Tabellenbreite hier untereinander statt nebeneinander.
+    </p>
+
+    <div class="frame solo" style="max-width:none;"><div class="frame-label is-light"><span class="dot"></span>Light</div>
+      <div class="demo theme-light">
+        <div class="card">
+          <h2>Dodd-Analyse</h2>
+          <p class="muted">Kindliche Aussprache-Produktionen eingeben; die App schlägt eine Klassifikation nach Dodd (dt. Adaption Fox-Boyer) vor. <strong>Lern-/Reflexionshilfe – ersetzt keine fachliche Diagnose.</strong></p>
+          <div class="dodd-age">
+            <label>Alter: <input class="age-input" type="number" value="5" /> Jahre</label>
+            <label><input class="age-input" type="number" value="0" /> Monate</label>
+          </div>
+          <div class="dodd-table-wrap"><table class="dodd-input-table">
+            <thead><tr><th>Zielwort</th><th>Ziel-IPA</th><th>Kind-IPA</th><th>Versuch</th><th></th></tr></thead>
+            <tbody>
+              <tr class="dodd-row">
+                <td class="zielwort-cell"><div class="autocomplete-wrap"><input class="zielwort-input" value="Sonne" /></div></td>
+                <td class="hybrid-ipa-cell state-display"><div class="hybrid-ipa-wrap"><input class="ipa-input ipa-text hybrid-ipa-input" value="ˈzɔnə" /><button class="btn btn-small hybrid-ipa-edit">✎</button></div></td>
+                <td class="hybrid-ipa-cell state-display"><div class="hybrid-ipa-wrap"><input class="ipa-input ipa-text hybrid-ipa-input" value="ˈdɔnə" /><button class="btn btn-small hybrid-ipa-edit">✎</button></div></td>
+                <td class="versuch-cell">1</td>
+                <td class="dodd-actions"><button class="btn btn-small">+ Versuch</button><button class="btn btn-small btn-danger">×</button></td>
+              </tr>
+              <tr class="dodd-row">
+                <td class="zielwort-cell"><div class="autocomplete-wrap"><input class="zielwort-input" value="Schule" /></div></td>
+                <td class="hybrid-ipa-cell state-display"><div class="hybrid-ipa-wrap"><input class="ipa-input ipa-text hybrid-ipa-input" value="ˈʃuːlə" /><button class="btn btn-small hybrid-ipa-edit">✎</button></div></td>
+                <td class="hybrid-ipa-cell state-display"><div class="hybrid-ipa-wrap"><input class="ipa-input ipa-text hybrid-ipa-input" value="ˈtuːlə" /><button class="btn btn-small hybrid-ipa-edit">✎</button></div></td>
+                <td class="versuch-cell">1</td>
+                <td class="dodd-actions"><button class="btn btn-small">+ Versuch</button><button class="btn btn-small btn-danger">×</button></td>
+              </tr>
+              <tr class="dodd-row">
+                <td class="zielwort-cell"><div class="autocomplete-wrap"><input class="zielwort-input" value="Pferd" /></div></td>
+                <td class="hybrid-ipa-cell state-display"><div class="hybrid-ipa-wrap"><input class="ipa-input ipa-text hybrid-ipa-input" value="ˈpfeːɐ̯t" /><button class="btn btn-small hybrid-ipa-edit">✎</button></div></td>
+                <td class="hybrid-ipa-cell state-edit"><div class="hybrid-ipa-wrap"><input class="ipa-input ipa-text hybrid-ipa-input" placeholder="Kind-IPA" value="feːɐ̯t" /><button class="btn btn-small hybrid-ipa-edit" hidden>✎</button></div><div class="hybrid-ipa-preview"><span class="hp-arrow">→</span> ˈfeːɐ̯t</div></td>
+                <td class="versuch-cell">1</td>
+                <td class="dodd-actions"><button class="btn btn-small">+ Versuch</button><button class="btn btn-small btn-danger">×</button></td>
+              </tr>
+            </tbody>
+          </table></div>
+          <div class="dodd-controls">
+            <span class="muted">3 Produktionen · Wortquelle: words.json (25 PLAKSS-Wörter)</span>
+            <div class="dodd-buttons">
+              <button class="btn">Produktion hinzufügen</button>
+              <button class="btn">Alle 25 PLAKSS-Wörter laden</button>
+              <button class="btn btn-ghost dropdown-toggle">Beispiel laden <span class="caret">▾</span></button>
+              <button class="btn btn-ghost">Zurücksetzen</button>
+              <button class="btn btn-primary">Analysieren</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card kbd-card"><div class="ipa-keyboard">
+          <div class="ipa-group"><div class="ipa-group-title">Vokale</div><div class="ipa-keys"><button class="ipa-key">a</button><button class="ipa-key">ə</button><button class="ipa-key">ɐ</button><button class="ipa-key">ɛ</button><button class="ipa-key">ɪ</button><button class="ipa-key">ɔ</button><button class="ipa-key">ʊ</button></div></div>
+          <div class="ipa-group"><div class="ipa-group-title">Konsonanten</div><div class="ipa-keys"><button class="ipa-key">t</button><button class="ipa-key">d</button><button class="ipa-key">k</button><button class="ipa-key">ʃ</button><button class="ipa-key">ç</button><button class="ipa-key">ŋ</button></div></div>
+          <div class="ipa-group"><div class="ipa-group-title">Diakritika</div><div class="ipa-keys"><button class="ipa-key">ː</button><button class="ipa-key">ˈ</button><button class="ipa-key">◌̯</button></div></div>
+          <div class="ipa-group"><div class="ipa-group-title">Aktionen</div><div class="ipa-keys"><button class="ipa-key ipa-key-action">← Löschen</button><button class="ipa-key ipa-key-action">Clear</button></div></div>
+        </div></div>
+
+        <div class="card-result">
+          <div class="dodd-klass">
+            <div class="dodd-klass-label">Klassifikation nach Dodd</div>
+            <div class="dodd-klass-value">Phonologische Verzögerung</div>
+            <div class="dodd-klass-meta">Alter: 5;0 · Produktionen: 3 · Inkonsequenz: 0%</div>
+          </div>
+          <p class="dodd-disclaimer">Lern-/Reflexionshilfe – ersetzt keine fachliche Diagnose.</p>
+          <div class="dodd-section">
+            <h4>Erkannte Prozesse</h4>
+            <table class="result-table">
+              <thead><tr><th>Prozess</th><th>Typ</th><th>Vorkommen</th><th>Alters-Bewertung</th><th>Beispiele</th></tr></thead>
+              <tbody>
+                <tr><td>Vorverlagerung (Velar-Fronting)</td><td><span class="badge badge-typisch">typisch</span></td><td>2 / 3</td><td class="status-bad">verzögert (Grenze 3;6)</td><td class="ipa-text">Schule → tule</td></tr>
+                <tr><td>Plosivierung (Stopping)</td><td><span class="badge badge-typisch">typisch</span></td><td>1 / 4</td><td class="status-bad">verzögert (Grenze 3;0)</td><td class="ipa-text">Sonne → donne</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="frame solo" style="max-width:none;margin-top:22px;"><div class="frame-label is-dark"><span class="dot"></span>Dark</div>
+      <div class="demo theme-dark">
+        <div class="card">
+          <h2>Dodd-Analyse</h2>
+          <p class="muted">Kindliche Aussprache-Produktionen eingeben; die App schlägt eine Klassifikation nach Dodd (dt. Adaption Fox-Boyer) vor. <strong>Lern-/Reflexionshilfe – ersetzt keine fachliche Diagnose.</strong></p>
+          <div class="dodd-age">
+            <label>Alter: <input class="age-input" type="number" value="4" /> Jahre</label>
+            <label><input class="age-input" type="number" value="6" /> Monate</label>
+          </div>
+          <div class="dodd-table-wrap"><table class="dodd-input-table">
+            <thead><tr><th>Zielwort</th><th>Ziel-IPA</th><th>Kind-IPA</th><th>Versuch</th><th></th></tr></thead>
+            <tbody>
+              <tr class="dodd-row">
+                <td class="zielwort-cell"><div class="autocomplete-wrap"><input class="zielwort-input" value="Katze" /></div></td>
+                <td class="hybrid-ipa-cell state-display"><div class="hybrid-ipa-wrap"><input class="ipa-input ipa-text hybrid-ipa-input" value="ˈkatsə" /><button class="btn btn-small hybrid-ipa-edit">✎</button></div></td>
+                <td class="hybrid-ipa-cell state-display"><div class="hybrid-ipa-wrap"><input class="ipa-input ipa-text hybrid-ipa-input" value="ˈtatsə" /><button class="btn btn-small hybrid-ipa-edit">✎</button></div></td>
+                <td class="versuch-cell">1</td>
+                <td class="dodd-actions"><button class="btn btn-small">+ Versuch</button><button class="btn btn-small btn-danger">×</button></td>
+              </tr>
+              <tr class="dodd-row">
+                <td class="zielwort-cell"><div class="autocomplete-wrap"><input class="zielwort-input" value="Katze" /></div></td>
+                <td class="hybrid-ipa-cell state-display"><div class="hybrid-ipa-wrap"><input class="ipa-input ipa-text hybrid-ipa-input" value="ˈkatsə" /><button class="btn btn-small hybrid-ipa-edit">✎</button></div></td>
+                <td class="hybrid-ipa-cell state-display"><div class="hybrid-ipa-wrap"><input class="ipa-input ipa-text hybrid-ipa-input" value="ˈkasə" /><button class="btn btn-small hybrid-ipa-edit">✎</button></div></td>
+                <td class="versuch-cell">2</td>
+                <td class="dodd-actions"><button class="btn btn-small">+ Versuch</button><button class="btn btn-small btn-danger">×</button></td>
+              </tr>
+            </tbody>
+          </table></div>
+          <div class="dodd-controls">
+            <span class="muted">2 Produktionen · Wortquelle: words.json (25 PLAKSS-Wörter)</span>
+            <div class="dodd-buttons">
+              <button class="btn">Produktion hinzufügen</button>
+              <button class="btn">Alle 25 PLAKSS-Wörter laden</button>
+              <button class="btn btn-ghost dropdown-toggle">Beispiel laden <span class="caret">▾</span></button>
+              <button class="btn btn-ghost">Zurücksetzen</button>
+              <button class="btn btn-primary">Analysieren</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-result">
+          <div class="dodd-klass">
+            <div class="dodd-klass-label">Klassifikation nach Dodd</div>
+            <div class="dodd-klass-value">Inkonsequente phonologische Störung</div>
+            <div class="dodd-klass-meta">Alter: 4;6 · Produktionen: 2 · Inkonsequenz: 100%</div>
+          </div>
+          <p class="dodd-disclaimer">Lern-/Reflexionshilfe – ersetzt keine fachliche Diagnose.</p>
+          <div class="dodd-section">
+            <h4>Inkonsequenz-Analyse</h4>
+            <p>Score: 100% (1 von 1 mehrfach produzierten Wörtern variabel; Grenze 40%).</p>
+            <p class="muted">„Katze": <span class="ipa-text">[ˈtatsə] / [ˈkasə]</span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="studio-foot">Inhalte aus <code>words.json</code> / <code>dodd-examples.json</code> — reale Beispieldaten des Repos.</footer>
+</body>
+</html>

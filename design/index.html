@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Logopädie-Trainer · UI-Konzept & Mockups</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Charis+SIL:ital,wght@0,400;0,700;1,400&family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="theme.css" />
+  <link rel="stylesheet" href="studio.css" />
+</head>
+<body class="studio">
+  <header class="studio-top">
+    <div class="studio-kicker">UI-Konzept · Übergabe an Claude Code</div>
+    <h1 class="studio-title">Logopädie-Trainer — vom Generischen zum Warmen.</h1>
+    <p class="studio-lede">
+      Komplettes UI-Konzept für alle drei Tabs, eine vollwertige Dark-Variante und die
+      Hybrid-Eingabe im Kind-IPA-Feld. Aufgesetzt auf den <strong>echten Code-Stand</strong>
+      des Repos — die Mockups nutzen exakt dieselben Klassennamen wie das bestehende
+      Vanilla-JS, das Redesign lässt sich also ohne JS-Umbau einspielen.
+    </p>
+
+    <nav class="studio-nav">
+      <a class="current" href="index.html">Überblick</a>
+      <a href="01-tokens.html">1 · Design-Tokens</a>
+      <a href="02-components.html">2 · Komponenten</a>
+      <a href="03-tabs.html">3 · Tabs</a>
+      <a href="04-hybrid.html">4 · Hybrid-Eingabe</a>
+      <a href="IMPLEMENTATION_PROMPT.md">5 · Implementierungs-Prompt ↗</a>
+    </nav>
+  </header>
+
+  <section class="mk-section">
+    <h2 class="mk-h2">Designhaltung</h2>
+    <p class="mk-note">
+      Der bestehende Stand ist funktional sauber, aber visuell neutral-klinisch
+      (Bootstrap-Blau, weiße Cards). Eine Lern-App für Studierende soll motivieren statt
+      einschüchtern — die Richtung ist <strong>freundlich-bildungsorientiert</strong>:
+      warme Papier-Töne, eine ruhige Akzentfarbe, klare Hierarchie. Fortschritt und
+      kleine Erfolge bleiben sichtbar, aber ohne Gamification-Kitsch (keine Maskottchen,
+      kein Konfetti, keine Emojis).
+    </p>
+
+    <div class="pair">
+      <div class="frame">
+        <div class="frame-label is-light"><span class="dot"></span>Warme Basis</div>
+        <div class="demo theme-light">
+          <p style="margin:0 0 12px;color:var(--text);font-weight:700;">Sand statt Klinikweiß</p>
+          <p style="margin:0;color:var(--muted);font-size:.92rem;line-height:1.55;">
+            Hintergründe in warmem Creme/Sand, Text in warmem Anthrazit, Ränder leicht
+            taupe getönt. Das nimmt der App das Sterile, ohne die Seriosität zu verlieren.
+          </p>
+        </div>
+      </div>
+      <div class="frame">
+        <div class="frame-label is-dark"><span class="dot"></span>Akzent: Heather</div>
+        <div class="demo theme-dark">
+          <p style="margin:0 0 12px;color:var(--text);font-weight:700;">Pflaume/Heather statt Blau</p>
+          <p style="margin:0;color:var(--muted);font-size:.92rem;line-height:1.55;">
+            Eine warme, gedämpfte Heather-Note als Akzent — bewusst <em>nicht</em> Blau
+            (zu klinisch) und sauber getrennt von den Status-Farben Grün/Bernstein/Rot.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="mk-h3">Warum diese Palette?</h3>
+    <p class="mk-note">
+      <strong>Heather/Pflaume (#6b4f9e)</strong> als Akzent liest sich gelehrt-ruhig (Anki-/
+      Quizlet-Territorium), wirkt warm und kollidiert mit keiner semantischen Farbe: Erfolg =
+      Grün, Warnung = Bernstein, Fehler = Rot bleiben dadurch eindeutig. <strong>IPA-Lesbarkeit</strong>
+      ist erste Priorität — die Zeichen sind fein, deshalb Serifenschrift <em>Charis SIL</em>
+      (für Phonetik gebaut, volle IPA-Abdeckung) und hoher Text-Kontrast in beiden Modi.
+    </p>
+
+    <h3 class="mk-h3">Dark Mode — gleichwertig, nicht invertiert</h3>
+    <p class="mk-note">
+      Der Dark Mode ist eigenständig gedacht: warmes Anthrazit mit Sepia-Stich statt Pure-Black,
+      damit die Lern-Wärme erhalten bleibt. Die Heather wird im Dunkeln <strong>heller und leicht
+      entsättigt</strong> (weniger Glare, feine IPA-Glyphen + Fokus-Ringe bleiben lesbar) — also
+      bewusst anders gewichtet als im Light. Status-Farben werden entsättigt, damit sie nicht
+      „schreien". IPA-Flächen zielen auf WCAG AAA.
+    </p>
+
+    <h3 class="mk-h3">Schrift</h3>
+    <div class="pair">
+      <div class="frame">
+        <div class="frame-label is-light"><span class="dot"></span>UI · Hanken Grotesk</div>
+        <div class="demo theme-light">
+          <div style="font-size:1.6rem;font-weight:800;letter-spacing:-.02em;color:var(--text);">Transkription üben</div>
+          <div style="color:var(--muted);margin-top:4px;">Humanistische Sans — warm, gut lesbar, freundlich.</div>
+        </div>
+      </div>
+      <div class="frame">
+        <div class="frame-label is-light"><span class="dot"></span>IPA · Charis SIL</div>
+        <div class="demo theme-light">
+          <div class="ipa-text" style="font-size:1.9rem;color:var(--text);">[ˈʃuːlə] · [ˈpfeːɐ̯t] · [ˈɡaːbl̩] · [ˈkʊtʃə]</div>
+          <div style="color:var(--muted);margin-top:6px;">Serife mit voller IPA- und Diakritika-Abdeckung.</div>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="mk-h3">Lieferumfang</h3>
+    <ul class="spec-list">
+      <li><b>Design-Tokens</b> für Light & Dark (Farben, Typo, Spacing, Radius, Schatten) mit Begründung — <a href="01-tokens.html">Seite 1</a>.</li>
+      <li><b>Komponenten-Bibliothek</b>, jede Komponente in Light und Dark — <a href="02-components.html">Seite 2</a>.</li>
+      <li><b>Tab-Mockups</b>: Wort→IPA, IPA→Wort, Dodd-Analyse, je Light/Dark — <a href="03-tabs.html">Seite 3</a>.</li>
+      <li><b>Hybrid-Eingabe</b>: Zustände A/B/C, Mini-Popup, Tooltip + Verhaltens-Spezifikation — <a href="04-hybrid.html">Seite 4</a>.</li>
+      <li><b>Produktionsreifes <code>theme.css</code></b> (ersetzt <code>css/style.css</code>) + <b>Implementierungs-Prompt</b> für Claude Code.</li>
+    </ul>
+
+    <p class="mk-note" style="margin-top:18px;">
+      <span class="mk-tag">Kein JS-Umbau nötig</span>&nbsp;
+      Das Redesign trifft die vorhandenen Klassen. Die Hybrid-Eingabe ist im JS bereits
+      angelegt (<code>.hybrid-ipa-*</code>, <code>state-edit</code>/<code>state-display</code>) —
+      das CSS dafür war bisher nur unter alten Namen vorhanden und wird jetzt sauber gestylt.
+    </p>
+  </section>
+
+  <footer class="studio-foot">
+    Logopädie-Trainer · UI-Konzept · Vanilla HTML/CSS/JS · LocalStorage · keine Frameworks.
+  </footer>
+</body>
+</html>

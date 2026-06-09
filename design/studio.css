@@ -1,0 +1,113 @@
+/* studio.css — Nur für die Mockup-/Spezifikationsseiten.
+   Neutrale „Studio"-Leinwand, Rahmen, Light/Dark-Paare, Token-Swatches.
+   Diese Datei gehört NICHT in die App — sie rahmt nur die Mockups. */
+
+.studio {
+  --studio-bg: #e7e3dc;
+  --studio-ink: #3a352d;
+  --studio-muted: #7d756a;
+  --studio-line: #d2ccc1;
+  background: var(--studio-bg);
+  color: var(--studio-ink);
+  min-height: 100vh;
+  font-family: "Hanken Grotesk", system-ui, sans-serif;
+}
+
+/* ----- Kopf / Navigation der Doku ----- */
+.studio-top {
+  max-width: 1180px; margin: 0 auto; padding: 40px 28px 8px;
+}
+.studio-kicker { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--studio-muted); }
+.studio-title { font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 800; letter-spacing: -0.02em; margin: 6px 0 10px; }
+.studio-lede { font-size: 1.02rem; line-height: 1.6; color: var(--studio-ink); max-width: 68ch; }
+.studio-lede a { color: #6b4f9e; font-weight: 600; }
+
+.studio-nav { display: flex; flex-wrap: wrap; gap: 8px; margin: 22px 0 8px; }
+.studio-nav a {
+  text-decoration: none; font-size: 0.9rem; font-weight: 600;
+  color: var(--studio-ink); background: #fffdf9; border: 1px solid var(--studio-line);
+  padding: 9px 15px; border-radius: 999px; transition: background .14s ease, transform .1s ease;
+}
+.studio-nav a:hover { background: #fff; transform: translateY(-1px); }
+.studio-nav a.current { background: #6b4f9e; color: #fff; border-color: transparent; }
+
+/* ----- Sektionen ----- */
+.mk-section { max-width: 1180px; margin: 0 auto; padding: 30px 28px; }
+.mk-h2 { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.01em; margin: 8px 0 6px; }
+.mk-h3 { font-size: 1.08rem; font-weight: 750; margin: 30px 0 4px; }
+.mk-note { font-size: 0.96rem; line-height: 1.6; color: var(--studio-muted); max-width: 70ch; margin: 0 0 18px; }
+.mk-note strong { color: var(--studio-ink); }
+.mk-note code { background: #fff; border: 1px solid var(--studio-line); padding: 1px 6px; border-radius: 5px; font-size: 0.86em; }
+
+.mk-divider { max-width: 1180px; margin: 8px auto; border: none; border-top: 1px solid var(--studio-line); }
+
+/* ----- Light/Dark-Paar ----- */
+.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
+@media (max-width: 860px) { .pair { grid-template-columns: 1fr; } }
+
+.frame { border-radius: 16px; overflow: hidden; border: 1px solid var(--studio-line); box-shadow: 0 6px 22px rgba(40,30,18,.09); }
+.frame-label {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 0.74rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 9px 14px; background: #fffdf9; color: var(--studio-muted); border-bottom: 1px solid var(--studio-line);
+}
+.frame-label .dot { width: 10px; height: 10px; border-radius: 999px; }
+.frame-label.is-light .dot { background: #f4efe7; border: 1px solid #d7c9b4; }
+.frame-label.is-dark { background: #2b2620; color: #b9ae9b; border-bottom-color: #423a2e; }
+.frame-label.is-dark .dot { background: #1b1714; border: 1px solid #4b4135; }
+
+/* die Demo-Fläche zeigt die App-eigene Hintergrundfarbe (themed) */
+.demo { background: var(--bg); color: var(--text); padding: 22px; }
+.demo.flush { padding: 0; }            /* für Header/Tabs, die randlos sitzen */
+.demo.tall { min-height: 120px; }
+
+/* einzelner (nicht gepaarter) Rahmen */
+.frame.solo { max-width: 720px; }
+
+/* Komponenten-Label kleiner Titel über einem Paar */
+.cmp { margin-top: 26px; }
+.cmp:first-of-type { margin-top: 6px; }
+.cmp-title { font-size: 1.05rem; font-weight: 750; margin: 0 0 4px; }
+.cmp-desc { font-size: 0.9rem; color: var(--studio-muted); margin: 0 0 12px; max-width: 72ch; line-height: 1.5; }
+
+/* ----- Token-Swatches ----- */
+.swatch-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+.swatch {
+  border-radius: 12px; overflow: hidden; border: 1px solid rgba(0,0,0,.08);
+  background: #fff; box-shadow: 0 2px 8px rgba(40,30,18,.06);
+}
+.swatch-chip { height: 64px; }
+.swatch-meta { padding: 9px 11px; }
+.swatch-name { font-size: 0.82rem; font-weight: 700; }
+.swatch-var { font-size: 0.72rem; color: var(--studio-muted); font-family: ui-monospace, "SF Mono", Menlo, monospace; }
+.swatch-hex { font-size: 0.72rem; color: var(--studio-muted); font-family: ui-monospace, "SF Mono", Menlo, monospace; }
+
+.token-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+@media (max-width: 860px) { .token-cols { grid-template-columns: 1fr; } }
+.token-col-head { display: flex; align-items: center; gap: 10px; font-size: 0.86rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--studio-muted); margin-bottom: 12px; }
+.token-col.dark { background: #221d18; border-radius: 16px; padding: 18px; }
+.token-col.dark .token-col-head { color: #b9ae9b; }
+.token-col.dark .swatch { background: #2c2620; border-color: rgba(255,255,255,.08); }
+.token-col.dark .swatch-name { color: #f0e9dd; }
+.token-col.dark .swatch-var, .token-col.dark .swatch-hex { color: #9b9080; }
+
+/* Spec-Liste (Verhalten) */
+.spec-list { counter-reset: step; list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; max-width: 80ch; }
+.spec-list li {
+  position: relative; padding: 14px 16px 14px 52px; background: #fffdf9;
+  border: 1px solid var(--studio-line); border-radius: 12px; font-size: 0.94rem; line-height: 1.55;
+}
+.spec-list li::before {
+  counter-increment: step; content: counter(step);
+  position: absolute; left: 14px; top: 13px;
+  width: 26px; height: 26px; border-radius: 999px; background: #6b4f9e; color: #fff;
+  display: grid; place-items: center; font-size: 0.82rem; font-weight: 700;
+}
+.spec-list b { color: #6b4f9e; }
+.spec-list code { background: #efe9f6; padding: 1px 6px; border-radius: 5px; font-size: 0.86em; }
+
+/* kleine Statuszeile */
+.mk-tag { display: inline-block; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; padding: 3px 9px; border-radius: 999px; background: #dde9dd; color: #3f7d57; }
+.mk-tag.warn { background: #f6ead1; color: #98690f; }
+
+.studio-foot { max-width: 1180px; margin: 0 auto; padding: 20px 28px 60px; color: var(--studio-muted); font-size: 0.86rem; }
